@@ -14,11 +14,11 @@ const Container = styled.div(common.splash);
 const Image = styled.img`
   width: 90px;
   height: 120px;
-  marginBottom: ${spacing(4)};
+  margin-bottom: ${spacing(4)};
 `;
 const Heading = styled.h3`
   ${typography.h3}
-  fontWeight: 500;
+  font-weight: 600;
 `;
 
 // const styles = StyleSheet.create({
@@ -63,7 +63,7 @@ const Visual = ({ name, type }: { name: string, type: VisualType }): React.Node 
     //   return <Icon style={styles.icon} name={name} size={48} color={Colors.textPrimary} />;
 
     case 'illustration': {
-      return <Image src={`assets/illustrations/${name}.png`} />;
+      return <Image src={`/assets/illustrations/${name}.png`} />;
     }
 
     default:

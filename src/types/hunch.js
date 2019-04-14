@@ -26,3 +26,8 @@ export type Hunch = {
 };
 
 export type HunchListType = 'ACTIVE' | 'COMPLETED' | 'PENDING' | 'REQUESTED';
+
+export type ViewType = {
+  key: HunchListType,
+  title: string,
+};

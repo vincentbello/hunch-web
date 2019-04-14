@@ -9,6 +9,9 @@ export default {
     primary: '#3593F2',
     secondary: '#F19935',
   },
+  links: {
+    hover: 'rgba(0,0,0,0.05)',
+  },
   thirdParty: {
     cashApp: '#28C101',
     facebook: '#3B5998',

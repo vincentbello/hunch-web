@@ -2,19 +2,11 @@
 import * as React from 'react';
 import { type Error } from 'types/apollo';
 
-// import Splash from 'components/Splash';
-// import Spinner from 'components/Spinner';
+import styled from '@emotion/styled';
+import colors from 'theme/colors';
+import common from 'theme/common';
 
-// const styles = StyleSheet.create({
-//   Splash: {
-//     width: AppSizes.screen.width,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   Splash_full: {
-//     flex: 1,
-//   },
-// });
+import Spinner from 'react-spinkit';
 
 type Props = {
   children: React.Node,
@@ -31,15 +23,16 @@ const defaultProps = {
   withCachedData: false,
 };
 
+const Splash = styled.main(common.splash);
+const StyledSpinner = styled(Spinner)`
+  height: 50px;
+  width: 50px;
+`;
+
 const DerivedStateSplash = ({ children, error, loading, size, withCachedData }: Props): React.Node => {
   if (withCachedData) return children;
 
-  if (loading) return (
-    // <View style={[styles.Splash, size === 'large' && styles.Splash_full]}>
-    //   <Spinner size={size} />
-    // </View>
-    <div>Loading...</div>
-  );
+  if (loading) return <Splash><StyledSpinner name="double-bounce" color={colors.brand.primary} /></Splash>;
 
   return Boolean(error) ? (
     // <Splash heading={error.errors.length > 0 ? error.errors[0].message : 'An error occurred.'} visualName="alert-triangle" />

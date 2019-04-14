@@ -54,6 +54,8 @@
     "react-dom": "^16.8.6",
     "react-facebook-login": "^4.1.1",
     "react-router-dom": "^5.0.0",
+    "react-spinkit": "^3.0.0",
+    "react-truncate": "^2.4.0",
     "resolve": "1.10.0",
     "sass-loader": "7.1.0",
     "style-loader": "0.23.1",

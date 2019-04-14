@@ -11,6 +11,20 @@ const SPACING_NOTCHES = {
   8: 64,
 };
 
+const SIZES = {
+  mobile: 420,
+};
+
 export function spacing(...notches: number[]): string {
   return notches.map((notch: number): string => `${SPACING_NOTCHES[notch] || 0}px`).join(' ');
 }
+
+export const media = Object.keys(SIZES).reduce((acc, label) => ({
+  ...acc,
+  [label]: (style: string) => `
+    @media (max-width: ${SIZES[label]}px) {
+      ${style}
+    }
+  `,
+}), {});
+console.log(media);

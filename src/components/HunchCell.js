@@ -1,6 +1,7 @@
 // @flow
 import * as React from 'react';
 import { distanceInWordsToNow } from 'date-fns';
+import Truncate from 'react-truncate';
 
 import { type Hunch } from 'types/hunch';
 
@@ -18,6 +19,7 @@ const Container = styled.div`
   margin: ${spacing(0, 2, 2)};
   padding: ${spacing(2)};
   display: flex;
+  box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.15);
 `;
 
 const Image = styled.img`
@@ -179,10 +181,12 @@ export default function HunchCell({ disabled, hunch, userId }: Props): React.Nod
         <Image src={displayedImageUrl} />
         <Content>
           <Header>
-            <HeaderText numberOfLines={1}>
-              {isInvolved && isBettor ? <span>You</span> : <a>{hunch.bettor.firstName}</a>}
-              <span> challenged </span>
-              {isInvolved && !isBettor ? <span>you</span> : <a>{hunch.bettee.firstName}</a>}
+            <HeaderText>
+              <Truncate>
+                {isInvolved && isBettor ? <span>You</span> : <a>{hunch.bettor.firstName}</a>}
+                <span> challenged </span>
+                {isInvolved && !isBettor ? <span>you</span> : <a>{hunch.bettee.firstName}</a>}
+              </Truncate>
             </HeaderText>
             <Label>
               {hunch.winnerId !== null && <LabelText>{hunch.winnerId === userId ? 'Won' : 'Lost'}</LabelText>}
@@ -190,7 +194,9 @@ export default function HunchCell({ disabled, hunch, userId }: Props): React.Nod
               <LabelText isComplete={hunch.winnerId !== null} won={hunch.winnerId === userId}>{hunch.amount}</LabelText>
             </Label>
           </Header>
-          <BodyText>{hunch.wager}</BodyText>
+          <BodyText>
+            <Truncate lines={2}>{hunch.wager}</Truncate>
+          </BodyText>
           <MetaText>{distanceInWordsToNow(hunch.createdAt, { addSuffix: true })}</MetaText>
         </Content>
       </Layout>
