@@ -1,5 +1,10 @@
 // @flow
 export default {
+  background: '#E9EBEE',
+  borders: {
+    main: '#D0D1D5',
+    cell: '#EEEEEE',
+  },
   brand: {
     primary: '#3593F2',
     secondary: '#F19935',

@@ -11,26 +11,21 @@ import { darken } from 'polished';
 // import { AccessToken, LoginManager } from 'react-native-fbsdk';
 // import { API_URL } from 'react-native-dotenv';
 
+import AuthenticationContext from 'contexts/AuthenticationContext';
 import GET_CURRENT_USER from 'graphql/queries/getCurrentUser';
 import LOGIN from 'graphql/mutations/login';
 
 // import { SocialIcon } from 'react-native-elements';
 
 // import { SplashStyles } from 'theme/app';
+import common from 'theme/common';
 import colors from 'theme/colors';
 import { spacing } from 'theme/sizes';
 import typography from 'theme/typography';
 
 type Props = { login: () => void };
 
-const Splash = styled.main`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100vw;
-`;
+const Splash = styled.main(common.splash);
 
 const SplashImage = styled.img`
   width: 120px;
@@ -61,52 +56,22 @@ const FbButton = styled.button`
 function LoginContainer(props: Props): React.Node {
   const [tokens, setTokens] = React.useState({ access: null, refresh: null });
   const [isAuthenticating, setAuthenticating] = React.useState(false);
+  const { isAuthenticated, setAuthenticated } = React.useContext(AuthenticationContext);
 
   async function onFbLogin(response) {
     if (response.isCancelled) {
       setAuthenticating(false);
+      setAuthenticated(false);
       return;
     }
 
     const { data: { login } } = await props.login({ context: { headers: { access_token: response.accessToken } } });
+    localStorage.setItem('accessToken', login.accessToken);
+    localStorage.setItem('refreshToken', login.refreshToken);
     setAuthenticating(false);
+    setAuthenticated(true);
     props.history.push('/');
   };
-
-  // const retrieveTokens = async () => {
-  //   const [[_1, access], [_2, refresh]] = await AsyncStorage.multiGet(['accessToken', 'refreshToken']);
-  //   setTokens({ access, refresh });
-  // };
-
-  // React.useEffect(() => {
-  //   retrieveTokens();
-  // }, []);
-
-  // const loginToFacebook = async () => {
-  //   await LoginManager.logOut();
-  //   setAuthenticating(true);
-  //   const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email', 'user_friends']);
-  //   if (result.isCancelled) {
-  //     setAuthenticating(false);
-  //     return;
-  //   }
-
-  //   const { accessToken } = await AccessToken.getCurrentAccessToken();
-  //   const { data: { login } } = await login({ context: { headers: { access_token: accessToken } } });
-  //   await AsyncStorage.multiSet([['accessToken', login.accessToken], ['refreshToken', login.refreshToken]]);
-  //   new NotificationService(({ os, token }): void => {
-  //     if (os && token) registerDevice({ variables: { os: os.toUpperCase(), token } });
-  //   });
-  //   Actions.main();
-  // };
-
-  // const renderAdminInfo = (): React.Node => (
-  //   <React.Fragment>
-  //     <Text style={{ fontSize: 10 }}>API URL: {API_URL}</Text>
-  //     <Text style={{ fontSize: 10 }}>Access Token: {tokens.access}</Text>
-  //     <Text style={{ fontSize: 10 }}>Refresh Token: {tokens.refresh}</Text>
-  //   </React.Fragment>
-  // );
 
   return (
     <Splash>
@@ -130,25 +95,6 @@ function LoginContainer(props: Props): React.Node {
         )}
       />
     </Splash>
-    // <View style={SplashStyles}>
-    //   <Text>API url: {API_URL}</Text>
-    //   <Text style={{ ...Typography.h1, marginBottom: 16 }}>Welcome to Hunch!</Text>
-    //   <TouchableOpacity
-    //     disabled={isAuthenticating}
-    //     onPress={loginToFacebook}
-    //   >
-    //     {isAuthenticating ? (
-    //       <Text>Logging In...</Text>
-    //     ) : (
-    //       <SocialIcon
-    //         button
-    //         style={{ borderRadius: 4, padding: 16 }}
-    //         title="Log in with Facebook"
-    //         type="facebook"
-    //       />
-    //     )}
-    //   </TouchableOpacity>
-    // </View>
   );
 }
 

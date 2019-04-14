@@ -7,18 +7,14 @@ import withCurrentUser, { type CurrentUserProps } from 'hocs/withCurrentUser';
 
 import { type HunchListType } from 'types/hunch';
 
-// import HunchList from 'src/components/HunchList';
+import HunchList from 'components/HunchList';
 // import TabView from 'src/components/TabView';
 
 type Props = {}; // CurrentUserProps;
 
 function Hunches({ currentUser }: Props): React.Node {
   return (
-    <div>
-      Hello from the home page!
-      {JSON.stringify(currentUser)}
-      {/* <HunchList hunchListType="ACTIVE" user={currentUser} /> */}
-    </div>
+    <HunchList hunchListType="ACTIVE" user={currentUser} />
     // <TabView
     //   navigationState={{
     //     index: viewIndex,
