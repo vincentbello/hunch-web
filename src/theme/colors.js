@@ -18,5 +18,9 @@ export default {
     iMessage: '#007AFF',
     venmo: '#3D95CE',
   },
+  text: {
+    primary: '#222222',
+    secondary: '#777777',
+  },
   white: '#FFFFFF',
 };

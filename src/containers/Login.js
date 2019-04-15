@@ -11,6 +11,7 @@ import { darken } from 'polished';
 // import { AccessToken, LoginManager } from 'react-native-fbsdk';
 // import { API_URL } from 'react-native-dotenv';
 
+import type { RouterProps } from 'types/router';
 import AuthenticationContext from 'contexts/AuthenticationContext';
 import GET_CURRENT_USER from 'graphql/queries/getCurrentUser';
 import LOGIN from 'graphql/mutations/login';
@@ -23,7 +24,7 @@ import colors from 'theme/colors';
 import { spacing } from 'theme/sizes';
 import typography from 'theme/typography';
 
-type Props = { login: () => void };
+type Props = RouterProps & { login: () => void };
 
 const Splash = styled.main(common.splash);
 

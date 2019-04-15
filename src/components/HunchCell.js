@@ -2,10 +2,12 @@
 import * as React from 'react';
 import { distanceInWordsToNow } from 'date-fns';
 import Truncate from 'react-truncate';
+import { Link } from 'react-router-dom';
 
 import { type Hunch } from 'types/hunch';
 
 import styled from '@emotion/styled';
+import common from 'theme/common';
 import colors from 'theme/colors';
 import typography from 'theme/typography';
 import { spacing } from 'theme/sizes';
@@ -13,13 +15,21 @@ import { spacing } from 'theme/sizes';
 // import HunchActions from 'components/HunchActions';
 // import Image from 'components/Image';
 
-const Container = styled.div`
+const ContainerLink = styled(Link)`
+  ${common.reset.link}
+  border: none;
   background-color: ${colors.white};
   border-radius: 2px;
   margin: ${spacing(0, 2, 2)};
   padding: ${spacing(2)};
   display: flex;
-  box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.15);
+  cursor: pointer;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.15);
+  transition: box-shadow 250ms;
+
+  &:hover {
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.25);
+  }
 `;
 
 const Image = styled.img`
@@ -176,7 +186,7 @@ export default function HunchCell({ disabled, hunch, userId }: Props): React.Nod
   })();
 
   return (
-    <Container>
+    <ContainerLink to={`/hunch/${hunch.id}`}>
       <Layout>
         <Image src={displayedImageUrl} />
         <Content>
@@ -205,7 +215,7 @@ export default function HunchCell({ disabled, hunch, userId }: Props): React.Nod
           <HunchActions hunch={hunch} isBettor={isBettor} />
         </View>
       )} */}
-    </Container>
+    </ContainerLink>
   );
 }
 

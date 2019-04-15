@@ -32,11 +32,11 @@ const StyledSpinner = styled(Spinner)`
 const DerivedStateSplash = ({ children, error, loading, size, withCachedData }: Props): React.Node => {
   if (withCachedData) return children;
 
-  if (loading) return <Splash><StyledSpinner name="double-bounce" color={colors.brand.primary} /></Splash>;
+  if (loading) return <Splash><StyledSpinner name="double-bounce" color={colors.brand.primary} fadeIn="none" /></Splash>;
 
   return Boolean(error) ? (
     // <Splash heading={error.errors.length > 0 ? error.errors[0].message : 'An error occurred.'} visualName="alert-triangle" />
-    <div>{error.errors.length > 0 ? error.errors[0].message : 'An error occurred.'}</div>
+    <div>{JSON.stringify(error)}</div>
   ) : children;
 };
 

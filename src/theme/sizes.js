@@ -16,7 +16,7 @@ const SIZES = {
 };
 
 export function spacing(...notches: number[]): string {
-  return notches.map((notch: number): string => `${SPACING_NOTCHES[notch] || 0}px`).join(' ');
+  return notches.map((notch: number): string => `${notch < 0 ? '-' : ''}${SPACING_NOTCHES[Math.abs(notch)] || 0}px`).join(' ');
 }
 
 export const media = Object.keys(SIZES).reduce((acc, label) => ({

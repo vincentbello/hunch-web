@@ -7,7 +7,7 @@ import { NavLink } from 'react-router-dom';
 import withCurrentUser, { type CurrentUserProps } from 'hocs/withCurrentUser';
 
 import { HUNCH_VIEW_TYPES } from 'constants/view-types';
-import type { HunchListType, ViewType } from 'types/hunch';
+import type { ViewType } from 'types/hunch';
 import type { RouterProps } from 'types/router';
 import styled from '@emotion/styled';
 import colors from 'theme/colors';
@@ -18,9 +18,15 @@ import HunchList from 'components/HunchList';
 
 type Props = CurrentUserProps & RouterProps;
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`;
+
 const Container = styled.div`
   padding-top: ${spacing(2)};
-  height: 100%;
+  flex: 1 0 0;
 `;
 
 const NavList = styled.ul`
@@ -60,9 +66,9 @@ const StyledLink = styled(NavLink)`
   }
 `;
 
-function Hunches({ currentUser, match }: Props): React.Node {
+function Hunches({ currentUser, history, match }: Props): React.Node {
   return (
-    <React.Fragment>
+    <Wrapper>
       <NavList>
         {HUNCH_VIEW_TYPES.map((viewType: ViewType, index: number): React.Node => (
           <NavItem key={viewType.key}>
@@ -75,7 +81,7 @@ function Hunches({ currentUser, match }: Props): React.Node {
       <Container>
         <HunchList hunchListType={match.params.type ? match.params.type.toUpperCase() : HUNCH_VIEW_TYPES[0].key} user={currentUser} />
       </Container>
-    </React.Fragment>
+    </Wrapper>
     // <TabView
     //   navigationState={{
     //     index: viewIndex,

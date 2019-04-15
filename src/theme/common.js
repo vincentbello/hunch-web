@@ -15,6 +15,14 @@ export default {
 
     ${media.mobile`width: 100%;`}
   `,
+  reset: {
+    link: `
+      &:-webkit-any-link {
+        color: inherit;
+        text-decoration: none;
+      }
+    `,
+  },
   splash: `
     display: flex;
     flex-direction: column;
