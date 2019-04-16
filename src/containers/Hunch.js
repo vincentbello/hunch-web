@@ -25,6 +25,7 @@ import GameCell from 'components/GameCell';
 import Amount from 'components/Amount';
 import Messages from 'components/Messages';
 import ImageSplash from 'components/ImageSplash';
+import SectionHeader from 'components/SectionHeader';
 // import FeedMessage from 'components/FeedMessage';
 // import PaymentActions from 'components/PaymentActions';
 import UserThumbnail from 'components/UserThumbnail';
@@ -60,12 +61,6 @@ const Section = styled.section`
   border-radius: 2px;
   margin: ${spacing(0, 2, 2)};
   padding: ${spacing(2)};
-`;
-
-const SectionHeader = styled.h4`
-  ${typography.h4}
-  margin: ${spacing(0, 0, 2)};
-  font-weight: 900;
 `;
 
 function HunchContainer({ currentUser, hunchQuery: { loading, error, hunch } }: Props): React.Node {

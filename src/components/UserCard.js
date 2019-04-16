@@ -11,13 +11,14 @@ import UPDATE_FRIENDSHIP_STATUS from 'graphql/mutations/updateFriendshipStatus';
 import { type Error } from 'types/apollo';
 import { type FriendshipStatus, type User, type UserFriendship } from 'types/user';
 
-import { FiUsers } from 'react-icons/fi';
+import { FiEdit2, FiUsers } from 'react-icons/fi';
 import Button from 'components/Button';
 import DerivedStateSplash from 'components/DerivedStateSplash';
 // import DualAction from 'components/DualAction';
 // import FavoritesList from 'components/FavoritesList';
 import FriendshipButton from 'components/FriendshipButton';
 import Image from 'components/Image';
+import SectionHeader from 'components/SectionHeader';
 // import UserStats from 'components/UserStats';
 
 import styled from '@emotion/styled';
@@ -148,7 +149,7 @@ const Container = styled.main`margin-top: ${spacing(2)};`;
 
 const Section = styled.section`
   ${props => !props.clear && common.box}
-  margin: ${props => spacing(0, 2, props.trimmed ? 0 : 2)};
+  margin: ${spacing(0, 2, 2)};
   padding: ${props => spacing(props.trimmed ? 0 : 2)};
   display: flex;
   align-items: center;
@@ -167,6 +168,12 @@ const HeaderMeta = styled.div`
   ${typography.h5}
   color: ${colors.text.secondary};
   margin-bottom: 2px;
+`;
+
+const ListHeader = styled.section`
+  display: flex;
+  align-items: center;
+  margin: ${spacing(0, 2, 2)};
 `;
 
 const LeftOffsetButton = styled(Button)`margin-left: ${spacing(2)};`;
@@ -255,22 +262,11 @@ function UserCard({ isCurrent, user, userFriendshipQuery, updateFriendshipStatus
           </React.Fragment>
         )}
 
-        {/* {<View style={styles.listHeader}>
-          <Text style={[styles.sectionHeader, styles.listHeaderText]}>{`${isCurrent ? 'My ' : ''}Favorite Teams`}</Text>
-          {isCurrent && (
-            <Icon.Button
-              backgroundColor={Colors.transparent}
-              color={Colors.brand.primary}
-              style={styles.listEditButton}
-              iconStyle={styles.listEditIcon}
-              name="edit-2"
-              size={18}
-              underlayColor="rgba(0, 0, 0, 0.1)"
-              onPress={Actions.favorites}
-            />
-          )}
-        </View>
-        <View style={styles.favorites}>
+       <ListHeader>
+          <SectionHeader grow>{`${isCurrent ? 'My ' : ''}Favorite Teams`}</SectionHeader>
+          {isCurrent && <Button type="tertiary" icon={<FiEdit2 />} onClick={() => console.log('edit my favorites')} />}
+        </ListHeader>
+         {/* <View style={styles.favorites}>
           <FavoritesList mine={isCurrent} userId={isCurrent ? null : user.id} />
         </View>
 
