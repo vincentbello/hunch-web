@@ -11,7 +11,6 @@ export default function withAuth(ComponentToProtect): React.ComponentType<> {
   function Protected(props): React.Node {
     const [state, setState] = React.useState({ checking: true, redirect: false });
     const { isAuthenticated, setAuthenticated } = React.useContext(AuthenticationContext);
-    console.log('is authenticated', isAuthenticated);
 
     async function checkAuth() {
       if (isAuthenticated) {
@@ -21,7 +20,6 @@ export default function withAuth(ComponentToProtect): React.ComponentType<> {
 
       const refreshToken = localStorage.getItem('refreshToken');
       if (refreshToken === null) {
-        console.log('REDIRECT');
         setState({ checking: false, redirect: true });
       } else {
         try {
@@ -33,7 +31,6 @@ export default function withAuth(ComponentToProtect): React.ComponentType<> {
           localStorage.setItem('accessToken', refreshAuth.accessToken);
           localStorage.setItem('refreshToken', refreshAuth.refreshToken);
           setAuthenticated(true);
-          console.log('SET AUTHENTICATED');
           setState({ ...state, checking: false });
         } catch (err) {
           console.log('Refresh auth error', err);

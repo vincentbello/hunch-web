@@ -1,10 +1,8 @@
 // @flow
 import * as React from 'react';
 import { compose, graphql, Query } from 'react-apollo';
-import gql from 'graphql-tag';
 import GET_HUNCH from 'graphql/queries/getHunch';
 import GET_GAME from 'graphql/queries/getGame';
-import { noop } from 'utils/functions';
 
 import { type Error } from 'types/apollo';
 import { type Hunch } from 'types/hunch';
@@ -23,13 +21,13 @@ import { spacing } from 'theme/sizes';
 import withCurrentUser, { type CurrentUserProps } from 'hocs/withCurrentUser';
 import DerivedStateSplash from 'components/DerivedStateSplash';
 // import HunchActions from 'components/HunchActions';
-// import GameCell from 'components/GameCell';
+import GameCell from 'components/GameCell';
 import Amount from 'components/Amount';
 import Messages from 'components/Messages';
 import ImageSplash from 'components/ImageSplash';
 // import FeedMessage from 'components/FeedMessage';
 // import PaymentActions from 'components/PaymentActions';
-import User from 'components/User';
+import UserThumbnail from 'components/UserThumbnail';
 
 type ExternalProps = {
   hunchId: number,
@@ -47,6 +45,12 @@ const Content = styled.div`
   position: relative;
   top: ${spacing(-2)};
   margin-bottom: ${spacing(-2)};
+`;
+
+const GameContainer = styled.div`
+  margin: ${spacing(0, 2, 6, 2)};
+  width: 100%;
+  align-self: flex-end;
 `;
 
 const Section = styled.section`
@@ -103,17 +107,18 @@ function HunchContainer({ currentUser, hunchQuery: { loading, error, hunch } }: 
             <React.Fragment>
               <ImageSplash dimmed src="/assets/nba-splash.png">
                 <DerivedStateSplash error={error} loading={loading}>
-                  {game && <div>GAMECELL</div>}
-                  {/* <View style={styles.game}>
-                    <GameCell game={game} large light />
-                  </View> */}
+                  {game && (
+                    <GameContainer>
+                      <GameCell game={game} large light />
+                    </GameContainer>
+                  )}
                 </DerivedStateSplash>
               </ImageSplash>
               <Content>
                 <Section flexed>
-                  <User currentUser={currentUser} user={hunch.bettor} hunch={hunch} game={game} isBettor />
+                  <UserThumbnail currentUser={currentUser} user={hunch.bettor} hunch={hunch} game={game} isBettor />
                   <Amount amount={hunch.amount} />
-                  <User currentUser={currentUser} user={hunch.bettee} hunch={hunch} game={game} />
+                  <UserThumbnail currentUser={currentUser} user={hunch.bettee} hunch={hunch} game={game} />
                 </Section>
                 {/* {this.renderActions(hunch)} */}
                 {Boolean(hunch.wager) && (
@@ -121,7 +126,7 @@ function HunchContainer({ currentUser, hunchQuery: { loading, error, hunch } }: 
                     <SectionHeader>Trash Talk</SectionHeader>
                     <Messages
                       currentUser={currentUser}
-                      messages={[{ id: 1, author: hunch.bettee, content: 'hunch.wager hello world hello world world hello world world hello world world hello world world hello world world hello world' }, { id: 2, author: hunch.bettor, content: 'Fuck you' }]}
+                      messages={[{ id: 1, author: hunch.bettor, content: hunch.wager }]}
                     />
                   </Section>
                 )}

@@ -12,6 +12,14 @@ export default {
   links: {
     hover: 'rgba(0,0,0,0.05)',
   },
+  primary: {
+    orange: '#FFA352',
+    blue: '#8CB2D9',
+    green: '#73C028',
+    red: '#F25F57',
+    purple: '#D28BDE',
+    gray: '#AAAAAA',
+  },
   thirdParty: {
     cashApp: '#28C101',
     facebook: '#3B5998',
@@ -21,6 +29,9 @@ export default {
   text: {
     primary: '#222222',
     secondary: '#777777',
+    tertiary: '#DDDDDD',
   },
+  gold: '#FFD700',
+  transparent: 'rgba(0,0,0,0)',
   white: '#FFFFFF',
 };

@@ -27,4 +27,3 @@ export const media = Object.keys(SIZES).reduce((acc, label) => ({
     }
   `,
 }), {});
-console.log(media);

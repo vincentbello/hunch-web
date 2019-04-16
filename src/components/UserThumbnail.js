@@ -33,6 +33,7 @@ const GET_USER_STATS = gql`
 const StyledLink = styled.a`
   ${common.reset.link}
   ${props => props.muted && `opacity: 1;`}
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -59,16 +60,10 @@ const Subhead = styled.div`
   margin-top: ${spacing(3)};
 `;
 
-const UserLabelContainer = styled.div`
-  display: flex;
-  align-items: 'center',
-  justify-content: 'center',
-  margin: ${spacing(2, 0, 1)};
-`;
-
 const UserLabel = styled.span`
   ${typography.h4}
   ${props => props.muted && `opacity: 0.75;`}
+  margin: ${spacing(2, 0, 1)};
   font-weight: 800;
 `;
 
@@ -85,6 +80,19 @@ const UserBadge = styled.div`
   font-weight: 900;
   font-size: 10px;
   color: ${colors.brand.primary};
+`;
+
+const Trophy = styled.span`
+  animation: ${common.keyframes.pulseAndShake} 1.5s;
+  font-size: 24px;
+  position: relative;
+  text-shadow: 1px 1px 1px rgba(255,255,255,.95);
+  margin-bottom: -36px;
+  top: -36px;
+  ${props => css`
+    right: ${props.left ? 'auto' :'28px'};
+    ${props.left && `left: 28px;`}
+  `}
 `;
 
 export default function User({ currentUser, isBettor, game, hunch, user }: Props) {
@@ -112,16 +120,11 @@ export default function User({ currentUser, isBettor, game, hunch, user }: Props
           />
         </TeamContainer>
       )}
+      {didWin && <Trophy left={!isBettor} role="img" aria-label="trophy">🏆</Trophy>}
       {pickedTeam && (
         <Subhead>{inactive ? 'Pending response' : `Picked the ${pickedTeam.lastName}`}</Subhead>
       )}
-      <UserLabelContainer>
-        {didWin && (
-          '★'
-          // <Icon style={styles.userIcon} name="star" size={20} color={Colors.gold} />
-        )}
-        <UserLabel muted={didLose}>{user.fullName}</UserLabel>
-      </UserLabelContainer>
+      <UserLabel muted={didLose}>{user.fullName}</UserLabel>
       <div>
         <UserMetaText>Record: </UserMetaText>
         <Query query={GET_USER_STATS} variables={{ userId: user.id }}>

@@ -1,18 +1,10 @@
 // @flow
 import * as React from 'react';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
 
-import { type Hunch } from 'types/hunch';
-import { type Game } from 'types/game';
 import { type Message } from 'types/message';
 import { type User } from 'types/user';
 
-import { css } from '@emotion/core';
 import styled from '@emotion/styled';
-import common from 'theme/common';
-import colors from 'theme/colors';
-import typography from 'theme/typography';
 import { spacing } from 'theme/sizes';
 
 import FeedMessage from 'components/FeedMessage';

@@ -2,22 +2,20 @@
 import * as React from 'react';
 import { distanceInWordsToNow } from 'date-fns';
 import Truncate from 'react-truncate';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router';
 
+import { type RouterProps } from 'types/router';
 import { type Hunch } from 'types/hunch';
 
 import styled from '@emotion/styled';
-import common from 'theme/common';
 import colors from 'theme/colors';
 import typography from 'theme/typography';
 import { spacing } from 'theme/sizes';
 
-// import HunchActions from 'components/HunchActions';
+import DivButton from 'components/DivButton';
 // import Image from 'components/Image';
 
-const ContainerLink = styled(Link)`
-  ${common.reset.link}
-  border: none;
+const StyledDivButton = styled(DivButton)`
   background-color: ${colors.white};
   border-radius: 2px;
   margin: ${spacing(0, 2, 2)};
@@ -28,7 +26,7 @@ const ContainerLink = styled(Link)`
   transition: box-shadow 250ms;
 
   &:hover {
-    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.25);
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.3);
   }
 `;
 
@@ -171,13 +169,13 @@ const LabelText = styled.span`
 //   },
 // });
 
-type Props = {
+type Props = RouterProps & {
   hunch: Hunch,
   disabled: boolean,
   userId: number,
 };
 
-export default function HunchCell({ disabled, hunch, userId }: Props): React.Node {
+function HunchCell({ disabled, history, hunch, userId }: Props): React.Node {
   const isBettor = userId === hunch.bettor.id;
   const isInvolved = userId === hunch.bettor.id || userId === hunch.bettee.id;
   const displayedImageUrl = ((): string | null => {
@@ -186,7 +184,7 @@ export default function HunchCell({ disabled, hunch, userId }: Props): React.Nod
   })();
 
   return (
-    <ContainerLink to={`/hunch/${hunch.id}`}>
+    <StyledDivButton onClick={() => history.push(`/hunch/${hunch.id}`)}>
       <Layout>
         <Image src={displayedImageUrl} />
         <Content>
@@ -215,7 +213,7 @@ export default function HunchCell({ disabled, hunch, userId }: Props): React.Nod
           <HunchActions hunch={hunch} isBettor={isBettor} />
         </View>
       )} */}
-    </ContainerLink>
+    </StyledDivButton>
   );
 }
 
@@ -223,3 +221,5 @@ HunchCell.defaultProps = {
   disabled: false,
   onPress() {},
 };
+
+export default withRouter(HunchCell);
