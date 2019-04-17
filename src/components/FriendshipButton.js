@@ -3,7 +3,7 @@ import * as React from 'react';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import { type UserFriendship, type FriendshipStatus } from 'types/user';
-import { FiUserCheck, FiUserMinus, FiUserPlus, FiPackage, FiPaperclip } from 'react-icons/fi';
+import { FiUserCheck, FiUserPlus } from 'react-icons/fi';
 import styled from '@emotion/styled';
 import typography from 'theme/typography';
 import { spacing } from 'theme/sizes';
@@ -23,12 +23,6 @@ type Props = {
   userId: number,
   updateFriendshipStatus: (status: FriendshipStatus) => void,
 };
-
-const OPTIONS = [
-  { key: 'foo', label: 'Do the foo', icon: <FiUserMinus style={{ fontSize: 16 }} />, onClick: console.log },
-  { key: 'bar', label: 'Do the bar', icon: <FiPackage style={{ fontSize: 16 }} />, onClick: console.log },
-  { key: 'baz', label: 'Do the baz', icon: <FiPaperclip style={{ fontSize: 16 }} />, onClick: console.log },
-];
 
 const ModalContent = styled.div(typography.h4);
 const ModalFooter = styled.div`text-align: right;`;
