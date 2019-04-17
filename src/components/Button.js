@@ -98,19 +98,18 @@ const IconContainer = styled.span`
   margin-${props => props.right ? 'left' : 'right'}: ${spacing(2)};
 `;
 
-export default function Button(props: Props) {
-  return (
-    <StyledButton {...props}>
-      {(props.title || props.icon) ? (
-        <React.Fragment>
-          {props.leftIcon !== null && <IconContainer>{props.leftIcon}</IconContainer>}
-          {props.title || props.icon}
-          {props.rightIcon !== null && <IconContainer right>{props.rightIcon}</IconContainer>}
-        </React.Fragment>
-      ) : (
-        props.children
-      )}
-    </StyledButton>
-  );
-}
+const Button = React.forwardRef((props: Props, ref: (el: HTMLButtonElement) => void) => (
+  <StyledButton {...props} ref={ref}>
+    {(props.title || props.icon) ? (
+      <React.Fragment>
+        {props.leftIcon !== null && <IconContainer>{props.leftIcon}</IconContainer>}
+        {props.title || props.icon}
+        {props.rightIcon !== null && <IconContainer right>{props.rightIcon}</IconContainer>}
+      </React.Fragment>
+    ) : (
+      props.children
+    )}
+  </StyledButton>
+));
 Button.defaultProps = defaultProps;
+export default Button;

@@ -8,6 +8,11 @@ export default {
     body {
       background-color: ${colors.background};
     }
+
+    .ReactModal__Content {
+      width: calc(100% - 30px);
+      min-height: 100px;
+    }
   `,
   keyframes: {
     pulseAndShake: keyframes`

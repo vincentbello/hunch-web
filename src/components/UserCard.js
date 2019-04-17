@@ -197,7 +197,7 @@ function UserCard({ isCurrent, user, userFriendshipQuery, updateFriendshipStatus
   //   return !isCurrent && q && q.userFriendship && q.userFriendship.status === 'PENDING' && q.userFriendship.userId === user.id;
   // }
 
-  // updateFriendshipStatus = (status: FriendshipStatus): void => this.props.updateFriendshipStatus({ variables: { userId: this.props.user.id, status } });
+  const updateFriendship = (status: FriendshipStatus): void => updateFriendshipStatus({ variables: { userId: user.id, status } });
 
   // const { isCurrent, user, userFriendshipQuery } = this.props;
   // const { needsAction } = this;
@@ -238,7 +238,7 @@ function UserCard({ isCurrent, user, userFriendshipQuery, updateFriendshipStatus
                   friendship={userFriendshipQuery.userFriendship}
                   name={user.firstName}
                   userId={user.id}
-                  updateFriendshipStatus={updateFriendshipStatus}
+                  updateFriendshipStatus={updateFriendship}
                 />
               </DerivedStateSplash>
               <LeftOffsetButton

@@ -55,6 +55,7 @@
     "react-dom": "^16.8.6",
     "react-facebook-login": "^4.1.1",
     "react-icons": "^3.5.0",
+    "react-modal": "^3.8.1",
     "react-router-dom": "^5.0.0",
     "react-spinkit": "^3.0.0",
     "react-truncate": "^2.4.0",

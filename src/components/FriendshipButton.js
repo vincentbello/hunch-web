@@ -1,8 +1,12 @@
 // @flow
 import * as React from 'react';
 import Button from 'components/Button';
+import Modal from 'components/Modal';
 import { type UserFriendship, type FriendshipStatus } from 'types/user';
-import { FiUserCheck, FiUserPlus } from 'react-icons/fi';
+import { FiUserCheck, FiUserMinus, FiUserPlus, FiPackage, FiPaperclip } from 'react-icons/fi';
+import styled from '@emotion/styled';
+import typography from 'theme/typography';
+import { spacing } from 'theme/sizes';
 
 type ButtonAttrs = {
   disabled: boolean,
@@ -19,6 +23,16 @@ type Props = {
   userId: number,
   updateFriendshipStatus: (status: FriendshipStatus) => void,
 };
+
+const OPTIONS = [
+  { key: 'foo', label: 'Do the foo', icon: <FiUserMinus style={{ fontSize: 16 }} />, onClick: console.log },
+  { key: 'bar', label: 'Do the bar', icon: <FiPackage style={{ fontSize: 16 }} />, onClick: console.log },
+  { key: 'baz', label: 'Do the baz', icon: <FiPaperclip style={{ fontSize: 16 }} />, onClick: console.log },
+];
+
+const ModalContent = styled.div(typography.h4);
+const ModalFooter = styled.div`text-align: right;`;
+const OffsetButton = styled(Button)`margin-left: ${spacing(1)}`;
 
 const getButtonAttrs = (friendship: UserFriendship, userId: number): null | ButtonAttrs => {
   if (!friendship || friendship.status === 'DELETED' || (friendship.status === 'REJECTED' && friendship.userId !== userId)) {
@@ -58,35 +72,56 @@ const getButtonAttrs = (friendship: UserFriendship, userId: number): null | Butt
 };
 
 function FriendshipButton({ name, friendship, userId, updateFriendshipStatus }: Props): React.Node {
-  const onPressHandler = (targetStatus: FriendshipStatus | null, confirmation: string | null): (() => void) => () => {
-    if (targetStatus === null) return;
-    if (confirmation !== null) {
-      const unfriend = confirmation === 'UNFRIEND';
-      // ActionSheetIOS.showActionSheetWithOptions({
-      //   options: ['Cancel', unfriend ? 'Unfriend' : 'Cancel Request'],
-      //   cancelButtonIndex: 0,
-      //   destructiveButtonIndex: 1,
-      //   message: unfriend ? `Are you sure you want to remove ${name} from your friends? You will not be able to challenge them anymore.` : `Are you sure you want to cancel your friend request to ${name}?`,
-      // },
-      // (buttonIndex: number) => {
-      //   if (buttonIndex === 1 && targetStatus !== null) updateFriendshipStatus(targetStatus);
-      // });
-      return;
-    }
-
-    updateFriendshipStatus(targetStatus);
-  };
-
+  const [isConfirming, setConfirm] = React.useState(false);
   const buttonAttrs = getButtonAttrs(friendship, userId);
   if (buttonAttrs === null) return null;
+
+  const { disabled, icon, label, primary, targetStatus, confirmation } = buttonAttrs;
+  const unfriend = confirmation === 'UNFRIEND';
+  const close = () => setConfirm(false);
+  const open = () => {
+    if (targetStatus === null) return;
+    if (confirmation === null) {
+      updateFriendshipStatus(targetStatus);
+    } else {
+      setConfirm(true);
+    }
+  };
+  const confirm = () => {
+    if (targetStatus !== null) updateFriendshipStatus(targetStatus);
+    close();
+  };
+
   return (
-    <Button
-      disabled={buttonAttrs.disabled}
-      leftIcon={buttonAttrs.icon}
-      title={buttonAttrs.label}
-      type={buttonAttrs.primary ? 'primary' : 'secondary'}
-      onClick={onPressHandler(buttonAttrs.targetStatus, buttonAttrs.confirmation)}
-    />
+    <>
+      <Button
+        disabled={disabled}
+        leftIcon={icon}
+        title={label}
+        type={primary ? 'primary' : 'secondary'}
+        onClick={open}
+      />
+      <Modal
+        isOpen={isConfirming}
+        close={close}
+        renderFooter={() => (
+          <ModalFooter>
+            <Button type="secondary" title="Cancel" onClick={close} />
+            <OffsetButton type="primary" title={unfriend ? 'Unfriend' : 'Cancel Request'} onClick={confirm} />
+          </ModalFooter>
+        )}
+      >
+        {() => (
+          <ModalContent>
+            {unfriend ? (
+              <>Are you sure you want to remove <strong>{name}</strong> from your friends? You will not be able to challenge them anymore.</>
+            ) : (
+              <>Are you sure you want to cancel your friend request to <strong>{name}</strong>?</>
+            )}
+          </ModalContent>
+        )}
+      </Modal>
+    </>
   );
 }
 
