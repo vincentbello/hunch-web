@@ -11,128 +11,41 @@ import UPDATE_FRIENDSHIP_STATUS from 'graphql/mutations/updateFriendshipStatus';
 import { type Error } from 'types/apollo';
 import { type FriendshipStatus, type User, type UserFriendship } from 'types/user';
 
-import { FiEdit2, FiUsers } from 'react-icons/fi';
+import { FiBell, FiEdit2, FiUsers } from 'react-icons/fi';
 import Button from 'components/Button';
 import DerivedStateSplash from 'components/DerivedStateSplash';
-// import DualAction from 'components/DualAction';
-// import FavoritesList from 'components/FavoritesList';
+import DualAction from 'components/DualAction';
+import FavoritesList from 'components/FavoritesList';
 import FriendshipButton from 'components/FriendshipButton';
 import Image from 'components/Image';
 import SectionHeader from 'components/SectionHeader';
-// import UserStats from 'components/UserStats';
+import UserStats from 'components/UserStats';
 
 import styled from '@emotion/styled';
 import common from 'theme/common';
 import colors from 'theme/colors';
 import { spacing } from 'theme/sizes';
-// import { BoxStyles } from 'theme/app';
 import typography from 'theme/typography';
 
-// const styles = StyleSheet.create({
-//   action: {
-//     padding: 8,
-//     backgroundColor: Colors.white,
-//     borderBottomWidth: 1,
-//     borderBottomColor: Colors.cellBorder,
-//   },
-//   actionLabel: {
-//     marginBottom: 8,
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//   },
-//   actionLabelText: {
-//     color: Colors.textPrimary,
-//     marginLeft: 8,
-//   },
-//   actionButton: {
-//     marginLeft: 8,
-//     marginRight: 8,
-//     marginBottom: 12,
-//     backgroundColor: Colors.brand.primary,
-//     padding: 12,
-//     borderRadius: 4,
-//   },
-//   actionButtonText: {
-//     color: Colors.white,
-//     fontWeight: 'bold',
-//   },
-//   section: {
-//     ...BoxStyles,
-//     marginLeft: 8,
-//     marginRight: 8,
-//     marginBottom: 8,
-//     padding: 8,
-//   },
-//   section_row: {
-//     flexDirection: 'row',
-//     justifyContent: 'center',
-//   },
-//   section_clear: {
-//     marginTop: 4,
-//     marginBottom: 12,
-//   },
-//   sectionHeader: {
-//     ...Typography.h4,
-//     fontWeight: '900',
-//     marginBottom: 2,
-//     marginLeft: 8,
-//     marginRight: 8,
-//   },
-//   headerContent: {
-//     marginLeft: 8,
-//     flex: 1,
-//   },
-//   headerTitle: {
-//     ...Typography.h2,
-//     fontWeight: 'bold',
-//     marginBottom: 4,
-//   },
-//   headerMeta: {
-//     ...Typography.h5,
-//     color: Colors.textSecondary,
-//     marginBottom: 2,
-//   },
-//   button: {
-//     paddingTop: 6,
-//     paddingBottom: 6,
-//     paddingLeft: 8,
-//     paddingRight: 8,
-//     marginLeft: 12,
-//     backgroundColor: Colors.white,
-//     borderColor: Colors.brand.primary,
-//     borderWidth: 1,
-//     borderRadius: 3,
-//   },
-//   buttonIcon: {
-//     marginRight: 8,
-//   },
-//   buttonLabel: {
-//     fontWeight: 'bold',
-//     color: Colors.brand.primary,
-//   },
-//   favorites: {
-//     marginBottom: 12,
-//   },
-//   listHeader: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     marginRight: 8,
-//   },
-//   listHeaderText: {
-//     flex: 1,
-//     marginRight: 8,
-//   },
-//   listEditButton: {
-//     padding: 0,
-//     paddingTop: 4,
-//     paddingBottom: 4,
-//     paddingLeft: 6,
-//     paddingRight: 6,
-//   },
-//   listEditIcon: {
-//     marginRight: 0,
-//   },
-// });
+const ActionContainer = styled.div`
+  padding: ${spacing(2)};
+  background-color: ${colors.white};
+  border: 1px solid ${colors.borders.main};
+`;
+
+const ActionLabel = styled.div`
+  ${typography.base}
+  font-weight: 500;
+  margin-bottom: ${spacing(3)};
+  display: flex;
+  align-items: center;
+`;
+
+const StyledFiBell = styled(FiBell)`
+  font-size: 16px;
+  margin-right: ${spacing(2)};
+  color: ${colors.text.primary};
+`;
 
 type Props = {
   isCurrent: boolean,
@@ -173,10 +86,11 @@ const HeaderMeta = styled.div`
 const ListHeader = styled.section`
   display: flex;
   align-items: center;
-  margin: ${spacing(0, 2, 2)};
+  margin: ${spacing(0, 2, 0)};
 `;
 
 const LeftOffsetButton = styled(Button)`margin-left: ${spacing(2)};`;
+const FavoritesSection = styled.section`margin-bottom: ${spacing(3)};`;
 
 const updateHandler = (userId: number, oldFriendship: UserFriendship): (() => void) => (cache, { data: { updateFriendshipStatus: newFriendship } }) => {
   const friendshipQuery = { query: GET_FRIENDSHIP, variables: { userId } };
@@ -191,34 +105,33 @@ const updateHandler = (userId: number, oldFriendship: UserFriendship): (() => vo
 };
 
 function UserCard({ isCurrent, user, userFriendshipQuery, updateFriendshipStatus }: Props): React.Node {
-
-  // get needsAction(): boolean {
-  //   const { isCurrent, user, userFriendshipQuery: q } = this.props;
-  //   return !isCurrent && q && q.userFriendship && q.userFriendship.status === 'PENDING' && q.userFriendship.userId === user.id;
-  // }
-
+  const needsAction = (
+    !isCurrent &&
+    userFriendshipQuery &&
+    userFriendshipQuery.userFriendship &&
+    userFriendshipQuery.userFriendship.status === 'PENDING' &&
+    userFriendshipQuery.userFriendship.userId === user.id
+  );
   const updateFriendship = (status: FriendshipStatus): void => updateFriendshipStatus({ variables: { userId: user.id, status } });
 
-  // const { isCurrent, user, userFriendshipQuery } = this.props;
-  // const { needsAction } = this;
   return (
-    <React.Fragment>
-      {/* {needsAction && (
-        <View style={styles.action}>
-          <View style={styles.actionLabel}>
-            <Icon name="bell" size={16} color={Colors.textPrimary} />
-            <Text style={styles.actionLabelText}>{`${user.firstName} sent you a friend request.`}</Text>
-          </View>
+    <>
+      {needsAction && (
+        <ActionContainer>
+          <ActionLabel>
+            <StyledFiBell />
+            <div>{`${user.firstName} sent you a friend request.`}</div>
+          </ActionLabel>
           <DualAction
             canPerformPrimaryAction
             canPerformSecondaryAction
-            primaryAction={(): void => this.updateFriendshipStatus('ACTIVE')}
+            primaryAction={(): void => updateFriendship('ACTIVE')}
             primaryLabel="Accept"
-            secondaryAction={(): void => this.updateFriendshipStatus('REJECTED')}
+            secondaryAction={(): void => updateFriendship('REJECTED')}
             secondaryLabel="Reject"
           />
-        </View>
-      )} */}
+        </ActionContainer>
+      )}
 
       <Container>
         <Section>
@@ -231,7 +144,7 @@ function UserCard({ isCurrent, user, userFriendshipQuery, updateFriendshipStatus
         </Section>
 
         {!isCurrent && (
-          <React.Fragment>
+          <>
             <Section centered clear>
               <DerivedStateSplash loading={userFriendshipQuery.loading} error={userFriendshipQuery.error} size="small">
                 <FriendshipButton
@@ -244,7 +157,7 @@ function UserCard({ isCurrent, user, userFriendshipQuery, updateFriendshipStatus
               <LeftOffsetButton
                 onClick={(): void => console.log('go to friends for', user.id)}
                 leftIcon={<FiUsers />}
-                title={pluralize('friend', user.friendCount, true)}
+                buttonTitle={pluralize('friend', user.friendCount, true)}
                 type="secondary"
               />
             </Section>
@@ -255,45 +168,45 @@ function UserCard({ isCurrent, user, userFriendshipQuery, updateFriendshipStatus
                   size="large"
                   type="primary"
                   onClick={(): void => console.log('challenge', user.id)}
-                  title={`Challenge ${user.firstName} to a Hunch`}
+                  buttonTitle={`Challenge ${user.firstName} to a Hunch`}
                 />
               </Section>
             )}
-          </React.Fragment>
+          </>
         )}
 
-       <ListHeader>
+        <ListHeader>
           <SectionHeader grow>{`${isCurrent ? 'My ' : ''}Favorite Teams`}</SectionHeader>
-          {isCurrent && <Button type="tertiary" icon={<FiEdit2 />} onClick={() => console.log('edit my favorites')} />}
+          {isCurrent && <Button type="tertiary" icon={<FiEdit2 />} title="Edit" onClick={() => console.log('edit my favorites')} />}
         </ListHeader>
-         {/* <View style={styles.favorites}>
-          <FavoritesList mine={isCurrent} userId={isCurrent ? null : user.id} />
-        </View>
+        <FavoritesSection>
+          <FavoritesList editMode mine={isCurrent} userId={isCurrent ? null : user.id} />
+        </FavoritesSection>
 
         <Query query={GET_STATS} variables={{ userId: user.id }}>
           {({ loading, error, data }): React.Node => (
-            <React.Fragment>
-              <Text style={styles.sectionHeader}>Statistics</Text>
-              <View style={styles.section}>
+            <>
+              <SectionHeader padded>Statistics</SectionHeader>
+              <Section>
                 <DerivedStateSplash loading={loading} error={error}>
                   {Boolean(data) && Boolean(data.userStats) && <UserStats stats={data.userStats.overall} />}
                 </DerivedStateSplash>
-              </View>
+              </Section>
               {!isCurrent && (
-                <React.Fragment>
-                  <Text style={styles.sectionHeader}>Against Me</Text>
-                  <View style={styles.section}>
+                <>
+                  <SectionHeader padded>Against Me</SectionHeader>
+                  <Section>
                     <DerivedStateSplash loading={loading} error={error}>
                       {Boolean(data) && Boolean(data.userStats) && <UserStats stats={data.userStats.against} />}
                     </DerivedStateSplash>
-                  </View>
-                </React.Fragment>
+                  </Section>
+                </>
               )}
-            </React.Fragment>
+            </>
           )}
-        </Query> */}
+        </Query>
       </Container>
-    </React.Fragment>
+    </>
   );
 }
 UserCard.displayName = 'UserCard';

@@ -81,12 +81,12 @@ function HunchContainer({ currentUser, hunchQuery: { loading, error, hunch } }: 
   //         }
   //       </Text>
   //       {hunch.responded ? (
-  //         <React.Fragment>
+  //         <>
   //           <Text style={[styles.splashSubhead, didLose && styles.splashSubhead_padded]}>
   //             {didWin ? `${other.firstName} owes you $${hunch.amount}.` : `You owe ${other.firstName} $${hunch.amount}.`}
   //           </Text>
   //           {didLose && <PaymentActions user={other} />}
-  //         </React.Fragment>
+  //         </>
   //       ) : (
   //         <HunchActions hunch={hunch} isBettor={isBettor} onCancel={Actions.pop} />
   //       )}
@@ -99,7 +99,7 @@ function HunchContainer({ currentUser, hunchQuery: { loading, error, hunch } }: 
       {Boolean(hunch) && (
         <Query query={GET_GAME} variables={{ id: hunch.game.id }}>
           {({ loading, error, data: { game } }): React.Node => (
-            <React.Fragment>
+            <>
               <ImageSplash dimmed src="/assets/nba-splash.png">
                 <DerivedStateSplash error={error} loading={loading}>
                   {game && (
@@ -126,7 +126,7 @@ function HunchContainer({ currentUser, hunchQuery: { loading, error, hunch } }: 
                   </Section>
                 )}
               </Content>
-            </React.Fragment>
+            </>
           )}
         </Query>
       )}

@@ -91,7 +91,7 @@ function FriendshipButton({ name, friendship, userId, updateFriendshipStatus }: 
       <Button
         disabled={disabled}
         leftIcon={icon}
-        title={label}
+        buttonTitle={label}
         type={primary ? 'primary' : 'secondary'}
         onClick={open}
       />
@@ -100,8 +100,8 @@ function FriendshipButton({ name, friendship, userId, updateFriendshipStatus }: 
         close={close}
         renderFooter={() => (
           <ModalFooter>
-            <Button type="secondary" title="Cancel" onClick={close} />
-            <OffsetButton type="primary" title={unfriend ? 'Unfriend' : 'Cancel Request'} onClick={confirm} />
+            <Button type="secondary" buttonTitle="Cancel" onClick={close} />
+            <OffsetButton type="primary" buttonTitle={unfriend ? 'Unfriend' : 'Cancel Request'} onClick={confirm} />
           </ModalFooter>
         )}
       >

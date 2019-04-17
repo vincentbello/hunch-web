@@ -143,7 +143,7 @@ type GameStatusProps = { game: Game, light: boolean, spaced: boolean };
 const GameStatus = ({ game, light, spaced }: GameStatusProps): React.Node => {
   const hasStarted = game.completed || game.inProgress;
   return (
-    <React.Fragment>
+    <>
       <MetaText light={light} emphasized={hasStarted}>
         {hasStarted ? (game.completed ? 'Final' : 'In Progress') : format(game.startDate, spaced ? 'MMM D, YYYY' : 'M/D, h:mm A')}
       </MetaText>
@@ -152,7 +152,7 @@ const GameStatus = ({ game, light, spaced }: GameStatusProps): React.Node => {
           {format(game.startDate, hasStarted ? 'MMM D, YYYY' : 'h:mm A')}
         </MetaText>
       )}
-    </React.Fragment>
+    </>
   );
 };
 

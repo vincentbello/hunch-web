@@ -3,6 +3,7 @@ import * as React from 'react';
 import ReactModal from 'react-modal';
 import Button from 'components/Button';
 import { FiX } from 'react-icons/fi';
+import { ClassNames } from '@emotion/core';
 import styled from '@emotion/styled';
 import colors from 'theme/colors';
 import { spacing } from 'theme/sizes';
@@ -39,11 +40,16 @@ const Footer = styled.footer`
   border-top: 1px solid ${colors.borders.main};
 `;
 
+const StyledReactModal = styled(ReactModal)`
+  width: calc(100% - 30px);
+  min-height: 100px;
+`;
+
 const modalStyles = {
   ...ReactModal.defaultStyles,
   overlay: {
     ...ReactModal.defaultStyles.overlay,
-    backgroundColor: 'rgba(4,36,69,0.75)',
+    backgroundColor: 'rgba(4,36,69,0.85)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -57,6 +63,12 @@ const modalStyles = {
 };
 
 export default function Modal({ isOpen, withCloseButton, close, children, renderFooter, renderHeader }: Props) {
+  const [canRender, setCanRender] = React.useState(false);
+
+  React.useEffect(() => {
+    if (isOpen && !canRender) setCanRender(true);
+  }, [isOpen]);
+
   React.useLayoutEffect(() => {
     const originalStyle = window.getComputedStyle(document.body).overflow;
     if (isOpen) document.body.style.overflow = 'hidden';
@@ -64,6 +76,11 @@ export default function Modal({ isOpen, withCloseButton, close, children, render
       if (isOpen) document.body.style.overflow = originalStyle;
     };
   }, [isOpen]); // Empty array ensures effect is only run on mount and unmount
+
+  const closeAndStopRender = () => {
+    close();
+    setTimeout(() => setCanRender(false), 250);
+  };
 
   const renderContent = () => {
     const header = renderHeader();
@@ -85,9 +102,27 @@ export default function Modal({ isOpen, withCloseButton, close, children, render
   };
 
   return (
-    <ReactModal isOpen={isOpen} onRequestClose={close} style={modalStyles} shouldCloseOnOverlayClick>
-      {isOpen && renderContent()}
-    </ReactModal>
+    <ClassNames>
+      {({ css, cx }) => (
+        <StyledReactModal
+          isOpen={isOpen}
+          onRequestClose={close}
+          style={modalStyles}
+          closeTimeoutMS={250}
+          shouldCloseOnOverlayClick
+          overlayClassName={{
+            base: css`
+              opacity: 0;
+              transition: opacity 150ms;
+            `,
+            afterOpen: css`opacity: 1;`,
+            beforeClose: css`opacity: 0;`,
+          }}
+        >
+          {canRender && renderContent()}
+        </StyledReactModal>
+      )}
+    </ClassNames>
   );
 }
 Modal.defaultProps = {

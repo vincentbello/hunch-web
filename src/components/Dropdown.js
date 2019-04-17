@@ -49,7 +49,7 @@ export default function Dropdown({ children, onToggle, renderTriggerSlot }: Prop
   };
 
   return (
-    <React.Fragment>
+    <>
       {renderTriggerSlot({
         isOpen,
         props: {
@@ -61,7 +61,7 @@ export default function Dropdown({ children, onToggle, renderTriggerSlot }: Prop
         reposition: position,
       })}
       {isOpen && withPortal(<Content style={contentStyle}>{children}</Content>)}
-    </React.Fragment>
+    </>
   );
 }
 Dropdown.defaultProps = {

@@ -13,18 +13,18 @@ type Props = {
   icon: React.Node,
   rightIcon: React.Node,
   size: 'small' | 'medium' | 'large',
-  title: string,
+  buttonTitle: string,
   type: 'primary' | 'secondary' | 'tertiary',
 };
 
 const defaultProps = {
   block: false,
+  buttonTitle: '',
   disabled: false,
   leftIcon: null,
   icon: null,
   rightIcon: null,
   size: 'medium',
-  title: '',
   type: 'primary',
 };
 
@@ -68,7 +68,7 @@ const StyledButton = styled.button(props => {
     display: ${props.block ? 'block' : 'inline-flex'};
     ${props.block ? `width: 100%;` : ''}
     border: 1px solid ${typeStyles.borderColor};
-    border-radius: 4px;
+    border-radius: 3px;
     padding: ${sizeStyles.padding};
     outline: none;
     align-items: center;
@@ -84,10 +84,10 @@ const StyledButton = styled.button(props => {
       cursor: default;
     ` : ''}
     &:hover {
-      background-color: ${darken(0.065, typeStyles.backgroundColor)};
+      background-color: ${darken(0.06, typeStyles.backgroundColor)};
     }
     &:active {
-      background-color: ${darken(0.125, typeStyles.backgroundColor)};
+      background-color: ${darken(0.12, typeStyles.backgroundColor)};
     }
   `;
 });
@@ -100,12 +100,12 @@ const IconContainer = styled.span`
 
 const Button = React.forwardRef((props: Props, ref: (el: HTMLButtonElement) => void) => (
   <StyledButton {...props} ref={ref}>
-    {(props.title || props.icon) ? (
-      <React.Fragment>
+    {(props.buttonTitle || props.icon) ? (
+      <>
         {props.leftIcon !== null && <IconContainer>{props.leftIcon}</IconContainer>}
-        {props.title || props.icon}
+        {props.buttonTitle || props.icon}
         {props.rightIcon !== null && <IconContainer right>{props.rightIcon}</IconContainer>}
-      </React.Fragment>
+      </>
     ) : (
       props.children
     )}
