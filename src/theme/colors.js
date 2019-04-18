@@ -1,4 +1,6 @@
 // @flow
+import { darken } from 'polished';
+
 export default {
   background: '#E9EBEE',
   borders: {
@@ -10,7 +12,9 @@ export default {
     secondary: '#F19935',
   },
   links: {
-    hover: 'rgba(0,0,0,0.05)',
+    base: '#551A8B',
+    hover: darken(0.06, '#551A8B'),
+    underlay: 'rgba(0,0,0,0.05)',
   },
   primary: {
     orange: '#FFA352',

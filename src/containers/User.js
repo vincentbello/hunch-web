@@ -29,6 +29,13 @@ function UserContainer({ currentUser, userQuery: { loading, error, user } }: Pro
 
 UserContainer.displayName = 'UserContainer';
 export default compose(
-  graphql(GET_USER, { name: 'userQuery', options: ({ match }) => ({ variables: { id: parseInt(match.params.id, 10) } }) }),
+  graphql(GET_USER, {
+    name: 'userQuery',
+    options: ({ match }) => ({
+      variables: {
+        id: match.params.id ? parseInt(match.params.id, 10) : null,
+      },
+    }),
+  }),
   withCurrentUser
 )(UserContainer);

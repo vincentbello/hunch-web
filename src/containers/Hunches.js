@@ -52,9 +52,10 @@ const StyledLink = styled(NavLink)`
   transition: background-color 250ms;
   border-radius: 4px;
   padding: ${spacing(1, 2)};
+  color: ${colors.links.base};
 
   &:hover {
-    background-color: ${colors.links.hover};
+    background-color: ${colors.links.underlay};
   }
 
   &.__activeNavLink__ {

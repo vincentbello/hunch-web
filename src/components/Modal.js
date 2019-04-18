@@ -90,7 +90,7 @@ export default function Modal({ isOpen, withCloseButton, close, children, render
         {(header !== null || withCloseButton) && (
           <Header withClose={withCloseButton}>
             <HeaderContent>{header}</HeaderContent>
-            {withCloseButton && <Button icon={<FiX />} size="large" type="tertiary" onClick={close} />}
+            {withCloseButton && <Button icon={<FiX />} size="large" type="tertiary" onClick={closeAndStopRender} />}
           </Header>
         )}
         <Content>
@@ -106,7 +106,7 @@ export default function Modal({ isOpen, withCloseButton, close, children, render
       {({ css, cx }) => (
         <StyledReactModal
           isOpen={isOpen}
-          onRequestClose={close}
+          onRequestClose={closeAndStopRender}
           style={modalStyles}
           closeTimeoutMS={250}
           shouldCloseOnOverlayClick

@@ -55,7 +55,6 @@ export default {
   reset: {
     link: `
       &:-webkit-any-link {
-        color: inherit;
         text-decoration: none;
       }
     `,

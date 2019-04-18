@@ -1,11 +1,14 @@
 // @flow
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { darken } from 'polished';
+import common from 'theme/common';
 import colors from 'theme/colors';
 import { spacing } from 'theme/sizes';
 
 type Props = {
+  asLink: boolean,
   block: boolean,
   disabled: boolean,
   children: React.Node,
@@ -18,6 +21,7 @@ type Props = {
 };
 
 const defaultProps = {
+  asLink: false,
   block: false,
   buttonTitle: '',
   disabled: false,
@@ -61,7 +65,7 @@ const TYPE_STYLES = {
   },
 };
 
-const StyledButton = styled.button(props => {
+const commonStyles = props => {
   const sizeStyles = SIZE_STYLES[props.size];
   const typeStyles = TYPE_STYLES[props.type];
   return `
@@ -90,7 +94,14 @@ const StyledButton = styled.button(props => {
       background-color: ${darken(0.12, typeStyles.backgroundColor)};
     }
   `;
-});
+};
+
+const StyledButton = styled.button(commonStyles);
+
+const StyledLink = styled(Link, { shouldForwardProp: prop => ['children', 'to'].includes(prop) })`
+  ${common.reset.link}
+  ${commonStyles}
+`;
 
 const IconContainer = styled.span`
   position: relative;
@@ -98,18 +109,21 @@ const IconContainer = styled.span`
   margin-${props => props.right ? 'left' : 'right'}: ${spacing(2)};
 `;
 
-const Button = React.forwardRef((props: Props, ref: (el: HTMLButtonElement) => void) => (
-  <StyledButton {...props} ref={ref}>
-    {(props.buttonTitle || props.icon) ? (
-      <>
-        {props.leftIcon !== null && <IconContainer>{props.leftIcon}</IconContainer>}
-        {props.buttonTitle || props.icon}
-        {props.rightIcon !== null && <IconContainer right>{props.rightIcon}</IconContainer>}
-      </>
-    ) : (
-      props.children
-    )}
-  </StyledButton>
-));
+const Button = React.forwardRef((props: Props, ref: (el: HTMLButtonElement) => void) => {
+  const Comp = props.asLink ? StyledLink : StyledButton;
+  return (
+    <Comp {...props} ref={ref}>
+      {(props.buttonTitle || props.icon) ? (
+        <>
+          {props.leftIcon !== null && <IconContainer>{props.leftIcon}</IconContainer>}
+          {props.buttonTitle || props.icon}
+          {props.rightIcon !== null && <IconContainer right>{props.rightIcon}</IconContainer>}
+        </>
+      ) : (
+        props.children
+      )}
+    </Comp>
+  );
+});
 Button.defaultProps = defaultProps;
 export default Button;

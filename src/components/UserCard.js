@@ -155,7 +155,8 @@ function UserCard({ isCurrent, user, userFriendshipQuery, updateFriendshipStatus
                 />
               </DerivedStateSplash>
               <LeftOffsetButton
-                onClick={(): void => console.log('go to friends for', user.id)}
+                asLink
+                to={`/user/${user.id}/friends`}
                 leftIcon={<FiUsers />}
                 buttonTitle={pluralize('friend', user.friendCount, true)}
                 type="secondary"
