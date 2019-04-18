@@ -2,11 +2,13 @@
 import * as React from 'react';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
-import { type UserFriendship, type FriendshipStatus } from 'types/user';
+import { getPronoun } from 'utils/string';
+import type { UserFriendship, FriendshipStatus, User } from 'types/user';
 import { FiUserCheck, FiUserPlus } from 'react-icons/fi';
 import styled from '@emotion/styled';
 import typography from 'theme/typography';
 import { spacing } from 'theme/sizes';
+import UserCell from 'components/UserCell';
 
 type ButtonAttrs = {
   disabled: boolean,
@@ -18,9 +20,8 @@ type ButtonAttrs = {
 };
 
 type Props = {
-  name: string,
   friendship: UserFriendship,
-  userId: number,
+  user: User,
   updateFriendshipStatus: (status: FriendshipStatus) => void,
 };
 
@@ -65,9 +66,9 @@ const getButtonAttrs = (friendship: UserFriendship, userId: number): null | Butt
   return null;
 };
 
-function FriendshipButton({ name, friendship, userId, updateFriendshipStatus }: Props): React.Node {
+function FriendshipButton({ friendship, user, updateFriendshipStatus }: Props): React.Node {
   const [isConfirming, setConfirm] = React.useState(false);
-  const buttonAttrs = getButtonAttrs(friendship, userId);
+  const buttonAttrs = getButtonAttrs(friendship, user.id);
   if (buttonAttrs === null) return null;
 
   const { disabled, icon, label, primary, targetStatus, confirmation } = buttonAttrs;
@@ -101,16 +102,17 @@ function FriendshipButton({ name, friendship, userId, updateFriendshipStatus }: 
         renderFooter={() => (
           <ModalFooter>
             <Button type="secondary" buttonTitle="Cancel" onClick={close} />
-            <OffsetButton type="primary" buttonTitle={unfriend ? 'Unfriend' : 'Cancel Request'} onClick={confirm} />
+            <OffsetButton type={unfriend ? 'danger' : 'primary'} buttonTitle={unfriend ? 'Unfriend' : 'Cancel Request'} onClick={confirm} />
           </ModalFooter>
         )}
       >
         {() => (
           <ModalContent>
+            <UserCell emphasized user={user} />
             {unfriend ? (
-              <>Are you sure you want to remove <strong>{name}</strong> from your friends? You will not be able to challenge them anymore.</>
+              <>Are you sure you want to remove <strong>{user.firstName}</strong> from your friends? You will not be able to challenge {getPronoun(user.gender)} anymore.</>
             ) : (
-              <>Are you sure you want to cancel your friend request to <strong>{name}</strong>?</>
+              <>Are you sure you want to cancel your friend request to <strong>{user.firstName}</strong>?</>
             )}
           </ModalContent>
         )}

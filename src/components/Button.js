@@ -7,7 +7,7 @@ import common from 'theme/common';
 import colors from 'theme/colors';
 import { spacing } from 'theme/sizes';
 
-type Props = {
+export type Props = {
   asLink: boolean,
   block: boolean,
   disabled: boolean,
@@ -17,7 +17,7 @@ type Props = {
   rightIcon: React.Node,
   size: 'small' | 'medium' | 'large',
   buttonTitle: string,
-  type: 'primary' | 'secondary' | 'tertiary',
+  type: 'primary' | 'secondary' | 'tertiary' | 'danger',
 };
 
 const defaultProps = {
@@ -63,6 +63,11 @@ const TYPE_STYLES = {
     backgroundColor: colors.transparent,
     color: colors.brand.primary,
   },
+  danger: {
+    borderColor: colors.primary.red,
+    backgroundColor: colors.primary.red,
+    color: colors.white,
+  }
 };
 
 const commonStyles = props => {

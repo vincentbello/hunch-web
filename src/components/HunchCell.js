@@ -1,14 +1,16 @@
 // @flow
 import * as React from 'react';
 import { distanceInWordsToNow } from 'date-fns';
-import Truncate from 'react-truncate';
+import Truncate from 'react-truncate-markup';
 import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import { type RouterProps } from 'types/router';
 import { type Hunch } from 'types/hunch';
 
 import styled from '@emotion/styled';
 import colors from 'theme/colors';
+import common from 'theme/common';
 import typography from 'theme/typography';
 import { spacing } from 'theme/sizes';
 
@@ -89,6 +91,18 @@ const LabelText = styled.span`
   font-size: 18px;
   font-weight: 600;
   ${props => props.isComplete && `color: ${props.won ? 'green' : 'red'};`}
+`;
+
+const DarkLink = styled(Link)`
+  ${common.reset.link}
+  color: ${colors.text.primary};
+  font-weight: 800;
+  padding: 2px 0;
+  border-radius: 2px;
+
+  &:hover {
+    background-color: ${colors.links.underlay};
+  }
 `;
 // const styles = StyleSheet.create({
 //   hunch: {
@@ -189,22 +203,22 @@ function HunchCell({ disabled, history, hunch, userId }: Props): React.Node {
         <Image src={displayedImageUrl} />
         <Content>
           <Header>
-            <HeaderText>
-              <Truncate>
-                {isInvolved && isBettor ? <span>You</span> : <a>{hunch.bettor.firstName}</a>}
+            <Truncate>
+              <HeaderText>
+                {isInvolved && isBettor ? <span>You</span> : <DarkLink to={`/user/${hunch.bettor.id}`}>{hunch.bettor.firstName}</DarkLink>}
                 <span> challenged </span>
-                {isInvolved && !isBettor ? <span>you</span> : <a>{hunch.bettee.firstName}</a>}
-              </Truncate>
-            </HeaderText>
+                {isInvolved && !isBettor ? <span>you</span> : <DarkLink to={`/user/${hunch.bettee.id}`}>{hunch.bettee.firstName}</DarkLink>}
+              </HeaderText>
+            </Truncate>
             <Label>
               {hunch.winnerId !== null && <LabelText>{hunch.winnerId === userId ? 'Won' : 'Lost'}</LabelText>}
               <LabelSuperscript>$</LabelSuperscript>
               <LabelText isComplete={hunch.winnerId !== null} won={hunch.winnerId === userId}>{hunch.amount}</LabelText>
             </Label>
           </Header>
-          <BodyText>
-            <Truncate lines={2}>{hunch.wager}</Truncate>
-          </BodyText>
+          <Truncate lines={2}>
+            <BodyText>{hunch.wager}</BodyText>
+          </Truncate>
           <MetaText>{distanceInWordsToNow(hunch.createdAt, { addSuffix: true })}</MetaText>
         </Content>
       </Layout>

@@ -54,6 +54,8 @@ export default {
   `,
   reset: {
     link: `
+      transition: background-color 200ms;
+
       &:-webkit-any-link {
         text-decoration: none;
       }

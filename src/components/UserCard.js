@@ -149,8 +149,7 @@ function UserCard({ isCurrent, user, userFriendshipQuery, updateFriendshipStatus
               <DerivedStateSplash loading={userFriendshipQuery.loading} error={userFriendshipQuery.error} size="small">
                 <FriendshipButton
                   friendship={userFriendshipQuery.userFriendship}
-                  name={user.firstName}
-                  userId={user.id}
+                  user={user}
                   updateFriendshipStatus={updateFriendship}
                 />
               </DerivedStateSplash>

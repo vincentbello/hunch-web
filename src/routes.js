@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import { compose } from 'react-apollo';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import withUserListType from 'hocs/withUserListType';
 import withAuth from 'hocs/withAuth';
 import LoginContainer from 'containers/Login';
@@ -11,6 +11,9 @@ import UserContainer from 'containers/User';
 import UserList from 'containers/UserList';
 import Nav from 'components/Nav';
 
+import styled from '@emotion/styled';
+
+const Main = styled.div`height: 100%;`;
 const AuthedHunchesContainer = withAuth(HunchesContainer);
 const AuthedFriendsContainer = compose(withAuth, withUserListType('FRIENDS'))(UserList);
 
@@ -18,7 +21,7 @@ export default function AppRouter() {
   return (
     <BrowserRouter>
       <Route path="/login" component={LoginContainer} />
-      <main>
+      <Main>
         <Nav />
         <Route path="/" exact component={AuthedHunchesContainer} />
         <Route path="/friends" component={AuthedFriendsContainer} />
@@ -27,7 +30,7 @@ export default function AppRouter() {
         <Route path="/user/:id" exact component={withAuth(UserContainer)} />
         <Route path="/me" exact component={withAuth(UserContainer)} />
         <Route path="/user/:id/friends" component={AuthedFriendsContainer} />
-      </main>
+      </Main>
     </BrowserRouter>
   );
 }

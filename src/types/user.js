@@ -5,6 +5,7 @@ export type User = {
   lastName: string,
   fullName: string,
   imageUrl: null | string,
+  gender: null | string,
   fbId: string,
   lastLoginAt: string,
   createdAt: string,

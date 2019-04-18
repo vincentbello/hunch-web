@@ -12,7 +12,6 @@ import Splash from 'components/Splash';
 import UserCell from 'components/UserCell';
 
 import styled from '@emotion/styled';
-import colors from 'theme/colors';
 
 const USER_LIST_EMPTY_MESSAGES = {
   FRIENDS: 'You have no friends.',
@@ -50,7 +49,7 @@ function UserList({ currentUser, enterTime, userListType, usersQuery, userId }: 
     <DerivedStateSplash error={error} loading={loading}>
       {Boolean(users) && (
         users.length === 0 ? (
-          <Splash heading={USER_LIST_EMPTY_MESSAGES[this.props.userListType]} visualName="search" />
+          <Splash heading={USER_LIST_EMPTY_MESSAGES[userListType]} visualName="meh-lightbulb" visualType="illustration" />
         ) : (
           <List>
             {users.map((user: User): React.Node => (
