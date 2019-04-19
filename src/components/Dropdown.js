@@ -1,8 +1,6 @@
 // @flow
 import * as React from 'react';
-import { createPortal } from 'react-dom';
 import styled from '@emotion/styled';
-import useDimensions from 'hooks/useDimensions';
 import usePortal from 'hooks/usePortal';
 
 export type TriggerContext = {
@@ -14,43 +12,55 @@ export type TriggerContext = {
     onClick: () => void,
   },
   reposition: () => void,
+  toggle: (open: boolean) => void,
 };
 
 type Props = {
   children: React.Node,
+  preventDefaultClickEvents: boolean,
   onToggle: (isOpen: boolean) => void,
-  renderTriggerSlot: (context: TriggerContext) => React.Node,
+  renderTrigger: (context: TriggerContext) => React.Node,
 };
 
-const Content = styled.div`
-  position: absolute;
-`;
+const Content = styled.div`position: absolute;`;
 
-export default function Dropdown({ children, onToggle, renderTriggerSlot }: Props) {
-  const [contentRef, contentDimensions] = useDimensions();
-  const [triggerRef, triggerDimensions] = useDimensions();
+export default function Dropdown({ children, preventDefaultClickEvents, onToggle, renderTrigger }: Props) {
+  const contentRef = React.useRef(null);
+  const triggerRef = React.useRef(null);
   const withPortal = usePortal();
   const [contentStyle, setContentStyle] = React.useState({});
   const [isOpen, setOpen] = React.useState(false);
 
   const position = () => {
-    console.log('position...', triggerDimensions.bottom, triggerDimensions.left);
-    const top = triggerDimensions.bottom;
-    const left = triggerDimensions.left;
-    if (top !== contentStyle.top || left !== contentStyle.top) setContentStyle({ top, left });
+    if (triggerRef.current === null) return;
+    const rect = triggerRef.current.getBoundingClientRect();
+    setContentStyle({ top: rect.bottom, left: rect.left });
   };
 
   React.useLayoutEffect(() => {
     if (isOpen) position();
-  }, [isOpen, triggerDimensions.bottom, triggerDimensions.left]);
+  }, [isOpen]);
 
   const toggle = (open: boolean) => {
     setOpen(open);
   };
 
+  const handleClick = (evt: SyntheticClickEvent<>) => {
+    if (contentRef.current !== null && contentRef.current.contains(evt.target)) {
+      if (preventDefaultClickEvents) evt.preventDefault();
+      return;
+    }
+    toggle(false);
+  };
+
+  React.useEffect(() => {
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
+
   return (
     <>
-      {renderTriggerSlot({
+      {renderTrigger({
         isOpen,
         props: {
           'aria-expanded': isOpen,
@@ -59,12 +69,14 @@ export default function Dropdown({ children, onToggle, renderTriggerSlot }: Prop
           onClick: () => setOpen(!isOpen),
         },
         reposition: position,
+        toggle,
       })}
-      {isOpen && withPortal(<Content style={contentStyle}>{children}</Content>)}
+      {isOpen && withPortal(<Content ref={contentRef} style={contentStyle}>{children}</Content>)}
     </>
   );
 }
 Dropdown.defaultProps = {
+  preventDefaultClickEvents: false,
   onToggle() {},
-  renderTriggerSlot: () => null,
+  renderTrigger: () => null,
 };

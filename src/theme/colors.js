@@ -37,5 +37,6 @@ export default {
   },
   gold: '#FFD700',
   transparent: 'rgba(0,0,0,0)',
+  offwhite: '#EFEFEF',
   white: '#FFFFFF',
 };

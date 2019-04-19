@@ -4,6 +4,7 @@ import { compose } from 'react-apollo';
 import { BrowserRouter, Route } from 'react-router-dom';
 import withUserListType from 'hocs/withUserListType';
 import withAuth from 'hocs/withAuth';
+import FavoritesContainer from 'containers/Favorites';
 import LoginContainer from 'containers/Login';
 import HunchesContainer from 'containers/Hunches';
 import HunchContainer from 'containers/Hunch';
@@ -30,6 +31,7 @@ export default function AppRouter() {
         <Route path="/user/:id" exact component={withAuth(UserContainer)} />
         <Route path="/me" exact component={withAuth(UserContainer)} />
         <Route path="/user/:id/friends" component={AuthedFriendsContainer} />
+        <Route path="/favorites" component={withAuth(FavoritesContainer)} />
       </Main>
     </BrowserRouter>
   );

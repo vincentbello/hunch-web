@@ -40,7 +40,7 @@ const ListItem = styled.li`
   padding: ${spacing(2)};
   background-color: ${colors.white};
   border-radius: 4px;
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   position: relative;
   align-items: center;

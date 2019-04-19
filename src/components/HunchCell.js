@@ -3,19 +3,17 @@ import * as React from 'react';
 import { distanceInWordsToNow } from 'date-fns';
 import Truncate from 'react-truncate-markup';
 import { withRouter } from 'react-router';
-import { Link } from 'react-router-dom';
 
 import { type RouterProps } from 'types/router';
 import { type Hunch } from 'types/hunch';
 
 import styled from '@emotion/styled';
 import colors from 'theme/colors';
-import common from 'theme/common';
 import typography from 'theme/typography';
 import { spacing } from 'theme/sizes';
 
 import DivButton from 'components/DivButton';
-// import Image from 'components/Image';
+import DarkLink from 'components/DarkLink';
 
 const StyledDivButton = styled(DivButton)`
   background-color: ${colors.white};
@@ -93,17 +91,6 @@ const LabelText = styled.span`
   ${props => props.isComplete && `color: ${props.won ? 'green' : 'red'};`}
 `;
 
-const DarkLink = styled(Link)`
-  ${common.reset.link}
-  color: ${colors.text.primary};
-  font-weight: 800;
-  padding: 2px 0;
-  border-radius: 2px;
-
-  &:hover {
-    background-color: ${colors.links.underlay};
-  }
-`;
 // const styles = StyleSheet.create({
 //   hunch: {
 //     backgroundColor: Colors.white,

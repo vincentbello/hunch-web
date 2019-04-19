@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import { Link } from 'react-router-dom';
 
 import { type Hunch } from 'types/hunch';
 import { type Game } from 'types/game';
@@ -14,6 +15,7 @@ import colors from 'theme/colors';
 import typography from 'theme/typography';
 import { spacing } from 'theme/sizes';
 
+import DarkLink from 'components/DarkLink';
 import Image from 'components/Image';
 
 type Props = { currentUser: UserType, isBettor: boolean, user: UserType, game: Game, hunch: Hunch };
@@ -30,8 +32,7 @@ const GET_USER_STATS = gql`
 `;
 
 // TODO: styled(Link) to={`user/${user.id}`}
-const StyledLink = styled.a`
-  ${common.reset.link}
+const Container = styled.div`
   ${props => props.muted && `opacity: 1;`}
   position: relative;
   display: flex;
@@ -60,11 +61,10 @@ const Subhead = styled.div`
   margin-top: ${spacing(3)};
 `;
 
-const UserLabel = styled.span`
+const UserLink = styled(DarkLink)`
   ${typography.h4}
   ${props => props.muted && `opacity: 0.75;`}
-  margin: ${spacing(2, 0, 1)};
-  font-weight: 800;
+  margin: ${spacing(1, 0, 0)};
 `;
 
 const UserMetaText = styled.span`
@@ -106,7 +106,7 @@ export default function User({ currentUser, isBettor, game, hunch, user }: Props
   const isCurrentUser = user.id === currentUser.id;
 
   return (
-    <StyledLink muted={!isCurrentUser} left={isBettor}>
+    <Container muted={!isCurrentUser} left={isBettor}>
       <Image dotted={inactive} muted={didLose} rounded padded size="large" src={user.imageUrl} />
       {pickedTeam !== null && (
         <TeamContainer left={isBettor}>
@@ -124,7 +124,7 @@ export default function User({ currentUser, isBettor, game, hunch, user }: Props
       {pickedTeam && (
         <Subhead>{inactive ? 'Pending response' : `Picked the ${pickedTeam.lastName}`}</Subhead>
       )}
-      <UserLabel muted={didLose}>{user.fullName}</UserLabel>
+      <UserLink muted={didLose} to={`/user/${user.id}`}>{user.fullName}</UserLink>
       <div>
         <UserMetaText>Record: </UserMetaText>
         <Query query={GET_USER_STATS} variables={{ userId: user.id }}>
@@ -134,7 +134,7 @@ export default function User({ currentUser, isBettor, game, hunch, user }: Props
         </Query>
       </div>
       {isBettor && <UserBadge>CHALLENGER</UserBadge>}
-    </StyledLink>
+    </Container>
   );
 }
 User.defaultProps = { isBettor: false };
