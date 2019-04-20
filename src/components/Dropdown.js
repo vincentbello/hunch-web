@@ -3,7 +3,12 @@ import * as React from 'react';
 import styled from '@emotion/styled';
 import usePortal from 'hooks/usePortal';
 
-export type TriggerContext = {
+export type DropdownActions = {
+  reposition: () => void,
+  toggle: (open: boolean) => void,
+};
+
+export type TriggerContext = DropdownActions & {
   isOpen: boolean,
   props: {
     'aria-expanded': boolean,
@@ -11,8 +16,6 @@ export type TriggerContext = {
     ref: (el: HTMLElement) => void,
     onClick: () => void,
   },
-  reposition: () => void,
-  toggle: (open: boolean) => void,
 };
 
 type Props = {
@@ -53,6 +56,8 @@ export default function Dropdown({ children, preventDefaultClickEvents, onToggle
     toggle(false);
   };
 
+  const actions = { reposition: position, toggle };
+
   React.useEffect(() => {
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
@@ -61,6 +66,7 @@ export default function Dropdown({ children, preventDefaultClickEvents, onToggle
   return (
     <>
       {renderTrigger({
+        ...actions,
         isOpen,
         props: {
           'aria-expanded': isOpen,
@@ -68,10 +74,12 @@ export default function Dropdown({ children, preventDefaultClickEvents, onToggle
           ref: triggerRef,
           onClick: () => setOpen(!isOpen),
         },
-        reposition: position,
-        toggle,
       })}
-      {isOpen && withPortal(<Content ref={contentRef} style={contentStyle}>{children}</Content>)}
+      {isOpen && withPortal(
+        <Content ref={contentRef} style={contentStyle}>
+          {typeof children === 'function' ? children(actions) : children}
+        </Content>
+      )}
     </>
   );
 }

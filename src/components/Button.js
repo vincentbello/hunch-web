@@ -62,6 +62,7 @@ const TYPE_STYLES = {
     borderColor: colors.transparent,
     backgroundColor: colors.transparent,
     color: colors.brand.primary,
+    hoverColor: darken(0.25, colors.brand.primary),
   },
   danger: {
     borderColor: colors.primary.red,
@@ -94,6 +95,7 @@ const commonStyles = props => {
     ` : ''}
     &:hover {
       background-color: ${darken(0.06, typeStyles.backgroundColor)};
+      ${'hoverColor' in typeStyles && `color: ${typeStyles.hoverColor}`}
     }
     &:active {
       background-color: ${darken(0.12, typeStyles.backgroundColor)};

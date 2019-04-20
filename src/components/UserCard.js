@@ -177,10 +177,10 @@ function UserCard({ isCurrent, user, userFriendshipQuery, updateFriendshipStatus
 
         <ListHeader>
           <SectionHeader grow>{`${isCurrent ? 'My ' : ''}Favorite Teams`}</SectionHeader>
-          {isCurrent && <Button type="tertiary" icon={<FiEdit2 />} title="Edit" onClick={() => console.log('edit my favorites')} />}
+          {isCurrent && <Button asLink to="/favorites" type="tertiary" icon={<FiEdit2 />} title="Edit" />}
         </ListHeader>
         <FavoritesSection>
-          <FavoritesList editMode mine={isCurrent} userId={isCurrent ? null : user.id} />
+          <FavoritesList mine={isCurrent} userId={isCurrent ? null : user.id} />
         </FavoritesSection>
 
         <Query query={GET_STATS} variables={{ userId: user.id }}>

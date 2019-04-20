@@ -53,12 +53,19 @@ export default {
     ${media.mobile`width: 100%;`}
   `,
   reset: {
+    item: `
+      list-style-type: none;
+    `,
     link: `
       transition: background-color 200ms;
 
       &:-webkit-any-link {
         text-decoration: none;
       }
+    `,
+    list: `
+      margin: 0;
+      padding: 0;
     `,
   },
   splash: `

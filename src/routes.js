@@ -1,9 +1,10 @@
 // @flow
 import * as React from 'react';
 import { compose } from 'react-apollo';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import withUserListType from 'hocs/withUserListType';
 import withAuth from 'hocs/withAuth';
+import CreateHunchContainer from 'containers/CreateHunch';
 import FavoritesContainer from 'containers/Favorites';
 import LoginContainer from 'containers/Login';
 import HunchesContainer from 'containers/Hunches';
@@ -27,7 +28,10 @@ export default function AppRouter() {
         <Route path="/" exact component={AuthedHunchesContainer} />
         <Route path="/friends" component={AuthedFriendsContainer} />
         <Route path="/hunches/:type" component={AuthedHunchesContainer} />
-        <Route path="/hunch/:id" component={withAuth(HunchContainer)} />
+        <Switch>
+          <Route path="/hunch/new" exact component={CreateHunchContainer} />
+          <Route path="/hunch/:id" component={withAuth(HunchContainer)} />
+        </Switch>
         <Route path="/user/:id" exact component={withAuth(UserContainer)} />
         <Route path="/me" exact component={withAuth(UserContainer)} />
         <Route path="/user/:id/friends" component={AuthedFriendsContainer} />

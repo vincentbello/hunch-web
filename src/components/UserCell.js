@@ -15,6 +15,7 @@ type Props = {
   linkable: boolean,
   user: User,
   renderMeta: () => React.Node,
+  onClick: () => void | null,
 };
 
 const containerStyles = props => `
@@ -30,16 +31,28 @@ const StyledLink = styled(Link, { shouldForwardProp: prop => prop !== 'inList' }
   ${containerStyles}
 `;
 const Container = styled.div(containerStyles);
+const Button = styled.button`
+  border: none;
+  ${containerStyles};
+  transition: background-color 200ms;
+  width: 100%;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${colors.offwhite};
+  }
+`;
 
 const Content = styled.div`
   ${typography.h4}
   color: ${colors.text.primary};
   margin: ${spacing(0, 2)};
+  text-align: left;
   ${props => props.full && 'flex: 1 0 0;'}
   ${props => props.emphasized && 'font-weight: bold;'}
 `;
 
-function UserCell({ emphasized, inList, linkable, user, renderMeta }: Props) {
+function UserCell({ emphasized, inList, linkable, user, renderMeta, onClick }: Props) {
   const content = (
     <>
       <Image bordered rounded size="small" src={user.imageUrl} />
@@ -47,6 +60,8 @@ function UserCell({ emphasized, inList, linkable, user, renderMeta }: Props) {
       {renderMeta()}
     </>
   );
+  if (linkable) return <StyledLink to={`/user/${user.id}`} inList={inList}>{content}</StyledLink>;
+  if (onClick !== null) return <Button onClick={onClick} inList={inList}>{content}</Button>;
   return linkable ? <StyledLink to={`/user/${user.id}`} inList={inList}>{content}</StyledLink> : <Container inList={inList}>{content}</Container>;
 };
 
@@ -54,6 +69,7 @@ UserCell.defaultProps = {
   emphasized: false,
   linkable: false,
   renderMeta: (): React.Node => null,
+  onClick: null,
 };
 UserCell.displayName = 'UserCell';
 

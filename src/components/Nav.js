@@ -67,6 +67,9 @@ export default () => (
           <NavItem>
             <StyledLink exact to="/me" activeClassName={activeClassName}>Me</StyledLink>
           </NavItem>
+          <NavItem>
+            <StyledLink exact to="/hunch/new" activeClassName={activeClassName}>Create</StyledLink>
+          </NavItem>
         </NavList>
       );
     }}

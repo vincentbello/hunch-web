@@ -30,7 +30,7 @@ function Favorites(props: Props): React.Node {
         />
       </Container>
       <SectionHeader>Teams</SectionHeader>
-      <TeamSelect league={LEAGUE_VIEW_TYPES[viewIndex].key} />
+      <TeamSelect />
     </Content>
   );
 }

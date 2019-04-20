@@ -40,7 +40,6 @@ const ListItem = styled.li`list-style-type: none;`;
 
 function UserList({ currentUser, enterTime, userListType, usersQuery, userId }: Props) {
   React.useEffect(() => {
-    console.log('DATA', usersQuery.users);
     if (usersQuery.users) usersQuery.refetch();
   }, [])
 

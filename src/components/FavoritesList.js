@@ -31,6 +31,7 @@ const EmptyText = styled.div`
 const HorizontalList = styled.ul`
   margin: 0;
   overflow-x: auto;
+  white-space: nowrap;
   padding: ${props => props.padded ? spacing(3, 0, 0) : spacing(0, 0, 0, 1)};
 `;
 
