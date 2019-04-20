@@ -70,7 +70,7 @@
     "workbox-webpack-plugin": "3.6.3"
   },
   "scripts": {
-    "deploy": "npm run build && aws s3 sync build/ s3://hunch-web",
+    "deploy": "npm run build && aws s3 sync build/ s3://hunchcard.com",
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
