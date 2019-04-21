@@ -94,7 +94,6 @@ const ListHeader = styled.section`
 `;
 
 const LeftOffsetButton = styled(Button)`margin-left: ${spacing(2)};`;
-const FavoritesSection = styled.section`margin-bottom: ${spacing(3)};`;
 
 const updateHandler = (userId: number, oldFriendship: UserFriendship): (() => void) => (cache, { data: { updateFriendshipStatus: newFriendship } }) => {
   const friendshipQuery = { query: GET_FRIENDSHIP, variables: { userId } };

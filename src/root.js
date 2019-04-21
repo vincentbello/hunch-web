@@ -3,7 +3,6 @@ import * as React from 'react';
 import { ApolloProvider } from 'react-apollo';
 
 import { Global, css } from '@emotion/core';
-import styled from '@emotion/styled';
 import common from 'theme/common';
 
 import { AuthenticationProvider } from 'contexts/AuthenticationContext';
