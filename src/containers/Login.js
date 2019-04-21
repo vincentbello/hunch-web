@@ -50,8 +50,10 @@ const FbButton = styled.button`
 function LoginContainer(props: Props): React.Node {
   useDocumentTitle('Hunch | Log in');
   const [isAuthenticating, setAuthenticating] = React.useState(false);
+  const [data, setData] = React.useState('');
   const { setAuthenticated } = React.useContext(AuthenticationContext);
   React.useEffect(() => {
+    setData(props.location.search);
     const splitEls = props.location.search.split('#');
     if (splitEls.length < 2) return;
 
@@ -80,7 +82,8 @@ function LoginContainer(props: Props): React.Node {
   return (
     <Splash>
       <SplashImage src="assets/brand/logo.png" alt="HunchCard" />
-      <Header>Welcome to HunchCard YO!</Header>
+      <Header>Welcome to HunchCard!</Header>
+      {data}
       <FacebookLogin
         appId="1508649675817033"
         fields="name,email,picture"
