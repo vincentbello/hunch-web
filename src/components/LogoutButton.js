@@ -5,7 +5,6 @@ import { Mutation } from 'react-apollo';
 import LOGOUT from 'graphql/mutations/logout';
 import { FiLogOut } from 'react-icons/fi';
 
-import { darken } from 'polished';
 import styled from '@emotion/styled';
 import colors from 'theme/colors';
 import { spacing } from 'theme/sizes';
