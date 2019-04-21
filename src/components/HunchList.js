@@ -37,7 +37,7 @@ const ListItem = styled.li`
   list-style-type: none;
 `;
 
-function HunchList({ history, hunchesQuery: { hunches, error, loading, networkStatus, refetch }, hunchListType, user }: Props): React.Node {
+function HunchList({ hunchesQuery: { hunches, error, loading, networkStatus, refetch }, hunchListType, user }: Props): React.Node {
   const renderHunches = (hunches: Array<Hunch>): React.Node => {
     if (hunches.length === 0) {
       return (
@@ -47,11 +47,12 @@ function HunchList({ history, hunchesQuery: { hunches, error, loading, networkSt
           visualType="illustration"
           renderSubhead={hunchListType === 'ACTIVE' ? (): React.Node => (
             <Button
+              asLink
+              to="/hunch/new"
               buttonTitle="Create One"
               leftIcon={<FiPlus />}
               type="tertiary"
               size="large"
-              onClick={() => history.push('/hunch/new')}
             />
           ) : null}
         />

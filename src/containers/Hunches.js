@@ -83,14 +83,6 @@ function Hunches({ currentUser, history, match }: Props): React.Node {
         <HunchList hunchListType={match.params.type ? match.params.type.toUpperCase() : HUNCH_VIEW_TYPES[0].key} user={currentUser} />
       </Container>
     </Wrapper>
-    // <TabView
-    //   navigationState={{
-    //     index: viewIndex,
-    //     routes: HUNCH_VIEW_TYPES,
-    //   }}
-    //   onIndexChange={actions.setViewIndex}
-    //   renderScene={(): React.Node => <HunchList hunchListType={hunchListType} user={currentUser} />}
-    // />
   );
 }
 Hunches.displayName = 'HunchesContainer';
