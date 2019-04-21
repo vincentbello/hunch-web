@@ -52,7 +52,10 @@ function LoginContainer(props: Props): React.Node {
   const [isAuthenticating, setAuthenticating] = React.useState(false);
   const { setAuthenticated } = React.useContext(AuthenticationContext);
   React.useEffect(() => {
-    const params = qs.parse(props.location.search, { ignoreQueryPrefix: true });
+    const splitEls = props.location.search.split('#');
+    if (splitEls.length < 2) return;
+
+    const params = qs.parse(splitEls[splitEls.length - 1]);
     if (params.token) {
       setAuthenticating(true);
       onFbLogin({ accessToken: params.token});
@@ -77,7 +80,7 @@ function LoginContainer(props: Props): React.Node {
   return (
     <Splash>
       <SplashImage src="assets/brand/logo.png" alt="HunchCard" />
-      <Header>Welcome to HunchCard!</Header>
+      <Header>Welcome to HunchCard YO!</Header>
       <FacebookLogin
         appId="1508649675817033"
         fields="name,email,picture"
