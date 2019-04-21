@@ -4,6 +4,7 @@ import { Query } from 'react-apollo';
 import GET_GAME from 'graphql/queries/getGame';
 
 import HunchCreationContext, { clearForm, setAmount, setBettee, setBettorPickTeam, setGame, setWager } from 'contexts/HunchCreationContext';
+import useDocumentTitle from 'hooks/useDocumentTitle';
 
 import { DATE_VIEW_TYPES } from 'constants/view-types';
 import { FiX } from 'react-icons/fi';
@@ -67,6 +68,7 @@ const Textarea = styled.textarea`
 `;
 
 export default function CreateHunch({ history }: RouterProps) {
+  useDocumentTitle('New Hunch');
   const [creationState, dispatch] = React.useContext(HunchCreationContext);
   const onCreated = () => {
     history.push('/hunches/pending');

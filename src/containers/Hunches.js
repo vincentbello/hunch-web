@@ -2,10 +2,9 @@
 import * as React from 'react';
 import { NavLink } from 'react-router-dom';
 
-// import { HUNCH_VIEW_TYPES } from 'constants/view-types';
-// import { getViewIndex, getHunchListType } from 'selectors/hunches';
 import withCurrentUser, { type CurrentUserProps } from 'hocs/withCurrentUser';
 
+import useDocumentTitle from 'hooks/useDocumentTitle';
 import { HUNCH_VIEW_TYPES } from 'constants/view-types';
 import type { ViewType } from 'types/hunch';
 import type { RouterProps } from 'types/router';
@@ -68,6 +67,7 @@ const StyledLink = styled(NavLink)`
 `;
 
 function Hunches({ currentUser, history, match }: Props): React.Node {
+  useDocumentTitle('Hunch');
   return (
     <Wrapper>
       <NavList>

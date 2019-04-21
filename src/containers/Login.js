@@ -6,6 +6,7 @@ import { graphql } from 'react-apollo';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import { darken } from 'polished';
 
+import useDocumentTitle from 'hooks/useDocumentTitle';
 import type { RouterProps } from 'types/router';
 import AuthenticationContext from 'contexts/AuthenticationContext';
 import GET_CURRENT_USER from 'graphql/queries/getCurrentUser';
@@ -47,6 +48,7 @@ const FbButton = styled.button`
 `;
 
 function LoginContainer(props: Props): React.Node {
+  useDocumentTitle('Hunch | Log in');
   const [isAuthenticating, setAuthenticating] = React.useState(false);
   const { setAuthenticated } = React.useContext(AuthenticationContext);
   React.useEffect(() => {

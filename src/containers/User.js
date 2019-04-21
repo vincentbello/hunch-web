@@ -6,6 +6,7 @@ import GET_USER from 'graphql/queries/getUser';
 import { type Error } from 'types/apollo';
 import { type User } from 'types/user';
 
+import useDocumentTitle from 'hooks/useDocumentTitle';
 import withCurrentUser, { type CurrentUserProps } from 'hocs/withCurrentUser';
 import DerivedStateSplash from 'components/DerivedStateSplash';
 import UserCard from 'components/UserCard';
@@ -20,6 +21,7 @@ type Props = CurrentUserProps & {
 };
 
 function UserContainer({ currentUser, userQuery: { loading, error, user } }: Props): React.Node {
+  useDocumentTitle(Boolean(user) ? user.fullName : 'User');
   return (
     <DerivedStateSplash error={error} loading={loading}>
       {Boolean(user) && <UserCard isCurrent={user.id === currentUser.id} user={user} />}

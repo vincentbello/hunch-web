@@ -12,6 +12,7 @@ import styled from '@emotion/styled';
 import colors from 'theme/colors';
 import { spacing } from 'theme/sizes';
 
+import useDocumentTitle from 'hooks/useDocumentTitle';
 import withCurrentUser, { type CurrentUserProps } from 'hocs/withCurrentUser';
 import DerivedStateSplash from 'components/DerivedStateSplash';
 import GameCell from 'components/GameCell';
@@ -55,6 +56,7 @@ const Section = styled.section`
 `;
 
 function HunchContainer({ currentUser, hunchQuery: { loading, error, hunch } }: Props): React.Node {
+  useDocumentTitle('Hunch');
   return (
     <DerivedStateSplash error={error} loading={loading}>
       {Boolean(hunch) && (

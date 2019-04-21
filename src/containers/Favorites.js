@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { graphql } from 'react-apollo';
 import REMOVE_FAVORITE_TEAM from 'graphql/mutations/removeFavoriteTeam';
+import useDocumentTitle from 'hooks/useDocumentTitle';
 import styled from '@emotion/styled';
 import { spacing } from 'theme/sizes';
 import FavoritesList from 'components/FavoritesList';
@@ -16,6 +17,7 @@ const Content = styled.div`margin: ${spacing(2)};`;
 const Container = styled.div`margin-bottom: ${spacing(4)};`;
 
 function Favorites(props: Props): React.Node {
+  useDocumentTitle('Manage Favorites');
   return (
     <Content>
       <Container>
