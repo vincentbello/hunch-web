@@ -82,6 +82,8 @@ export default {
     justify-content: center;
     align-items: center;
     height: 100%;
-    width: 100vw;
+    width: 100%;
+
+    ${media.mobile`width: 100vw;`}
   `,
 };
