@@ -22,6 +22,7 @@ import DualAction from 'components/DualAction';
 import FavoritesList from 'components/FavoritesList';
 import FriendshipButton from 'components/FriendshipButton';
 import Image from 'components/Image';
+import LogoutButton from 'components/LogoutButton';
 import SectionHeader from 'components/SectionHeader';
 import UserStats from 'components/UserStats';
 
@@ -222,6 +223,7 @@ function UserCard({ history, isCurrent, user, userFriendshipQuery, updateFriends
             </>
           )}
         </Query>
+        {isCurrent && <LogoutButton />}
       </Container>
     </>
   );

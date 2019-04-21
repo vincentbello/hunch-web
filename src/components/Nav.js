@@ -3,6 +3,8 @@ import * as React from 'react';
 import { NavLink } from 'react-router-dom';
 import { ClassNames } from '@emotion/core';
 
+import HunchCreationContext, { clearForm } from 'contexts/HunchCreationContext';
+
 import styled from '@emotion/styled';
 import colors from 'theme/colors';
 import { spacing } from 'theme/sizes';
@@ -46,35 +48,38 @@ const StyledLink = styled(NavLink)`
   }
 `;
 
-export default () => (
-  <ClassNames>
-    {({ css, cx }) => {
-      const activeClassName = css`
-        font-weight: bold;
+export default function Nav() {
+  const [_, dispatch] = React.useContext(HunchCreationContext); // eslint-disable-line no-unused-vars
+  return (
+    <ClassNames>
+      {({ css, cx }) => {
+        const activeClassName = css`
+          font-weight: bold;
 
-        &:hover {
-          background: none;
-        }
-      `;
-      return (
-        <NavList>
-          <NavItem>
-            <StyledLink exact to="/" activeClassName={activeClassName}>Home</StyledLink>
-          </NavItem>
-          <NavItem>
-            <StyledLink exact to="/hunches" activeClassName={activeClassName}>Hunches</StyledLink>
-          </NavItem>
-          <NavItem>
-            <StyledLink exact to="/friends" activeClassName={activeClassName}>Friends</StyledLink>
-          </NavItem>
-          <NavItem>
-            <StyledLink exact to="/me" activeClassName={activeClassName}>Me</StyledLink>
-          </NavItem>
-          <NavItem>
-            <StyledLink exact to="/hunch/new" activeClassName={activeClassName}>Create</StyledLink>
-          </NavItem>
-        </NavList>
-      );
-    }}
-  </ClassNames>
-);
+          &:hover {
+            background: none;
+          }
+        `;
+        return (
+          <NavList>
+            <NavItem>
+              <StyledLink exact to="/" activeClassName={activeClassName}>Home</StyledLink>
+            </NavItem>
+            <NavItem>
+              <StyledLink exact to="/hunches" activeClassName={activeClassName}>Hunches</StyledLink>
+            </NavItem>
+            <NavItem>
+              <StyledLink exact to="/friends" activeClassName={activeClassName}>Friends</StyledLink>
+            </NavItem>
+            <NavItem>
+              <StyledLink exact to="/me" activeClassName={activeClassName}>Me</StyledLink>
+            </NavItem>
+            <NavItem>
+              <StyledLink exact to="/hunch/new" activeClassName={activeClassName} onClick={() => dispatch(clearForm())}>Create</StyledLink>
+            </NavItem>
+          </NavList>
+        );
+      }}
+    </ClassNames>
+  );
+}

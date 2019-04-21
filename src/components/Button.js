@@ -10,14 +10,15 @@ import { spacing } from 'theme/sizes';
 export type Props = {
   asLink: boolean,
   block: boolean,
+  buttonTitle: string,
   disabled: boolean,
   children: React.Node,
   leftIcon: React.Node,
   icon: React.Node,
   rightIcon: React.Node,
   size: 'small' | 'medium' | 'large',
-  buttonTitle: string,
-  type: 'primary' | 'secondary' | 'tertiary' | 'danger',
+  tint: string,
+  type: 'primary' | 'secondary' | 'tertiary',
 };
 
 const defaultProps = {
@@ -29,6 +30,7 @@ const defaultProps = {
   icon: null,
   rightIcon: null,
   size: 'medium',
+  tint: colors.brand.primary,
   type: 'primary',
 };
 
@@ -47,33 +49,35 @@ const SIZE_STYLES = {
   },
 };
 
-const TYPE_STYLES = {
-  primary: {
-    borderColor: colors.brand.primary,
-    backgroundColor: colors.brand.primary,
-    color: colors.white,
-  },
-  secondary: {
-    borderColor: colors.brand.primary,
-    backgroundColor: colors.white,
-    color: colors.brand.primary,
-  },
-  tertiary: {
-    borderColor: colors.transparent,
-    backgroundColor: colors.transparent,
-    color: colors.brand.primary,
-    hoverColor: darken(0.25, colors.brand.primary),
-  },
-  danger: {
-    borderColor: colors.primary.red,
-    backgroundColor: colors.primary.red,
-    color: colors.white,
+const getTypeStyles = (type, tint) => {
+  switch (type) {
+    case 'primary':
+      return {
+        borderColor: tint,
+        backgroundColor: tint,
+        color: colors.white,
+      };
+
+    case 'secondary':
+      return {
+        borderColor: tint,
+        backgroundColor: colors.white,
+        color: tint,
+      };
+
+    default:
+      return {
+        borderColor: colors.transparent,
+        backgroundColor: colors.transparent,
+        color: tint,
+        hoverColor: darken(0.25, tint),
+      };
   }
 };
 
 const commonStyles = props => {
   const sizeStyles = SIZE_STYLES[props.size];
-  const typeStyles = TYPE_STYLES[props.type];
+  const typeStyles = getTypeStyles(props.type, props.tint);
   return `
     display: ${props.block ? 'block' : 'inline-flex'};
     ${props.block ? `width: 100%;` : ''}

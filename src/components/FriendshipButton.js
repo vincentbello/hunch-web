@@ -6,6 +6,7 @@ import { getPronoun } from 'utils/string';
 import type { UserFriendship, FriendshipStatus, User } from 'types/user';
 import { FiUserCheck, FiUserPlus } from 'react-icons/fi';
 import styled from '@emotion/styled';
+import colors from 'theme/colors';
 import typography from 'theme/typography';
 import { spacing } from 'theme/sizes';
 import UserCell from 'components/UserCell';
@@ -102,7 +103,12 @@ function FriendshipButton({ friendship, user, updateFriendshipStatus }: Props): 
         renderFooter={() => (
           <ModalFooter>
             <Button type="secondary" buttonTitle="Cancel" onClick={close} />
-            <OffsetButton type={unfriend ? 'danger' : 'primary'} buttonTitle={unfriend ? 'Unfriend' : 'Cancel Request'} onClick={confirm} />
+            <OffsetButton
+              type="primary"
+              tint={unfriend ? colors.primary.red : undefined}
+              buttonTitle={unfriend ? 'Unfriend' : 'Cancel Request'}
+              onClick={confirm}
+            />
           </ModalFooter>
         )}
       >
