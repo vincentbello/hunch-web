@@ -1,8 +1,11 @@
 // @flow
 import * as React from 'react';
+import { Prompt } from 'react-router';
 import { Mutation } from 'react-apollo';
 import CREATE_HUNCH_REQUEST from 'graphql/mutations/createHunchRequest';
 import GET_HUNCHES from 'graphql/queries/getHunches';
+
+import useUnsavedAlert from 'hooks/useUnsavedAlert';
 
 import { FiSend } from 'react-icons/fi';
 import Button from 'components/Button';
@@ -15,6 +18,8 @@ const onHunchCreate = (cache, { data: { createHunchRequest } }) => {
   } catch (err) {}
 };
 
+const UNSAVED_CHANGES_MESSAGE = 'Your Hunch has not been sent, are you sure you want to leave?';
+
 type Props = {
   data: {},
   onCreated: () => void,
@@ -25,19 +30,23 @@ export default function CreateHunchButton({ data: { amount, bettee, bettorPickTe
   const variables = {
     variables: isFormCompleted ? { amount, betteeId: bettee.id, gameId, bettorPickTeamId, type: 'MONEY_LINE', wager } : {},
   };
+  useUnsavedAlert(UNSAVED_CHANGES_MESSAGE, !isFormCompleted);
 
   return (
-    <Mutation mutation={CREATE_HUNCH_REQUEST} update={onHunchCreate} onCompleted={onCreated}>
-      {(createHunchRequest, { called, loading }): React.Node => (
-        <Button
-          block
-          buttonTitle={called ? `${loading ? 'Sending...' : 'Sent!'}` : `Send${bettee ? ` ${bettee.firstName} a` : ''} Hunch Request`}
-          disabled={called || !isFormCompleted}
-          leftIcon={<FiSend />}
-          size="large"
-          onClick={() => createHunchRequest(variables)}
-        />
-      )}
-    </Mutation>
+    <>
+      <Prompt when={isFormCompleted} message={UNSAVED_CHANGES_MESSAGE} />
+      <Mutation mutation={CREATE_HUNCH_REQUEST} update={onHunchCreate} onCompleted={onCreated}>
+        {(createHunchRequest, { called, loading }): React.Node => (
+          <Button
+            block
+            buttonTitle={called ? `${loading ? 'Sending...' : 'Sent!'}` : `Send${bettee ? ` ${bettee.firstName} a` : ''} Hunch Request`}
+            disabled={called || !isFormCompleted}
+            leftIcon={<FiSend />}
+            size="large"
+            onClick={() => createHunchRequest(variables)}
+          />
+        )}
+      </Mutation>
+    </>
   );
 }

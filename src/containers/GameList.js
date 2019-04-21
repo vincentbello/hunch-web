@@ -15,7 +15,9 @@ import common from 'theme/common';
 import { spacing } from 'theme/sizes';
 
 type Props = {
-  date: string,
+  canCreateHunch: boolean,
+  date: string | null,
+  next: number | null,
   gamesQuery: {
     loading: boolean,
     error: Error,
@@ -42,7 +44,7 @@ const ListItem = styled.li`
 
 const StyledDivButton = styled(DivButton)(common.shadow);
 
-function GameList({ gamesQuery, selectGame }: Props) {
+function GameList({ canCreateHunch, gamesQuery, selectGame }: Props) {
   return (
     <DerivedStateSplash error={gamesQuery.error} loading={gamesQuery.loading}>
       {Boolean(gamesQuery.upcomingGames) && (
@@ -53,7 +55,7 @@ function GameList({ gamesQuery, selectGame }: Props) {
             {gamesQuery.upcomingGames.map((game: Game): React.Node => (
               <ListItem key={game.id}>
                 <StyledDivButton onClick={() => selectGame(game)}>
-                  <GameCell game={game} withContainer />
+                  <GameCell canCreateHunch={canCreateHunch} game={game} withContainer />
                 </StyledDivButton>
               </ListItem>
             ))}
@@ -64,8 +66,14 @@ function GameList({ gamesQuery, selectGame }: Props) {
   );
 }
 GameList.displayName = 'GameList';
+GameList.defaultProps = {
+  canCreateHunch: false,
+  date: null,
+  next: null,
+  selectGame() {},
+};
 
 export default graphql(GET_UPCOMING_GAMES, {
   name: 'gamesQuery',
-  options: ({ date }) => ({ variables: { date, league: 'NBA' } }),
+  options: ({ date, next }) => ({ variables: { date, league: 'NBA', next } }),
 })(GameList);

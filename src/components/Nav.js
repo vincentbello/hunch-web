@@ -62,6 +62,9 @@ export default () => (
             <StyledLink exact to="/" activeClassName={activeClassName}>Home</StyledLink>
           </NavItem>
           <NavItem>
+            <StyledLink exact to="/hunches" activeClassName={activeClassName}>Hunches</StyledLink>
+          </NavItem>
+          <NavItem>
             <StyledLink exact to="/friends" activeClassName={activeClassName}>Friends</StyledLink>
           </NavItem>
           <NavItem>

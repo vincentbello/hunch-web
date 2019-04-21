@@ -5,6 +5,7 @@ import withAuth from 'hocs/withAuth';
 import CreateHunchContainer from 'containers/CreateHunch';
 import FriendsContainer from 'containers/Friends';
 import LoginContainer from 'containers/Login';
+import HomeContainer from 'containers/Home';
 import HunchesContainer from 'containers/Hunches';
 import HunchContainer from 'containers/Hunch';
 import UserContainer from 'containers/User';
@@ -15,7 +16,6 @@ import common from 'theme/common';
 
 const Main = styled.div(common.layout);
 const Content = styled.main`flex: 1 0 0;`;
-const AuthedHunchesContainer = withAuth(HunchesContainer);
 const AuthedFriendsContainer = withAuth(FriendsContainer);
 
 export default function AppRouter() {
@@ -26,9 +26,9 @@ export default function AppRouter() {
         <Main>
           <Nav />
           <Content>
-            <Route path="/" exact component={AuthedHunchesContainer} />
+            <Route path="/" exact component={withAuth(HomeContainer)} />
             <Route path="/friends" component={AuthedFriendsContainer} />
-            <Route path="/hunches/:type" component={AuthedHunchesContainer} />
+            <Route path="/hunches/:type?" component={withAuth(HunchesContainer)} />
             <Switch>
               <Route path="/hunch/new" exact component={withAuth(CreateHunchContainer)} />
               <Route path="/hunch/:id" component={withAuth(HunchContainer)} />

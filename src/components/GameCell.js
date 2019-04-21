@@ -1,9 +1,13 @@
 // @flow
 import * as React from 'react';
+import { withRouter } from 'react-router';
 import { format } from 'date-fns';
 
 import { type Game } from 'types/game';
+import { type RouterProps } from 'types/router';
 import { type Team } from 'types/team';
+
+import HunchCreationContext, { setGame } from 'contexts/HunchCreationContext';
 
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
@@ -12,9 +16,11 @@ import typography from 'theme/typography';
 import { spacing } from 'theme/sizes';
 
 import { FaCaretLeft } from 'react-icons/fa';
+import Button from 'components/Button';
 import Image from 'components/Image';
 
 type Props = {
+  canCreateHunch: boolean,
   game: Game,
   large: boolean,
   light: boolean,
@@ -32,19 +38,11 @@ type TeamRowProps = {
 };
 
 const defaultProps = {
+  canCreateHunch: false,
   large: false,
   light: false,
   muted: false,
 };
-
-const MetaContainer = styled.div`
-  ${props => !props.large && `flex: 3 0 0;`}
-  display: flex;
-  flex-direction: column;
-  margin: ${spacing(2, 0)};
-  align-items: center;
-  justify-content: center;
-`;
 
 const MetaText = styled.span`
   ${typography.base}
@@ -63,6 +61,27 @@ const Container = styled.div`
     align-items: center;
   `}
   ${props => props.muted && `opacity: 0.25;`}
+`;
+
+const MetaContainer = styled.div`
+  ${props => !props.large && `flex: 3 0 0;`}
+  display: flex;
+  flex-direction: column;
+  margin: ${spacing(2, 0)};
+  align-items: center;
+  justify-content: center;
+
+  ${props => props.hideable && `
+    [data-game-container]:hover & {
+      display: none;
+    }
+  `}
+`;
+
+const StyledHiddenButton = styled(Button)`
+  [data-game-container]:not(:hover) & {
+    display: none;
+  }
 `;
 
 const Content = styled.div`
@@ -154,11 +173,20 @@ const GameStatus = ({ game, light, spaced }: GameStatusProps): React.Node => {
   );
 };
 
-export default function GameCell({ game, large, light, muted, withContainer }: Props) {
+const HiddenButton = withRouter(({ gameId, history }: RouterProps & { gameId: number }) => {
+  const [_, dispatch] = React.useContext(HunchCreationContext); // eslint-disable-line no-unused-vars
+  const createHunch = () => {
+    dispatch(setGame(gameId));
+    history.push('/hunch/new');
+  };
+  return <StyledHiddenButton buttonTitle="Create Hunch" type="primary" onClick={createHunch} />;
+});
+
+function GameCell({ canCreateHunch, game, large, light, muted, withContainer }: Props) {
   return (
     <div>
       {large && <MetaText emphasized light spaced>{game.league}</MetaText>}
-      <Container contained={withContainer} muted={muted}>
+      <Container contained={withContainer} muted={muted} data-game-container>
         <Content>
           <TeamRow
             didLose={game.completed && game.awayScore < game.homeScore}
@@ -177,12 +205,15 @@ export default function GameCell({ game, large, light, muted, withContainer }: P
             team={game.homeTeam}
           />
         </Content>
-        <MetaContainer large={large}>
+        <MetaContainer hideable={canCreateHunch} large={large}>
           <GameStatus game={game} light={light} spaced={large} />
         </MetaContainer>
+        {canCreateHunch && <HiddenButton gameId={game.id} />}
       </Container>
       {large && <MetaText emphasized light spaced>{`${game.homeTeam.site} · ${game.homeTeam.city}, ${game.homeTeam.state}`}</MetaText>}
     </div>
   );
 }
 GameCell.defaultProps = defaultProps;
+
+export default withRouter(GameCell);
