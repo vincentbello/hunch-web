@@ -110,6 +110,7 @@ const updateHandler = (userId: number, oldFriendship: UserFriendship): (() => vo
 
 function UserCard({ history, isCurrent, user, userFriendshipQuery, updateFriendshipStatus }: Props): React.Node {
   const [_, dispatch] = React.useContext(HunchCreationContext); // eslint-disable-line no-unused-vars
+  const [editMode, setEditMode] = React.useState(false);
   const needsAction = (
     !isCurrent &&
     userFriendshipQuery &&
@@ -186,11 +187,19 @@ function UserCard({ history, isCurrent, user, userFriendshipQuery, updateFriends
 
         <ListHeader>
           <SectionHeader grow>{`${isCurrent ? 'My ' : ''}Favorite Teams`}</SectionHeader>
-          {isCurrent && <Button asLink to="/favorites" type="tertiary" icon={<FiEdit2 />} title="Edit" />}
+          {isCurrent && (
+            <Button
+              type="tertiary"
+              buttonTitle={editMode ? 'Done' : ''}
+              icon={editMode ? null : <FiEdit2 />}
+              title={editMode ? 'Done' : 'Edit'}
+              onClick={() => setEditMode(!editMode)}
+            />
+          )}
         </ListHeader>
-        <FavoritesSection>
-          <FavoritesList mine={isCurrent} userId={isCurrent ? null : user.id} />
-        </FavoritesSection>
+        <Section clear trimmed>
+          <FavoritesList editMode={editMode} mine={isCurrent} userId={isCurrent ? null : user.id} />
+        </Section>
 
         <Query query={GET_STATS} variables={{ userId: user.id }}>
           {({ loading, error, data }): React.Node => (

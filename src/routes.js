@@ -3,7 +3,6 @@ import * as React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import withAuth from 'hocs/withAuth';
 import CreateHunchContainer from 'containers/CreateHunch';
-import FavoritesContainer from 'containers/Favorites';
 import FriendsContainer from 'containers/Friends';
 import LoginContainer from 'containers/Login';
 import HunchesContainer from 'containers/Hunches';
@@ -12,8 +11,10 @@ import UserContainer from 'containers/User';
 import Nav from 'components/Nav';
 
 import styled from '@emotion/styled';
+import common from 'theme/common';
 
-const Main = styled.div`height: 100%;`;
+const Main = styled.div(common.layout);
+const Content = styled.main`flex: 1 0 0;`;
 const AuthedHunchesContainer = withAuth(HunchesContainer);
 const AuthedFriendsContainer = withAuth(FriendsContainer);
 
@@ -24,17 +25,18 @@ export default function AppRouter() {
         <Route path="/login" component={LoginContainer} />
         <Main>
           <Nav />
-          <Route path="/" exact component={AuthedHunchesContainer} />
-          <Route path="/friends" component={AuthedFriendsContainer} />
-          <Route path="/hunches/:type" component={AuthedHunchesContainer} />
-          <Switch>
-            <Route path="/hunch/new" exact component={withAuth(CreateHunchContainer)} />
-            <Route path="/hunch/:id" component={withAuth(HunchContainer)} />
-          </Switch>
-          <Route path="/user/:id" exact component={withAuth(UserContainer)} />
-          <Route path="/me" exact component={withAuth(UserContainer)} />
-          <Route path="/user/:id/friends" component={AuthedFriendsContainer} />
-          <Route path="/favorites" component={withAuth(FavoritesContainer)} />
+          <Content>
+            <Route path="/" exact component={AuthedHunchesContainer} />
+            <Route path="/friends" component={AuthedFriendsContainer} />
+            <Route path="/hunches/:type" component={AuthedHunchesContainer} />
+            <Switch>
+              <Route path="/hunch/new" exact component={withAuth(CreateHunchContainer)} />
+              <Route path="/hunch/:id" component={withAuth(HunchContainer)} />
+            </Switch>
+            <Route path="/user/:id" exact component={withAuth(UserContainer)} />
+            <Route path="/me" exact component={withAuth(UserContainer)} />
+            <Route path="/user/:id/friends" component={AuthedFriendsContainer} />
+          </Content>
         </Main>
       </Switch>
     </BrowserRouter>

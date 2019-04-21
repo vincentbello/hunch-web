@@ -39,6 +39,14 @@ export default {
         transform: rotate(0deg);
       }
     `,
+    shake: keyframes`
+      0% {
+          transform: rotate(-1deg);
+      }
+      50% {
+          transform: rotate(1.5deg);
+      }
+    `,
   },
   box: `
     background-color: ${colors.white};
@@ -47,6 +55,8 @@ export default {
   `,
   layout: `
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
     max-width: 1080px;
     height: 100vh;
 

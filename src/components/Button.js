@@ -86,7 +86,7 @@ const commonStyles = props => {
     color: ${typeStyles.color};
     font-size: ${sizeStyles.fontSize}px;
     font-weight: 600;
-    transition: background-color 250ms;
+    transition: color 250ms, background-color 250ms;
     cursor: pointer;
     ${props.disabled ? `
       pointer-events: none;
