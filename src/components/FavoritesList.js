@@ -21,6 +21,7 @@ import Image from 'components/Image';
 import SectionHeader from 'components/SectionHeader';
 import TeamSelect from 'components/TeamSelect';
 
+const Container = styled.div`width: 100%;`;
 const StyledFiMinus = styled(FiMinus)`
   color: ${colors.white};
   font-size: 15px;
@@ -95,7 +96,7 @@ type Props = {
 };
 
 const FavoritesList = ({ editMode, favoriteTeamsQuery: { loading, error, favoriteTeams }, mine, userId, removeFavoriteTeam }): React.Node => (
-  <div>
+  <Container>
     <DerivedStateSplash size="small" loading={loading} error={error}>
       {Boolean(favoriteTeams) && (
         favoriteTeams.length === 0 ? (
@@ -123,7 +124,7 @@ const FavoritesList = ({ editMode, favoriteTeamsQuery: { loading, error, favorit
         <TeamSelect />
       </Section>
     )}
-  </div>
+  </Container>
 );
 
 export default compose(
