@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import qs from 'qs';
 import styled from '@emotion/styled';
 import { graphql } from 'react-apollo';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
@@ -49,6 +50,14 @@ function LoginContainer(props: Props): React.Node {
   const [isAuthenticating, setAuthenticating] = React.useState(false);
   const { setAuthenticated } = React.useContext(AuthenticationContext);
 
+  React.useEffect(() => {
+    const params = qs.parse(props.location.search, { ignoreQueryPrefix: true });
+    if (params.token) {
+      setAuthenticating(true);
+      onFbLogin({ accessToken: params.token});
+    }
+  }, []);
+
   async function onFbLogin(response) {
     if (response.isCancelled) {
       setAuthenticating(false);
@@ -71,6 +80,7 @@ function LoginContainer(props: Props): React.Node {
       <FacebookLogin
         appId="1508649675817033"
         fields="name,email,picture"
+        responseType="token"
         scope="public_profile,user_friends"
         callback={onFbLogin}
         render={(fbRenderProps) => (
