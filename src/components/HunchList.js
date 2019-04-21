@@ -5,19 +5,18 @@ import GET_HUNCHES from 'graphql/queries/getHunches';
 
 import { type Error } from 'types/apollo';
 import { type Hunch, type HunchListType } from 'types/hunch';
+import { type RouterProps } from 'types/router';
 import { type User } from 'types/user';
 
 import styled from '@emotion/styled';
 
-import common from 'theme/colors';
-import colors from 'theme/colors';
-
-// import Icon from 'react-native-vector-icons/Feather';
+import { FiPlus } from 'react-icons/fi';
+import Button from 'components/Button';
 import HunchCell from 'components/HunchCell';
 import DerivedStateSplash from 'components/DerivedStateSplash';
 import Splash from 'components/Splash';
 
-type Props = {
+type Props = RouterProps & {
   hunchesQuery: {
     loading: boolean,
     error: Error,
@@ -38,18 +37,7 @@ const ListItem = styled.li`
   list-style-type: none;
 `;
 
-// const styles = StyleSheet.create({
-//   subheadIcon: {
-//     marginRight: 6,
-//   },
-//   subheadText: {
-//     fontWeight: '600',
-//     color: Colors.brand.primary,
-//     fontSize: 18,
-//   },
-// });
-
-function HunchList({ hunchesQuery: { hunches, error, loading, networkStatus, refetch }, hunchListType, user }: Props): React.Node {
+function HunchList({ history, hunchesQuery: { hunches, error, loading, networkStatus, refetch }, hunchListType, user }: Props): React.Node {
   const renderHunches = (hunches: Array<Hunch>): React.Node => {
     if (hunches.length === 0) {
       return (
@@ -57,18 +45,15 @@ function HunchList({ hunchesQuery: { hunches, error, loading, networkStatus, ref
           heading={`You have no ${hunchListType.toLowerCase()} hunches.`}
           visualName="meh-lightbulb"
           visualType="illustration"
-          // renderSubhead={hunchListType === 'ACTIVE' ? (): React.Node => (
-          //   <Icon.Button
-          //     backgroundColor={Colors.transparent}
-          //     color={Colors.brand.primary}
-          //     iconStyle={styles.subheadIcon}
-          //     name="plus"
-          //     underlayColor={Colors.background}
-          //     onPress={Actions.createHunchModal}
-          //   >
-          //     <Text style={styles.subheadText}>Create One</Text>
-          //   </Icon.Button>
-          // ) : null}
+          renderSubhead={hunchListType === 'ACTIVE' ? (): React.Node => (
+            <Button
+              buttonTitle="Create One"
+              leftIcon={<FiPlus />}
+              type="tertiary"
+              size="large"
+              onClick={() => history.push('/hunch/new')}
+            />
+          ) : null}
         />
       );
     }
@@ -81,19 +66,6 @@ function HunchList({ hunchesQuery: { hunches, error, loading, networkStatus, ref
           </ListItem>
         ))}
       </UnorderedList>
-      // <FlatList
-      //   data={hunches}
-      //   keyExtractor={(hunch: Hunch): string => `${hunch.id}`}
-      //   onRefresh={refetch}
-      //   refreshing={networkStatus === 4}
-      //   renderItem={({ item, index }): React.Node => (
-      //     <HunchCell
-      //       hunch={item}
-      //       userId={user.id}
-      //       onPress={(): void => Actions.hunchCard({ hunchId: item.id })}
-      //     />
-      //   )}
-      // />
     );
   };
 

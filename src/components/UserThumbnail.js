@@ -1,8 +1,8 @@
+/* eslint jsx-a11y/accessible-emoji: 0 */
 // @flow
 import * as React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Link } from 'react-router-dom';
 
 import { type Hunch } from 'types/hunch';
 import { type Game } from 'types/game';

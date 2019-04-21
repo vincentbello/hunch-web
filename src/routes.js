@@ -29,7 +29,7 @@ export default function AppRouter() {
         <Route path="/friends" component={AuthedFriendsContainer} />
         <Route path="/hunches/:type" component={AuthedHunchesContainer} />
         <Switch>
-          <Route path="/hunch/new" exact component={CreateHunchContainer} />
+          <Route path="/hunch/new" exact component={withAuth(CreateHunchContainer)} />
           <Route path="/hunch/:id" component={withAuth(HunchContainer)} />
         </Switch>
         <Route path="/user/:id" exact component={withAuth(UserContainer)} />

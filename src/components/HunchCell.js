@@ -8,6 +8,7 @@ import { type RouterProps } from 'types/router';
 import { type Hunch } from 'types/hunch';
 
 import styled from '@emotion/styled';
+import common from 'theme/common';
 import colors from 'theme/colors';
 import typography from 'theme/typography';
 import { spacing } from 'theme/sizes';
@@ -21,13 +22,7 @@ const StyledDivButton = styled(DivButton)`
   margin: ${spacing(0, 2, 2)};
   padding: ${spacing(2)};
   display: flex;
-  cursor: pointer;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.15);
-  transition: box-shadow 250ms;
-
-  &:hover {
-    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.3);
-  }
+  ${common.shadow}
 `;
 
 const Image = styled.img`

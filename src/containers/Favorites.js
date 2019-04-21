@@ -1,8 +1,7 @@
 // @flow
 import * as React from 'react';
-import { compose, graphql, Query } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import REMOVE_FAVORITE_TEAM from 'graphql/mutations/removeFavoriteTeam';
-import { LEAGUE_VIEW_TYPES } from 'constants/view-types';
 import styled from '@emotion/styled';
 import { spacing } from 'theme/sizes';
 import FavoritesList from 'components/FavoritesList';
@@ -17,7 +16,6 @@ const Content = styled.div`margin: ${spacing(2)};`;
 const Container = styled.div`margin-bottom: ${spacing(4)};`;
 
 function Favorites(props: Props): React.Node {
-  const [viewIndex] = React.useState(0);
   return (
     <Content>
       <Container>

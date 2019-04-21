@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import { withRouter } from 'react-router';
 import { distanceInWordsToNow, format } from 'date-fns';
 import pluralize from 'pluralize';
 import { compose, graphql, Query } from 'react-apollo';
@@ -9,7 +10,10 @@ import GET_USER from 'graphql/queries/getUser';
 import UPDATE_FRIENDSHIP_STATUS from 'graphql/mutations/updateFriendshipStatus';
 
 import { type Error } from 'types/apollo';
+import { type RouterProps } from 'types/router';
 import { type FriendshipStatus, type User, type UserFriendship } from 'types/user';
+
+import HunchCreationContext, { setBettee } from 'contexts/HunchCreationContext';
 
 import { FiBell, FiEdit2, FiUsers } from 'react-icons/fi';
 import Button from 'components/Button';
@@ -47,7 +51,7 @@ const StyledFiBell = styled(FiBell)`
   color: ${colors.text.primary};
 `;
 
-type Props = {
+type Props = RouterProps & {
   isCurrent: boolean,
   user: User,
   userFriendshipQuery: {
@@ -104,7 +108,8 @@ const updateHandler = (userId: number, oldFriendship: UserFriendship): (() => vo
   }
 };
 
-function UserCard({ isCurrent, user, userFriendshipQuery, updateFriendshipStatus }: Props): React.Node {
+function UserCard({ history, isCurrent, user, userFriendshipQuery, updateFriendshipStatus }: Props): React.Node {
+  const [_, dispatch] = React.useContext(HunchCreationContext); // eslint-disable-line no-unused-vars
   const needsAction = (
     !isCurrent &&
     userFriendshipQuery &&
@@ -113,6 +118,10 @@ function UserCard({ isCurrent, user, userFriendshipQuery, updateFriendshipStatus
     userFriendshipQuery.userFriendship.userId === user.id
   );
   const updateFriendship = (status: FriendshipStatus): void => updateFriendshipStatus({ variables: { userId: user.id, status } });
+  const challenge = () => {
+    dispatch(setBettee(user));
+    history.push('/hunch/new');
+  };
 
   return (
     <>
@@ -167,7 +176,7 @@ function UserCard({ isCurrent, user, userFriendshipQuery, updateFriendshipStatus
                   block
                   size="large"
                   type="primary"
-                  onClick={(): void => console.log('challenge', user.id)}
+                  onClick={challenge}
                   buttonTitle={`Challenge ${user.firstName} to a Hunch`}
                 />
               </Section>
@@ -223,4 +232,5 @@ export default compose(
       update: updateHandler(user.id, userFriendshipQuery && userFriendshipQuery.userFriendship),
     }),
   }),
+  withRouter,
 )(UserCard);

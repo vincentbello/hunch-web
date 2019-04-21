@@ -103,7 +103,6 @@ const EmptyImage = styled.div`
 `;
 
 const StyledImage = styled.img`
-  ${props => props.dotted && `border-style: dashed;`}
   ${props => props.muted && `opacity: 0.75;`}
   ${commonStyles}
 `;
@@ -114,7 +113,7 @@ export default function Image({ bordered, dotted, light, muted, padded, rounded,
       {/* <Icon name="user" size={dimension * 2 / 3} color={Colors.textSecondary} /> */}
     </EmptyImage>
   ) : (
-    <StyledImage bordered={bordered} dotted={dotted} muted={muted} rounded={rounded} size={size} src={src} />
+    <StyledImage bordered={bordered} muted={muted} rounded={rounded} size={size} src={src} />
   );
   return padded ? <PaddingContainer dotted={dotted} rounded={rounded} size={size}>{image}</PaddingContainer> : image;
 }

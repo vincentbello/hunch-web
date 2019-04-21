@@ -51,17 +51,11 @@ type Props = {
     teams: User[],
   },
   value: User | null,
-  onSelect: null | (friend: User) => void,
+  selectUser: null | (friend: User) => void,
 };
 
-function FriendSelect({ friendsQuery, value, onSelect }: Props) {
+function FriendSelect({ friendsQuery, value, selectUser }: Props) {
   const [filteredUsers, inputProps] = useInputFilter(friendsQuery.users);
-
-  // const select = (user: User) => {
-  //   onSelect(user);
-
-  // }
-
   return (
     <Container>
       {value === null ? (
@@ -83,7 +77,7 @@ function FriendSelect({ friendsQuery, value, onSelect }: Props) {
                 <FriendList>
                   {filteredUsers.map((user: User) => (
                     <FriendItem key={user.id}>
-                      <UserCell inList user={user} onClick={chain(() => onSelect(user), () => actions.toggle(false))} />
+                      <UserCell inList user={user} onClick={chain(() => selectUser(user), () => actions.toggle(false))} />
                     </FriendItem>
                   ))}
                 </FriendList>
@@ -92,7 +86,7 @@ function FriendSelect({ friendsQuery, value, onSelect }: Props) {
           )}
         </Dropdown>
       ) : (
-        <UserCell user={value} renderMeta={() => <Button icon={<FiX />} type="tertiary" onClick={() => onSelect(null)} />} />
+        <UserCell user={value} renderMeta={() => <Button icon={<FiX />} type="tertiary" onClick={() => selectUser(null)} />} />
       )}
     </Container>
   );

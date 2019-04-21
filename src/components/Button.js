@@ -90,7 +90,7 @@ const commonStyles = props => {
     cursor: pointer;
     ${props.disabled ? `
       pointer-events: none;
-      opacity: 0.75;
+      opacity: 0.65;
       cursor: default;
     ` : ''}
     &:hover {

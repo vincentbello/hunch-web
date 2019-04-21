@@ -5,6 +5,7 @@ export default {
   background: '#E9EBEE',
   borders: {
     main: '#D0D1D5',
+    focus: darken(0.15, '#D0D1D5'),
     cell: '#EEEEEE',
   },
   brand: {

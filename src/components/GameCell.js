@@ -44,7 +44,6 @@ const MetaContainer = styled.div`
   margin: ${spacing(2, 0)};
   align-items: center;
   justify-content: center;
-  ${props => !props.large && `border: 1px solid ${colors.borders.main};`}
 `;
 
 const MetaText = styled.span`
@@ -60,7 +59,6 @@ const Container = styled.div`
     height: 68px;
     background-color: ${colors.white};
     border-radius: 2px;
-    margin: ${spacing(0, 2, 2)};
     padding: ${spacing(1, 2)};
     align-items: center;
   `}

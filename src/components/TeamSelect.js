@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import { compose, graphql, Query } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
 import GET_TEAMS from 'graphql/queries/getTeams';
 import REMOVE_FAVORITE_TEAM from 'graphql/mutations/removeFavoriteTeam';
 import SET_FAVORITE_TEAM from 'graphql/mutations/setFavoriteTeam';
@@ -13,15 +13,12 @@ import { FiSearch } from 'react-icons/fi';
 import styled from '@emotion/styled';
 import colors from 'theme/colors';
 import { spacing } from 'theme/sizes';
-import typography from 'theme/typography';
 
 import { FaStar, FaRegStar } from 'react-icons/fa';
 
 import DerivedStateSplash from 'components/DerivedStateSplash';
 import Dropdown, { type TriggerContext } from 'components/Dropdown';
 import Image from 'components/Image';
-import SectionHeader from 'components/SectionHeader';
-import Splash from 'components/Splash';
 
 type Props = {
   teamsQuery: {

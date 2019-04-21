@@ -1,24 +1,15 @@
 // @flow
 import * as React from 'react';
-// import AsyncStorage from '@react-native-community/async-storage';
-// import { View, Text, TouchableOpacity } from 'react-native';
 import styled from '@emotion/styled';
-import { compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import { darken } from 'polished';
-// import NotificationService from 'services/NotificationService';
-// import { Actions } from 'react-native-router-flux';
-// import { AccessToken, LoginManager } from 'react-native-fbsdk';
-// import { API_URL } from 'react-native-dotenv';
 
 import type { RouterProps } from 'types/router';
 import AuthenticationContext from 'contexts/AuthenticationContext';
 import GET_CURRENT_USER from 'graphql/queries/getCurrentUser';
 import LOGIN from 'graphql/mutations/login';
 
-// import { SocialIcon } from 'react-native-elements';
-
-// import { SplashStyles } from 'theme/app';
 import common from 'theme/common';
 import colors from 'theme/colors';
 import { spacing } from 'theme/sizes';
@@ -55,9 +46,8 @@ const FbButton = styled.button`
 `;
 
 function LoginContainer(props: Props): React.Node {
-  const [tokens, setTokens] = React.useState({ access: null, refresh: null });
   const [isAuthenticating, setAuthenticating] = React.useState(false);
-  const { isAuthenticated, setAuthenticated } = React.useContext(AuthenticationContext);
+  const { setAuthenticated } = React.useContext(AuthenticationContext);
 
   async function onFbLogin(response) {
     if (response.isCancelled) {

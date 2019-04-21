@@ -68,6 +68,14 @@ export default {
       padding: 0;
     `,
   },
+  shadow: `
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.15);
+    transition: box-shadow 250ms;
+
+    &:hover {
+      box-shadow: 0 2px 8px 0 rgba(0,0,0,0.3);
+    }
+  `,
   splash: `
     display: flex;
     flex-direction: column;

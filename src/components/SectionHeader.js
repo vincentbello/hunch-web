@@ -1,6 +1,4 @@
 // @flow
-import * as React from 'react';
-
 import styled from '@emotion/styled';
 import { spacing } from 'theme/sizes';
 import typography from 'theme/typography';
