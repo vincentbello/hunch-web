@@ -21,24 +21,26 @@ const AuthedFriendsContainer = withAuth(FriendsContainer);
 export default function AppRouter() {
   return (
     <BrowserRouter>
-      <Switch>
-        <Route path="/login" component={LoginContainer} />
-        <Main>
-          <Nav />
-          <Content>
-            <Route path="/" exact component={withAuth(HomeContainer)} />
-            <Route path="/friends" component={AuthedFriendsContainer} />
-            <Route path="/hunches/:type?" component={withAuth(HunchesContainer)} />
-            <Switch>
-              <Route path="/hunch/new" exact component={withAuth(CreateHunchContainer)} />
-              <Route path="/hunch/:id" component={withAuth(HunchContainer)} />
-            </Switch>
-            <Route path="/user/:id" exact component={withAuth(UserContainer)} />
-            <Route path="/me" exact component={withAuth(UserContainer)} />
-            <Route path="/user/:id/friends" component={AuthedFriendsContainer} />
-          </Content>
-        </Main>
-      </Switch>
+      <Main>
+        <Switch>
+          <Route path="/login" component={LoginContainer} />
+          <>
+            <Nav />
+            <Content>
+              <Route path="/" exact component={withAuth(HomeContainer)} />
+              <Route path="/friends" component={AuthedFriendsContainer} />
+              <Route path="/hunches/:type?" component={withAuth(HunchesContainer)} />
+              <Switch>
+                <Route path="/hunch/new" exact component={withAuth(CreateHunchContainer)} />
+                <Route path="/hunch/:id" component={withAuth(HunchContainer)} />
+              </Switch>
+              <Route path="/user/:id" exact component={withAuth(UserContainer)} />
+              <Route path="/me" exact component={withAuth(UserContainer)} />
+              <Route path="/user/:id/friends" component={AuthedFriendsContainer} />
+            </Content>
+          </>
+        </Switch>
+      </Main>
     </BrowserRouter>
   );
 }

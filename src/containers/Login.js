@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import qs from 'qs';
+import queryString from 'query-string';
 import styled from '@emotion/styled';
 import { graphql } from 'react-apollo';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
@@ -51,18 +51,13 @@ function LoginContainer(props: Props): React.Node {
   useDocumentTitle('Hunch | Log in');
   const [isAuthenticating, setAuthenticating] = React.useState(false);
   const { setAuthenticated } = React.useContext(AuthenticationContext);
-  const [data, setData] = React.useState('data');
   React.useEffect(() => {
-    const splitEls = props.location.search.split('#');
-    if (splitEls.length < 2) return;
-
-    const params = qs.parse(splitEls[splitEls.length - 1]);
-    setData(JSON.stringify(params));
+    const params = queryString.parse(props.location.hash);
     if (params.access_token) {
       setAuthenticating(true);
       onFbLogin({ accessToken: params.access_token});
     }
-  }, [props.location.search]);
+  }, [props.location.hash]);
 
   async function onFbLogin(response) {
     if (response.isCancelled) {
@@ -83,8 +78,6 @@ function LoginContainer(props: Props): React.Node {
     <Splash>
       <SplashImage src="assets/brand/logo.png" alt="HunchCard" />
       <Header>Welcome to HunchCard!</Header>
-      {JSON.stringify(props.location.search)}
-      <strong>{data}</strong>
       <FacebookLogin
         appId="1508649675817033"
         fields="name,email,picture"
