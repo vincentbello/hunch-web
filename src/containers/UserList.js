@@ -10,7 +10,7 @@ import useInputFilter from 'hooks/useInputFilter';
 import withCurrentUser, { type CurrentUserProps } from 'hocs/withCurrentUser';
 import DerivedStateSplash from 'components/DerivedStateSplash';
 import Splash from 'components/Splash';
-import UserCell from 'components/UserCell';
+import EntityCell from 'components/EntityCell';
 
 import styled from '@emotion/styled';
 import { spacing } from 'theme/sizes';
@@ -71,7 +71,7 @@ function UserList({ currentUser, enterTime, userListType, usersQuery, userId }: 
           <List>
             {filteredUsers.map((user: User): React.Node => (
               <ListItem key={user.id}>
-                <UserCell linkable inList user={user} isMe={currentUser.id !== user.id} />
+                <EntityCell linkable inList entity={user} isMe={currentUser.id !== user.id} />
               </ListItem>
             ))}
           </List>

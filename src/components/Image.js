@@ -19,11 +19,12 @@ type Props = {
   muted: boolean,
   rounded: boolean,
   padded: boolean,
-  size: 'xsmall' | 'small' | 'medium' | 'large',
+  size: 'xxsmall' | 'xsmall' | 'small' | 'medium' | 'large',
   src: string | null,
 };
 
 const SIZES = {
+  xxsmall: 24,
   xsmall: 32,
   small: 36,
   medium: 50,

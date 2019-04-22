@@ -3,6 +3,7 @@ import { darken } from 'polished';
 
 export default {
   background: '#E9EBEE',
+  black: '#000000',
   borders: {
     main: '#D0D1D5',
     focus: darken(0.15, '#D0D1D5'),

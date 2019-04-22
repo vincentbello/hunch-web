@@ -1,5 +1,14 @@
 // @flow
 import * as React from 'react';
+import type { User } from 'types/user';
+
+export type CreationData = {
+  amount: number,
+  bettorPickTeamId: number | null,
+  bettee: User | null,
+  gameId: number | null,
+  wager: string,
+};
 
 const initialState = {
   amount: 0,

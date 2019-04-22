@@ -9,7 +9,7 @@ import styled from '@emotion/styled';
 import colors from 'theme/colors';
 import typography from 'theme/typography';
 import { spacing } from 'theme/sizes';
-import UserCell from 'components/UserCell';
+import EntityCell from 'components/EntityCell';
 
 type ButtonAttrs = {
   disabled: boolean,
@@ -114,7 +114,7 @@ function FriendshipButton({ friendship, user, updateFriendshipStatus }: Props): 
       >
         {() => (
           <ModalContent>
-            <UserCell emphasized user={user} />
+            <EntityCell emphasized entity={user} />
             {unfriend ? (
               <>Are you sure you want to remove <strong>{user.firstName}</strong> from your friends? You will not be able to challenge {getPronoun(user.gender)} anymore.</>
             ) : (

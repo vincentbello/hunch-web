@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { Prompt } from 'react-router';
 import { Mutation } from 'react-apollo';
+import { chain } from 'utils/functions';
 import CREATE_HUNCH_REQUEST from 'graphql/mutations/createHunchRequest';
 import GET_HUNCHES from 'graphql/queries/getHunches';
 
@@ -26,15 +27,16 @@ type Props = {
 };
 
 export default function CreateHunchButton({ data: { amount, bettee, bettorPickTeamId, gameId, wager }, onCreated }: Props) {
+  const [creating, setCreating] = React.useState(false);
   const isFormCompleted = bettee !== null && amount > 0 && gameId !== null && bettorPickTeamId !== null;
   const variables = {
     variables: isFormCompleted ? { amount, betteeId: bettee.id, gameId, bettorPickTeamId, type: 'MONEY_LINE', wager } : {},
   };
-  useUnsavedAlert(UNSAVED_CHANGES_MESSAGE, !isFormCompleted);
+  useUnsavedAlert(UNSAVED_CHANGES_MESSAGE, isFormCompleted && !creating);
 
   return (
     <>
-      <Prompt when={isFormCompleted} message={UNSAVED_CHANGES_MESSAGE} />
+      <Prompt when={isFormCompleted && !creating} message={UNSAVED_CHANGES_MESSAGE} />
       <Mutation mutation={CREATE_HUNCH_REQUEST} update={onHunchCreate} onCompleted={onCreated}>
         {(createHunchRequest, { called, loading }): React.Node => (
           <Button
@@ -43,7 +45,7 @@ export default function CreateHunchButton({ data: { amount, bettee, bettorPickTe
             disabled={called || !isFormCompleted}
             leftIcon={<FiSend />}
             size="large"
-            onClick={() => createHunchRequest(variables)}
+            onClick={chain(() => setCreating(true), () => createHunchRequest(variables))}
           />
         )}
       </Mutation>

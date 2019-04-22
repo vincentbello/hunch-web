@@ -1,16 +1,16 @@
 // @flow
 import { useEffect } from 'react';
 
-export default function useUnsavedAlert(alertMessage, passthrough = false) {
+export default function useUnsavedAlert(alertMessage, showAlert = false) {
   useEffect(() => {
     const alert = evt => {
       evt.preventDefault();
       evt.returnValue = alertMessage;
       return alertMessage;
     };
-    if (!passthrough) window.addEventListener('beforeunload', alert);
+    if (showAlert) window.addEventListener('beforeunload', alert);
     return () => {
-      if (!passthrough) window.removeEventListener('beforeunload', alert);
+      if (!showAlert) window.removeEventListener('beforeunload', alert);
     };
-  }, [alertMessage, passthrough]);
+  }, [alertMessage, showAlert]);
 }

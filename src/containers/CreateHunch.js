@@ -12,6 +12,7 @@ import GameList from 'containers/GameList';
 import AmountInput from 'components/AmountInput';
 import Button from 'components/Button';
 import CreateHunchButton from 'components/CreateHunchButton';
+import CreationTracker from 'components/CreationTracker';
 import GameCell from 'components/GameCell';
 import TabView from 'components/TabView';
 import TeamPicker from 'components/TeamPicker';
@@ -76,6 +77,7 @@ export default function CreateHunch({ history }: RouterProps) {
   };
   return (
     <Container>
+      <CreationTracker state={creationState} />
       <Header>
         <FriendSelect value={creationState.bettee} selectUser={(user: User) => dispatch(setBettee(user))} />
         <AmountInput amount={creationState.amount} setAmount={(amount: number) => dispatch(setAmount(amount))} />

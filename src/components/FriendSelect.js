@@ -12,7 +12,7 @@ import { FiX } from 'react-icons/fi';
 import Button from 'components/Button';
 import DerivedStateSplash from 'components/DerivedStateSplash';
 import Dropdown, { type DropdownActions, type TriggerContext } from 'components/Dropdown';
-import UserCell from 'components/UserCell';
+import EntityCell from 'components/EntityCell';
 
 import styled from '@emotion/styled';
 import common from 'theme/common';
@@ -66,7 +66,7 @@ function FriendSelect({ friendsQuery, value, selectUser }: Props) {
               placeholder="Select a friend..."
               ref={context.props.ref}
               onFocus={() => context.toggle(true)}
-              onBlur={() => context.toggle(false)}
+              // onBlur={() => context.toggle(false)}
               {...inputProps}
             />
           )}
@@ -77,7 +77,7 @@ function FriendSelect({ friendsQuery, value, selectUser }: Props) {
                 <FriendList>
                   {filteredUsers.map((user: User) => (
                     <FriendItem key={user.id}>
-                      <UserCell inList user={user} onClick={chain(() => selectUser(user), () => actions.toggle(false))} />
+                      <EntityCell inList entity={user} onClick={chain(() => selectUser(user), () => actions.toggle(false))} />
                     </FriendItem>
                   ))}
                 </FriendList>
@@ -86,7 +86,7 @@ function FriendSelect({ friendsQuery, value, selectUser }: Props) {
           )}
         </Dropdown>
       ) : (
-        <UserCell user={value} renderMeta={() => <Button icon={<FiX />} type="tertiary" onClick={() => selectUser(null)} />} />
+        <EntityCell entity={value} renderMeta={() => <Button icon={<FiX />} type="tertiary" onClick={() => selectUser(null)} />} />
       )}
     </Container>
   );

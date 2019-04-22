@@ -131,7 +131,7 @@ const WinnerIcon = styled(FaCaretLeft, { shouldForwardProp: prop => !['light', '
   font-size: ${props => props.large ? 18 : 12}px;
 `;
 
-const TeamRow = ({ didLose, didWin, large, light, score, team }: TeamRowProps): React.Node => {
+export const TeamRow = ({ didLose, didWin, large, light, score, team }: TeamRowProps): React.Node => {
   return (
     <Row large={large} muted={didLose}>
       <Image rounded light={light} size={large ? 'medium' : 'xsmall'} src={team.imageUrl} />
