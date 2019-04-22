@@ -7,6 +7,7 @@ export default {
   global: `
     body {
       background-color: ${colors.background};
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     }
     html, body, #root {
       height: 100%;
