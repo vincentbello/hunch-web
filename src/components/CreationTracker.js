@@ -4,6 +4,7 @@ import { withRouter } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import GET_GAME from 'graphql/queries/getGame';
+import { STEPS } from 'constants/create-hunch';
 import type { CreationState } from 'contexts/HunchCreationContext';
 import type { RouterProps } from 'types/router';
 import { ClassNames } from '@emotion/core';
@@ -22,7 +23,7 @@ const StepList = styled.ul`
   position: relative;
   display: flex;
   align-items: center;
-  margin: ${spacing(1, 2, 3)};
+  margin: ${spacing(1, 2, 0)};
   padding: 0;
 `;
 
@@ -89,63 +90,65 @@ const ProgressLine = styled.div`
   background-color: ${props => props.valid ? colors.primary.green : colors.borders.main};
 `;
 
-function CreationTracker({ history, state }: Props) {
-  const steps = css => {
-    const activeClassName = css`
-      color: ${colors.black};
-      font-weight: bold;
+type StepContainerProps = {
+  children: React.Node,
+  plainText: boolean,
+  step: string,
+  valid: boolean,
+};
+const stepContainerDefaultProps = { disabled: false, plainText: false, valid: false };
 
-      &:hover {
-        border-color: ${colors.text.primary};
-        color: ${colors.text.primary};
-      }
-    `;
-
-    const isBetteeValid = state.bettee !== null;
-    const isAmountValid = state.amount > 0;
-    const isGameValid = state.gameId !== null;
-    const isPickValid = isGameValid && state.bettorPickTeamId !== null;
-    const gameSteps = (game: Game | null) => (
-      <>
-        <Step valid={isGameValid}>
-          <StyledLink to="/hunch/new" valid={isGameValid} activeClassName={activeClassName}>
-            {isGameValid ? <strong>{`${game.awayTeam.abbreviation} - ${game.homeTeam.abbreviation}`}</strong> : 'Game'}
-          </StyledLink>
-        </Step>
-        <Step disabled={!isGameValid} valid={isPickValid}>
-          <StyledLink to="/hunch/new" valid={isPickValid} activeClassName={activeClassName}>
-            {isPickValid ? (
-              <EntityCell centered entity={game.awayTeam.id === state.bettorPickTeamId ? game.awayTeam : game.homeTeam} small type="team" />
-            ) : 'My Pick'}
-          </StyledLink>
-        </Step>
-      </>
-    );
-    return (
-      <StepList>
-        <ProgressLine valid={isBetteeValid && isAmountValid && isGameValid && isPickValid} />
-        <Step valid={isBetteeValid}>
-          <StyledLink to="/hunch/new" valid={isBetteeValid} activeClassName={activeClassName}>
-            {isBetteeValid ? <EntityCell centered entity={state.bettee} small /> : 'Challenger'}
-          </StyledLink>
-        </Step>
-        <Step valid={isAmountValid}>
-          <StyledLink to="/hunch/new" valid={isAmountValid} plainText activeClassName={activeClassName}>
-            <Superscript>$</Superscript>{state.amount}
-          </StyledLink>
-        </Step>
-        {state.gameId === null ? gameSteps(null) : (
-          <Query query={GET_GAME} variables={{ id: state.gameId }}>
-            {({ data: { game } }): React.Node => !!game && gameSteps(game)}
-          </Query>
-        )}
-      </StepList>
-    );
-  }
+function StepContainer({ children, disabled, plainText, step, valid }: StepContainerProps) {
   return (
     <ClassNames>
-      {({ css }) => steps(css)}
+      {({ css }) => {
+        const borderColor = darken(0.15, valid ? colors.primary.green : colors.borders.focus);
+        const activeClassName = css`border-color: ${borderColor} !important;`;
+        return (
+          <Step disabled={disabled} valid={valid}>
+            <StyledLink exact to={`/hunch/new/${step}`} plainText={plainText} valid={valid} activeClassName={activeClassName}>
+              {children}
+            </StyledLink>
+          </Step>
+        );
+      }}
     </ClassNames>
+  );
+}
+StepContainer.defaultProps = stepContainerDefaultProps;
+
+function CreationTracker({ history, state }: Props) {
+  const isBetteeValid = state.bettee !== null;
+  const isAmountValid = state.amount > 0;
+  const isGameValid = state.gameId !== null;
+  const isPickValid = isGameValid && state.bettorPickTeamId !== null;
+  const gameSteps = (game: Game | null) => (
+    <>
+      <StepContainer step={STEPS.GAME.key} valid={isGameValid}>
+        {isGameValid ? <strong>{`${game.awayTeam.abbreviation} - ${game.homeTeam.abbreviation}`}</strong> : 'Game'}
+      </StepContainer>
+      <StepContainer disabled={!isGameValid} step={STEPS.PICK.key} valid={isPickValid}>
+        {isPickValid ? (
+          <EntityCell centered entity={game.awayTeam.id === state.bettorPickTeamId ? game.awayTeam : game.homeTeam} small type="team" />
+        ) : 'My Pick'}
+      </StepContainer>
+    </>
+  );
+  return (
+    <StepList>
+      <ProgressLine valid={isBetteeValid && isAmountValid && isGameValid && isPickValid} />
+      <StepContainer step={STEPS.CHALLENGER.key} valid={isBetteeValid}>
+        {isBetteeValid ? <EntityCell centered entity={state.bettee} small /> : 'Challenger'}
+      </StepContainer>
+      <StepContainer plainText step={STEPS.AMOUNT.key} valid={isAmountValid}>
+        <Superscript>$</Superscript>{state.amount}
+      </StepContainer>
+      {state.gameId === null ? gameSteps(null) : (
+        <Query query={GET_GAME} variables={{ id: state.gameId }}>
+          {({ data: { game } }): React.Node => !!game && gameSteps(game)}
+        </Query>
+      )}
+    </StepList>
   );
 }
 export default withRouter(CreationTracker);

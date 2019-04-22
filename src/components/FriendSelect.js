@@ -33,28 +33,35 @@ const DropdownContent = styled.div`
 `;
 
 const Input = styled.input`
-  background-color: ${colors.transparent};
-  border: none;
+  ${props => props.large ? `width: 300px;` : ''}
+  background-color: ${props => props.contained ? colors.white : colors.transparent};
+  border: ${props => props.contained ? `1px solid ${colors.borders.main}` : 'none'};
+  border-radius: 4px;
   box-shadow: none;
-  font-size: 15px;
+  box-sizing: border-box;
+  font-size: ${props => props.large ? 20 : 15}px;
   outline: none;
-  padding: ${spacing(2)};
+  padding: ${props => spacing(props.large ? 3 : 2)};
 `;
 
 const FriendList = styled.ul(common.reset.list);
 const FriendItem = styled.li(common.reset.item);
 
 type Props = {
+  autoFocus: boolean,
+  contained: boolean,
   friendsQuery: {
     loading: boolean,
     error: Error,
     teams: User[],
   },
+  large: boolean,
   value: User | null,
   selectUser: null | (friend: User) => void,
+  renderUser: () => React.Node,
 };
 
-function FriendSelect({ friendsQuery, value, selectUser }: Props) {
+function FriendSelect({ autoFocus, contained, friendsQuery, large, value, selectUser, renderUser }: Props) {
   const [filteredUsers, inputProps] = useInputFilter(friendsQuery.users);
   return (
     <Container>
@@ -63,6 +70,9 @@ function FriendSelect({ friendsQuery, value, selectUser }: Props) {
           preventDefaultClickEvents
           renderTrigger={(context: TriggerContext) => (
             <Input
+              autoFocus={autoFocus}
+              contained={contained}
+              large={large}
               placeholder="Select a friend..."
               ref={context.props.ref}
               onFocus={() => context.toggle(true)}
@@ -85,11 +95,14 @@ function FriendSelect({ friendsQuery, value, selectUser }: Props) {
             </DropdownContent>
           )}
         </Dropdown>
-      ) : (
-        <EntityCell entity={value} renderMeta={() => <Button icon={<FiX />} type="tertiary" onClick={() => selectUser(null)} />} />
-      )}
+      ) : renderUser()}
     </Container>
   );
 }
+FriendSelect.defaultProps = {
+  contained: false,
+  large: false,
+  renderUser: () => null,
+};
 
 export default graphql(GET_USERS, { name: 'friendsQuery', options: { variables: { userListType: 'FRIENDS' } } })(FriendSelect);

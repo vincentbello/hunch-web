@@ -17,6 +17,7 @@ import common from 'theme/common';
 const Main = styled.div(common.layout);
 const Content = styled.main`flex: 1 0 0;`;
 const AuthedFriendsContainer = withAuth(FriendsContainer);
+const AuthedCreateHunchContainer = withAuth(CreateHunchContainer);
 
 export default function AppRouter() {
   return (
@@ -31,7 +32,7 @@ export default function AppRouter() {
               <Route path="/friends" component={AuthedFriendsContainer} />
               <Route path="/hunches/:type?" component={withAuth(HunchesContainer)} />
               <Switch>
-                <Route path="/hunch/new" exact component={withAuth(CreateHunchContainer)} />
+                <Route path="/hunch/new/:step?" exact component={AuthedCreateHunchContainer} />
                 <Route path="/hunch/:id" component={withAuth(HunchContainer)} />
               </Switch>
               <Route path="/user/:id" exact component={withAuth(UserContainer)} />

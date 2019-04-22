@@ -52,14 +52,16 @@ const MetaText = styled.span`
 `;
 
 const Container = styled.div`
-  display: flex;
   ${props => props.contained && `
-    height: 68px;
     background-color: ${colors.white};
     border-radius: 2px;
-    padding: ${spacing(1, 2)};
+    padding: ${spacing(2)};
     align-items: center;
   `}
+`;
+
+const MainContent = styled.div`
+  display: flex;
   ${props => props.muted && `opacity: 0.25;`}
 `;
 
@@ -159,7 +161,7 @@ const GameStatus = ({ game, light, spaced }: GameStatusProps): React.Node => {
         {hasStarted ? (game.completed ? 'Final' : 'In Progress') : format(game.startDate, spaced ? 'MMM D, YYYY' : 'M/D, h:mm A')}
       </MetaText>
       {spaced && (
-        <MetaText light spaced>
+        <MetaText light={light} spaced>
           {format(game.startDate, hasStarted ? 'MMM D, YYYY' : 'h:mm A')}
         </MetaText>
       )}
@@ -178,9 +180,9 @@ const CreateButton = withRouter(({ gameId, history }: RouterProps & { gameId: nu
 
 function GameCell({ canCreateHunch, game, large, light, muted, withContainer }: Props) {
   return (
-    <div>
-      {large && <MetaText emphasized light spaced>{game.league}</MetaText>}
-      <Container contained={withContainer} muted={muted} data-game-container>
+    <Container contained={withContainer}>
+      {large && <MetaText emphasized light={light} spaced>{game.league}</MetaText>}
+      <MainContent muted={muted} data-game-container>
         <Content>
           <TeamRow
             didLose={game.completed && game.awayScore < game.homeScore}
@@ -203,9 +205,11 @@ function GameCell({ canCreateHunch, game, large, light, muted, withContainer }: 
           <GameStatus game={game} light={light} spaced={large} />
         </MetaContainer>
         {canCreateHunch && <CreateButton gameId={game.id} />}
-      </Container>
-      {large && <MetaText emphasized light spaced>{`${game.homeTeam.site} · ${game.homeTeam.city}, ${game.homeTeam.state}`}</MetaText>}
-    </div>
+      </MainContent>
+      {large && (
+        <MetaText emphasized light={light} spaced>{`${game.homeTeam.site} · ${game.homeTeam.city}, ${game.homeTeam.state}`}</MetaText>
+      )}
+    </Container>
   );
 }
 GameCell.defaultProps = defaultProps;

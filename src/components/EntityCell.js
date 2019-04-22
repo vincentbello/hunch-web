@@ -64,7 +64,7 @@ function EntityCell({ centered, emphasized, entity, inList, linkable, small, typ
   const containerProps = { centered, inList, small };
   const content = (
     <>
-      <Image bordered rounded size={small ? 'xxsmall' : 'small'} src={entity.imageUrl} />
+      <Image bordered={!small} rounded size={small ? 'xxsmall' : 'small'} src={entity.imageUrl} />
       <Content emphasized={emphasized} full={inList} small={small}>
         {small ? entity[type === 'user' ? 'firstName' : 'lastName'] : entity.fullName}
       </Content>

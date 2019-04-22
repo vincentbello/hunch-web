@@ -53,6 +53,7 @@ const StyledFiBell = styled(FiBell)`
 `;
 
 type Props = RouterProps & {
+  display: boolean,
   isCurrent: boolean,
   user: User,
   userFriendshipQuery: {
@@ -108,7 +109,7 @@ const updateHandler = (userId: number, oldFriendship: UserFriendship): (() => vo
   }
 };
 
-function UserCard({ history, isCurrent, user, userFriendshipQuery, updateFriendshipStatus }: Props): React.Node {
+function UserCard({ display, history, isCurrent, user, userFriendshipQuery, updateFriendshipStatus }: Props): React.Node {
   const [_, dispatch] = React.useContext(HunchCreationContext); // eslint-disable-line no-unused-vars
   const [editMode, setEditMode] = React.useState(false);
   const needsAction = (
@@ -126,7 +127,7 @@ function UserCard({ history, isCurrent, user, userFriendshipQuery, updateFriends
 
   return (
     <>
-      {needsAction && (
+      {!display && needsAction && (
         <ActionContainer>
           <ActionLabel>
             <StyledFiBell />
@@ -153,7 +154,7 @@ function UserCard({ history, isCurrent, user, userFriendshipQuery, updateFriends
           </Header>
         </Section>
 
-        {!isCurrent && (
+        {!isCurrent && !display && (
           <>
             <Section centered clear>
               <DerivedStateSplash loading={userFriendshipQuery.loading} error={userFriendshipQuery.error} size="small">
@@ -223,12 +224,17 @@ function UserCard({ history, isCurrent, user, userFriendshipQuery, updateFriends
             </>
           )}
         </Query>
+
         {isCurrent && <LogoutButton />}
       </Container>
     </>
   );
 }
 UserCard.displayName = 'UserCard';
+UserCard.defaultProps = {
+  display: false,
+  isCurrent: false,
+};
 
 export default compose(
   graphql(GET_FRIENDSHIP, {

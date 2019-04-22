@@ -75,7 +75,7 @@ export default function Nav() {
               <StyledLink exact to="/me" activeClassName={activeClassName}>Me</StyledLink>
             </NavItem>
             <NavItem>
-              <StyledLink exact to="/hunch/new" activeClassName={activeClassName} onClick={() => dispatch(clearForm())}>Create</StyledLink>
+              <StyledLink to="/hunch/new" activeClassName={activeClassName} onClick={() => dispatch(clearForm())}>Create</StyledLink>
             </NavItem>
           </NavList>
         );

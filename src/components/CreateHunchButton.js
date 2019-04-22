@@ -32,11 +32,11 @@ export default function CreateHunchButton({ data: { amount, bettee, bettorPickTe
   const variables = {
     variables: isFormCompleted ? { amount, betteeId: bettee.id, gameId, bettorPickTeamId, type: 'MONEY_LINE', wager } : {},
   };
-  useUnsavedAlert(UNSAVED_CHANGES_MESSAGE, isFormCompleted && !creating);
+  // useUnsavedAlert(UNSAVED_CHANGES_MESSAGE, isFormCompleted && !creating);
 
   return (
     <>
-      <Prompt when={isFormCompleted && !creating} message={UNSAVED_CHANGES_MESSAGE} />
+      {/* <Prompt when={isFormCompleted && !creating} message={UNSAVED_CHANGES_MESSAGE} /> */}
       <Mutation mutation={CREATE_HUNCH_REQUEST} update={onHunchCreate} onCompleted={onCreated}>
         {(createHunchRequest, { called, loading }): React.Node => (
           <Button
