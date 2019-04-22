@@ -67,18 +67,12 @@ const MetaContainer = styled.div`
   ${props => !props.large && `flex: 3 0 0;`}
   display: flex;
   flex-direction: column;
-  margin: ${spacing(2, 0)};
-  align-items: center;
+  margin: ${spacing(2, 2, 0, 0)};
+  align-items: flex-end;
   justify-content: center;
-
-  ${props => props.hideable && `
-    [data-game-container]:hover & {
-      display: none;
-    }
-  `}
 `;
 
-const StyledHiddenButton = styled(Button)`
+const StyledButton = styled(Button)`
   [data-game-container]:not(:hover) & {
     display: none;
   }
@@ -173,13 +167,13 @@ const GameStatus = ({ game, light, spaced }: GameStatusProps): React.Node => {
   );
 };
 
-const HiddenButton = withRouter(({ gameId, history }: RouterProps & { gameId: number }) => {
+const CreateButton = withRouter(({ gameId, history }: RouterProps & { gameId: number }) => {
   const [_, dispatch] = React.useContext(HunchCreationContext); // eslint-disable-line no-unused-vars
   const createHunch = () => {
     dispatch(setGame(gameId));
     history.push('/hunch/new');
   };
-  return <StyledHiddenButton buttonTitle="Create Hunch" type="primary" onClick={createHunch} />;
+  return <StyledButton buttonTitle="Create Hunch" type="primary" onClick={createHunch} />;
 });
 
 function GameCell({ canCreateHunch, game, large, light, muted, withContainer }: Props) {
@@ -208,7 +202,7 @@ function GameCell({ canCreateHunch, game, large, light, muted, withContainer }: 
         <MetaContainer hideable={canCreateHunch} large={large}>
           <GameStatus game={game} light={light} spaced={large} />
         </MetaContainer>
-        {canCreateHunch && <HiddenButton gameId={game.id} />}
+        {canCreateHunch && <CreateButton gameId={game.id} />}
       </Container>
       {large && <MetaText emphasized light spaced>{`${game.homeTeam.site} · ${game.homeTeam.city}, ${game.homeTeam.state}`}</MetaText>}
     </div>
