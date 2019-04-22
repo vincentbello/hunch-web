@@ -71,9 +71,9 @@ function Hunches({ currentUser, history, match }: Props): React.Node {
   return (
     <Wrapper>
       <NavList>
-        {HUNCH_VIEW_TYPES.map((viewType: ViewType, index: number): React.Node => (
+        {HUNCH_VIEW_TYPES.map((viewType: ViewType): React.Node => (
           <NavItem key={viewType.key}>
-            <StyledLink exact to={index === 0 ? '/' : `/hunches/${viewType.key.toLowerCase()}`} activeClassName="__activeNavLink__">
+            <StyledLink exact to={`/hunches/${viewType.key.toLowerCase()}`} activeClassName="__activeNavLink__">
               {viewType.title}
             </StyledLink>
           </NavItem>

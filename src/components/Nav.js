@@ -66,7 +66,7 @@ export default function Nav() {
               <StyledLink exact to="/" activeClassName={activeClassName}>Home</StyledLink>
             </NavItem>
             <NavItem>
-              <StyledLink exact to="/hunches" activeClassName={activeClassName}>Hunches</StyledLink>
+              <StyledLink exact to="/hunches/active" activeClassName={activeClassName}>Hunches</StyledLink>
             </NavItem>
             <NavItem>
               <StyledLink exact to="/friends" activeClassName={activeClassName}>Friends</StyledLink>
