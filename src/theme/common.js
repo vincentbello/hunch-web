@@ -8,6 +8,9 @@ export default {
     body {
       background-color: ${colors.background};
     }
+    html, body, #root {
+      height: 100%;
+    }
   `,
   keyframes: {
     pulseAndShake: keyframes`
@@ -58,7 +61,7 @@ export default {
     display: flex;
     flex-direction: column;
     max-width: 1080px;
-    height: 100vh;
+    height: 100%;
 
     ${media.mobile`width: 100%;`}
   `,
