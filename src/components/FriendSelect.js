@@ -7,9 +7,6 @@ import type { User } from 'types/user';
 import useInputFilter from 'hooks/useInputFilter';
 import { chain } from 'utils/functions';
 
-import { FiX } from 'react-icons/fi';
-
-import Button from 'components/Button';
 import DerivedStateSplash from 'components/DerivedStateSplash';
 import Dropdown, { type DropdownActions, type TriggerContext } from 'components/Dropdown';
 import EntityCell from 'components/EntityCell';
