@@ -17,10 +17,12 @@ import EntityCell from 'components/EntityCell';
 
 type Props = RouterProps & {
   state: CreationState,
+  validityMap: {
+    [key: string]: boolean,
+  },
 };
 
 const StepList = styled.ul`
-  position: relative;
   display: flex;
   align-items: center;
   margin: ${spacing(1, 2, 0)};
@@ -81,15 +83,6 @@ const StyledLink = styled(NavLink, { shouldForwardProp: prop => !['plainText', '
   `;
 });
 
-const ProgressLine = styled.div`
-  position: absolute;
-  top: 25px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background-color: ${props => props.valid ? colors.primary.green : colors.borders.main};
-`;
-
 type StepContainerProps = {
   children: React.Node,
   plainText: boolean,
@@ -102,7 +95,7 @@ function StepContainer({ children, disabled, plainText, step, valid }: StepConta
   return (
     <ClassNames>
       {({ css }) => {
-        const borderColor = darken(0.15, valid ? colors.primary.green : colors.borders.focus);
+        const borderColor = valid ? colors.primary.green : darken(0.15, colors.borders.focus);
         const activeClassName = css`border-color: ${borderColor} !important;`;
         return (
           <Step disabled={disabled} valid={valid}>
@@ -117,11 +110,10 @@ function StepContainer({ children, disabled, plainText, step, valid }: StepConta
 }
 StepContainer.defaultProps = stepContainerDefaultProps;
 
-function CreationTracker({ history, state }: Props) {
-  const isBetteeValid = state.bettee !== null;
-  const isAmountValid = state.amount > 0;
-  const isGameValid = state.gameId !== null;
-  const isPickValid = isGameValid && state.bettorPickTeamId !== null;
+function Tracker({ history, state, validityMap }: Props) {
+  const isBetteeValid = validityMap[STEPS.CHALLENGER.key];
+  const isGameValid = validityMap[STEPS.GAME.key];
+  const isPickValid = isGameValid && validityMap[STEPS.PICK.key];
   const gameSteps = (game: Game | null) => (
     <>
       <StepContainer step={STEPS.GAME.key} valid={isGameValid}>
@@ -136,11 +128,10 @@ function CreationTracker({ history, state }: Props) {
   );
   return (
     <StepList>
-      <ProgressLine valid={isBetteeValid && isAmountValid && isGameValid && isPickValid} />
       <StepContainer step={STEPS.CHALLENGER.key} valid={isBetteeValid}>
         {isBetteeValid ? <EntityCell centered entity={state.bettee} small /> : 'Challenger'}
       </StepContainer>
-      <StepContainer plainText step={STEPS.AMOUNT.key} valid={isAmountValid}>
+      <StepContainer plainText step={STEPS.AMOUNT.key} valid={validityMap[STEPS.AMOUNT.key]}>
         <Superscript>$</Superscript>{state.amount}
       </StepContainer>
       {state.gameId === null ? gameSteps(null) : (
@@ -151,4 +142,4 @@ function CreationTracker({ history, state }: Props) {
     </StepList>
   );
 }
-export default withRouter(CreationTracker);
+export default withRouter(Tracker);

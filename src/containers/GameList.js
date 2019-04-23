@@ -21,6 +21,7 @@ type Props = {
   canCreateHunch: boolean,
   date: string | null,
   next: number | null,
+  today: boolean,
   gamesQuery: {
     loading: boolean,
     error: Error,
@@ -49,7 +50,7 @@ const ListItem = styled.li`
 const StyledDivButton = styled(DivButton)(common.shadow);
 const Header = styled.header`display: flex;`;
 
-function GameList({ canCreateHunch, gamesQuery, withHeader, selectGame }: Props) {
+function GameList({ canCreateHunch, gamesQuery, today, withHeader, selectGame }: Props) {
   return (
     <>
       {withHeader && (
@@ -61,7 +62,7 @@ function GameList({ canCreateHunch, gamesQuery, withHeader, selectGame }: Props)
       <DerivedStateSplash error={gamesQuery.error} loading={gamesQuery.loading}>
         {Boolean(gamesQuery.upcomingGames) && (
           gamesQuery.upcomingGames.length === 0 ? (
-            <Splash heading="No games." visualName="meh-lightbulb" visualType="illustration" />
+            <Splash heading={today ? 'No upcoming games today.' : 'No games.'} visualName="meh-lightbulb" visualType="illustration" />
           ) : (
             <List>
               {gamesQuery.upcomingGames.map((game: Game): React.Node => (
@@ -83,6 +84,7 @@ GameList.defaultProps = {
   canCreateHunch: false,
   date: null,
   next: null,
+  today: false,
   withHeader: false,
   selectGame() {},
 };

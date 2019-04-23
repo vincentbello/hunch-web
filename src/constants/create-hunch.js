@@ -6,9 +6,10 @@ import Pick from 'components/CreateHunch/Pick';
 
 export type StepProps = {
   valid: boolean,
+  goToNext: () => void,
 };
 
-export const stepDefaultProps = { valid: false };
+export const stepDefaultProps = { goToNext() {}, valid: false };
 
 export const STEPS = {
   AMOUNT: {
@@ -40,3 +41,4 @@ export const STEP_SEQUENCE = [
   STEPS.GAME,
   STEPS.PICK,
 ];
+export const NUM_STEPS = STEP_SEQUENCE.length;

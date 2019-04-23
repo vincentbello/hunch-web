@@ -17,6 +17,8 @@ type Props = {
   renderScene: (view: View) => React.Node,
 };
 
+const Scene = styled.div`height: 100%;`;
+
 const TabList = styled.ul`
   ${common.reset.list}
   margin-bottom: ${spacing(2)};
@@ -57,7 +59,7 @@ const Button = styled.button`
 export default function TabView({ views, renderScene }: Props) {
   const [viewIndex, setViewIndex] = React.useState(0);
   return (
-    <div>
+    <>
       <TabList>
         {views.map((view: View, index: number) => (
           <Tab key={view.key}>
@@ -65,7 +67,7 @@ export default function TabView({ views, renderScene }: Props) {
           </Tab>
         ))}
       </TabList>
-      <div>{renderScene(viewIndex)}</div>
-    </div>
+      <Scene>{renderScene(viewIndex)}</Scene>
+    </>
   );
 }

@@ -16,7 +16,7 @@ import GameCell from 'components/GameCell';
 import TabView from 'components/TabView';
 import { Container, Content, Heading } from 'components/CreateHunch/Layout';
 
-export default function Game({ valid }: StepProps) {
+export default function Game({ valid, goToNext }: StepProps) {
   const [creationState, dispatch] = React.useContext(HunchCreationContext);
   return (
     <Container>
@@ -31,7 +31,14 @@ export default function Game({ valid }: StepProps) {
           <TabView
             views={DATE_VIEW_TYPES}
             renderScene={(index: number) => (
-              <GameList date={DATE_VIEW_TYPES[index].key} selectGame={(game: GameType) => dispatch(setGame(game.id))} />
+              <GameList
+                date={DATE_VIEW_TYPES[index].key}
+                today={index === 0}
+                selectGame={(game: GameType) => {
+                  dispatch(setGame(game.id));
+                  goToNext();
+                }}
+              />
             )}
           />
         )}
