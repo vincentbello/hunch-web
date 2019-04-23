@@ -175,7 +175,7 @@ const CreateButton = withRouter(({ gameId, history }: RouterProps & { gameId: nu
     dispatch(setGame(gameId));
     history.push('/hunch/new');
   };
-  return <StyledButton buttonTitle="Create Hunch" type="primary" onClick={createHunch} />;
+  return <StyledButton buttonTitle="Create Hunch" type="secondary" onClick={createHunch} />;
 });
 
 function GameCell({ canCreateHunch, game, large, light, muted, withContainer }: Props) {

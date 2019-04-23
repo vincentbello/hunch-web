@@ -38,12 +38,12 @@ const HorizontalList = styled.ul`
   margin: 0;
   overflow-x: auto;
   white-space: nowrap;
-  padding: ${props => props.padded ? spacing(3, 0, 0) : spacing(0, 0, 0, 1)};
+  padding: ${props => props.padded ? spacing(3, 0, 0) : spacing(0, 0, 0, props.small ? 0 : 1)};
 `;
 
 const ListItem = styled.li(props => css`
-  width: 80px;
-  margin: ${spacing(0, props.padded ? 4 : 2, 0, 1)};
+  width: ${props.small ? 60 : 80}px;
+  margin: ${spacing(0, props.small ? 1 : (props.padded ? 4 : 2), 0, 1)};
   padding: ${spacing(2)};
   background-color: ${colors.white};
   border-radius: 4px;
@@ -53,6 +53,10 @@ const ListItem = styled.li(props => css`
   align-items: center;
   justify-content: center;
   ${props.padded && css`animation: ${common.keyframes.shake} 250ms infinite;`}
+
+  &:first-of-type {
+    margin-left: 0;
+  }
 `);
 
 const RemoveButton = styled.button`
@@ -78,7 +82,7 @@ const RemoveButton = styled.button`
   }
 `;
 const Label = styled.div`
-  font-size: 16px;
+  font-size: ${props => props.small ? 14 : 16}px;
   font-weight: bold;
 `;
 const Section = styled.section`margin-top: ${spacing(2)};`;
@@ -91,27 +95,28 @@ type Props = {
     favoriteTeams: Array<Team>,
   },
   mine: boolean,
+  small: boolean,
   userId: number | null,
   removeFavoriteTeam: ({ variables: { teamId: number } }) => void,
 };
 
-const FavoritesList = ({ editMode, favoriteTeamsQuery: { loading, error, favoriteTeams }, mine, userId, removeFavoriteTeam }): React.Node => (
+const FavoritesList = ({ editMode, favoriteTeamsQuery: { loading, error, favoriteTeams }, mine, small, userId, removeFavoriteTeam }): React.Node => (
   <Container>
     <DerivedStateSplash size="small" loading={loading} error={error}>
       {Boolean(favoriteTeams) && (
         favoriteTeams.length === 0 ? (
           <EmptyText>{editMode ? 'Add favorite teams below.' : 'No favorite teams.'}</EmptyText>
         ) : (
-          <HorizontalList padded={editMode}>
+          <HorizontalList padded={editMode} small={small}>
             {favoriteTeams.map((team: Team) => (
-              <ListItem key={team.id} padded={editMode}>
+              <ListItem key={team.id} padded={editMode} small={small}>
                 {editMode && (
                   <RemoveButton onClick={(): void => removeFavoriteTeam({ variables: { teamId: team.id } })}>
                     <StyledFiMinus />
                   </RemoveButton>
                 )}
-                <Image rounded src={team.imageUrl} />
-                <Label>{team.abbreviation}</Label>
+                <Image rounded size={small ? 'small' : 'medium'} src={team.imageUrl} />
+                <Label small={small}>{team.abbreviation}</Label>
               </ListItem>
             ))}
           </HorizontalList>
@@ -126,6 +131,11 @@ const FavoritesList = ({ editMode, favoriteTeamsQuery: { loading, error, favorit
     )}
   </Container>
 );
+FavoritesList.defaultProps = {
+  editMode: false,
+  mine: false,
+  small: false,
+};
 
 export default compose(
   graphql(GET_FAVORITE_TEAMS, {

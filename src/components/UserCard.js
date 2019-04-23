@@ -55,6 +55,7 @@ const StyledFiBell = styled(FiBell)`
 type Props = RouterProps & {
   display: boolean,
   isCurrent: boolean,
+  small: boolean,
   user: User,
   userFriendshipQuery: {
     loading: boolean,
@@ -109,7 +110,7 @@ const updateHandler = (userId: number, oldFriendship: UserFriendship): (() => vo
   }
 };
 
-function UserCard({ display, history, isCurrent, user, userFriendshipQuery, updateFriendshipStatus }: Props): React.Node {
+function UserCard({ display, history, isCurrent, small, user, userFriendshipQuery, updateFriendshipStatus }: Props): React.Node {
   const [_, dispatch] = React.useContext(HunchCreationContext); // eslint-disable-line no-unused-vars
   const [editMode, setEditMode] = React.useState(false);
   const needsAction = (
@@ -146,7 +147,7 @@ function UserCard({ display, history, isCurrent, user, userFriendshipQuery, upda
 
       <Container>
         <Section>
-          <Image bordered rounded size="large" src={user.imageUrl} />
+          <Image bordered rounded size={small ? 'medium' : 'large'} src={user.imageUrl} />
           <Header>
             <HeaderTitle>{user.fullName}</HeaderTitle>
             <HeaderMeta>{`Member since ${format(user.createdAt, 'MMMM D, YYYY')}`}</HeaderMeta>
@@ -188,7 +189,7 @@ function UserCard({ display, history, isCurrent, user, userFriendshipQuery, upda
 
         <ListHeader>
           <SectionHeader grow>{`${isCurrent ? 'My ' : ''}Favorite Teams`}</SectionHeader>
-          {isCurrent && (
+          {isCurrent && !display && (
             <Button
               type="tertiary"
               buttonTitle={editMode ? 'Done' : ''}
@@ -199,7 +200,7 @@ function UserCard({ display, history, isCurrent, user, userFriendshipQuery, upda
           )}
         </ListHeader>
         <Section clear trimmed>
-          <FavoritesList editMode={editMode} mine={isCurrent} userId={isCurrent ? null : user.id} />
+          <FavoritesList editMode={editMode} mine={isCurrent} small={small} userId={isCurrent ? null : user.id} />
         </Section>
 
         <Query query={GET_STATS} variables={{ userId: user.id }}>
@@ -224,8 +225,7 @@ function UserCard({ display, history, isCurrent, user, userFriendshipQuery, upda
             </>
           )}
         </Query>
-
-        {isCurrent && <LogoutButton />}
+        {isCurrent && !display && <LogoutButton />}
       </Container>
     </>
   );
@@ -234,6 +234,7 @@ UserCard.displayName = 'UserCard';
 UserCard.defaultProps = {
   display: false,
   isCurrent: false,
+  small: false,
 };
 
 export default compose(

@@ -33,6 +33,8 @@ type Props = {
   selectGame: (game: Game) => void,
 };
 
+const Container = styled.div`height: 100%; width: 100%;`;
+
 const List = styled.ul`
   margin: 0;
   padding: 0;
@@ -52,7 +54,7 @@ const Header = styled.header`display: flex;`;
 
 function GameList({ canCreateHunch, gamesQuery, today, withHeader, selectGame }: Props) {
   return (
-    <>
+    <Container>
       {withHeader && (
         <Header>
           <SectionHeader grow>Upcoming Games</SectionHeader>
@@ -76,7 +78,7 @@ function GameList({ canCreateHunch, gamesQuery, today, withHeader, selectGame }:
           )
         )}
       </DerivedStateSplash>
-    </>
+    </Container>
   );
 }
 GameList.displayName = 'GameList';
