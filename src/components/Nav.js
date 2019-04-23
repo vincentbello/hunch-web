@@ -3,21 +3,44 @@ import * as React from 'react';
 import { NavLink } from 'react-router-dom';
 import { ClassNames } from '@emotion/core';
 
+import withCurrentUser, { type CurrentUserProps } from 'hocs/withCurrentUser';
 import HunchCreationContext, { clearForm } from 'contexts/HunchCreationContext';
+
+import Button from 'components/Button';
+import EntityCell from 'components/EntityCell';
 
 import styled from '@emotion/styled';
 import colors from 'theme/colors';
-import { spacing } from 'theme/sizes';
+import { sizes, spacing } from 'theme/sizes';
+
+const PageContainer = styled.nav`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${colors.brand.primary};
+`;
+
+const NavContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: ${spacing(2, 3)};
+  box-sizing: border-box;
+  width: 100%;
+  max-width: ${sizes.desktop}px;
+`;
 
 const NavList = styled.ul`
-  display: flex;
+  flex: 1 0 0;
   margin: 0;
-  padding: ${spacing(3)};
-  border-bottom: 1px solid ${colors.borders.main};
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 `;
 
 const NavItem = styled.li`
-  flex: 1 0 0;
+  display: inline-flex;
   margin-right: ${spacing(2)};
   list-style-type: none;
   text-align: center;
@@ -29,57 +52,58 @@ const NavItem = styled.li`
 
 const StyledLink = styled(NavLink)`
   text-decoration: none;
-  transition: background-color 250ms;
+  transition: color 250ms, background-color 250ms;
   border-radius: 4px;
+  font-weight: 600;
   padding: ${spacing(1, 2)};
-  color: ${colors.links.base};
+  color: ${colors.offwhite};
 
   &:hover {
-    color: ${colors.links.hover};
+    color: ${colors.white};
     background-color: ${colors.links.underlay};
-  }
-
-  &.__activeNavLink__ {
-    font-weight: bold;
-
-    &:hover {
-      background: none;
-    }
   }
 `;
 
-export default function Nav() {
+const activeClassStyles = `
+  font-weight: 700 !important;
+  color: ${colors.white} !important;
+
+  &:hover {
+    background: none !important;
+  }
+`;
+
+function Nav({ currentUser }: CurrentUserProps) {
   const [_, dispatch] = React.useContext(HunchCreationContext); // eslint-disable-line no-unused-vars
   return (
     <ClassNames>
       {({ css, cx }) => {
-        const activeClassName = css`
-          font-weight: bold;
-
-          &:hover {
-            background: none;
-          }
-        `;
+        const activeClassName = css(activeClassStyles);
         return (
-          <NavList>
-            <NavItem>
+          <PageContainer>
+            <NavContainer>
               <StyledLink exact to="/" activeClassName={activeClassName}>Home</StyledLink>
-            </NavItem>
-            <NavItem>
-              <StyledLink to="/hunches" activeClassName={activeClassName}>Hunches</StyledLink>
-            </NavItem>
-            <NavItem>
-              <StyledLink exact to="/friends" activeClassName={activeClassName}>Friends</StyledLink>
-            </NavItem>
-            <NavItem>
-              <StyledLink exact to="/me" activeClassName={activeClassName}>Me</StyledLink>
-            </NavItem>
-            <NavItem>
-              <StyledLink to="/hunch/new" activeClassName={activeClassName} onClick={() => dispatch(clearForm())}>Create</StyledLink>
-            </NavItem>
-          </NavList>
+              <NavList>
+                <NavItem>
+                  <StyledLink to="/hunches" activeClassName={activeClassName}>Hunches</StyledLink>
+                </NavItem>
+                <NavItem>
+                  <StyledLink exact to="/friends" activeClassName={activeClassName}>Friends</StyledLink>
+                </NavItem>
+                <NavItem>
+                  <Button asLink buttonTitle="Create" to="/hunch/new" type="translucent" onClick={() => dispatch(clearForm())} />
+                </NavItem>
+                <NavItem>
+                  <StyledLink exact to="/me" activeClassName={activeClassName}>
+                    <EntityCell lightMode entity={currentUser} small />
+                  </StyledLink>
+                </NavItem>
+              </NavList>
+            </NavContainer>
+          </PageContainer>
         );
       }}
     </ClassNames>
   );
 }
+export default withCurrentUser(Nav);

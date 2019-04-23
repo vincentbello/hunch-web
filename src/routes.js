@@ -14,8 +14,9 @@ import Nav from 'components/Nav';
 import styled from '@emotion/styled';
 import common from 'theme/common';
 
-const Main = styled.div(common.layout);
-const Content = styled.main`flex: 1 0 0;`;
+const Main = styled.div(common.main);
+const Content = styled.main(common.layout);
+const AuthedNav = withAuth(Nav);
 const AuthedFriendsContainer = withAuth(FriendsContainer);
 const AuthedCreateHunchContainer = withAuth(CreateHunchContainer);
 
@@ -26,7 +27,7 @@ export default function AppRouter() {
         <Switch>
           <Route path="/login" component={LoginContainer} />
           <>
-            <Nav />
+            <AuthedNav />
             <Content>
               <Route path="/" exact component={withAuth(HomeContainer)} />
               <Route path="/friends" component={AuthedFriendsContainer} />

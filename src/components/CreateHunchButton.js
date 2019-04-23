@@ -44,7 +44,7 @@ export default function CreateHunchButton({ data: { amount, bettee, bettorPickTe
             buttonTitle={called ? `${loading ? 'Sending...' : 'Sent!'}` : `Send${bettee ? ` ${bettee.firstName} a` : ''} Hunch Request`}
             disabled={called || !isFormCompleted}
             leftIcon={<FiSend />}
-            size="large"
+            size="xlarge"
             onClick={chain(() => setCreating(true), () => createHunchRequest(variables))}
           />
         )}

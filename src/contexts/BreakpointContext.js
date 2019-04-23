@@ -28,7 +28,7 @@ export function BreakpointProvider(props): React.Node {
       window.removeEventListener('resize', handler);
       window.removeEventListener('orientationchange', handler);
     };
-  }, []);
+  }, [breakpoint]);
 
   return (
     <BreakpointContext.Provider value={breakpoint}>

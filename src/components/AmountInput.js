@@ -3,9 +3,9 @@ import * as React from 'react';
 import styled from '@emotion/styled';
 import { darken } from 'polished';
 import colors from 'theme/colors';
-import { spacing } from 'theme/sizes';
+import { media, spacing } from 'theme/sizes';
 
-const getInputSize = (amount: number): number => Math.min(amount.toString().length, 3) * 68;
+const getInputSize = (amount: number, base: number): number => Math.min(amount.toString().length, 3) * base;
 const darkGreen = darken(0.05, colors.primary.green);
 
 const Input = styled.input`
@@ -13,14 +13,19 @@ const Input = styled.input`
   color: ${props => props.valid ? darkGreen : colors.text.secondary};
   border: none;
   box-shadow: none;
-  font-size: 110px;
+  font-size: 140px;
   outline: none;
   font-weight: 600;
   padding: 0;
-  height: 90px;
-  width: ${props => `${getInputSize(props.amount)}px`};
+  height: 110px;
+  width: ${props => `${getInputSize(props.amount, 88)}px`};
   text-align: center;
   transition: color 200ms;
+  ${media.tablet`
+    font-size: 110px;
+    height: 90px;
+    width: ${props => `${getInputSize(props.amount, 68)}px`};
+  `}
 `;
 
 const Label = styled.label`

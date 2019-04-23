@@ -13,7 +13,7 @@ import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import colors from 'theme/colors';
 import typography from 'theme/typography';
-import { spacing } from 'theme/sizes';
+import { media, spacing } from 'theme/sizes';
 
 import { FaCaretLeft } from 'react-icons/fa';
 import Button from 'components/Button';
@@ -96,9 +96,12 @@ const Row = styled.div`
 const RowStack = styled.div`
   flex: 1 0 0;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   margin-left: ${spacing(2)};
+
+  ${media.mobile`
+    flex-direction: column;
+    justify-content: center;
+  `}
 `;
 
 const colorModifiers = props => css`
@@ -110,6 +113,11 @@ const RowSubhead = styled.span`
   ${typography.base}
   margin-bottom: 2px;
   ${colorModifiers}
+  ${props => props.large ? `font-size: 18px;` : `display: none;`}
+  ${media.mobile(`
+    font-size: 14px;
+    display: ${props => props.large ? 'block' : 'none'};
+  `)}
 `;
 
 const RowLabel = styled.span`
@@ -138,9 +146,7 @@ export const TeamRow = ({ didLose, didWin, large, light, score, team }: TeamRowP
     <Row large={large} muted={didLose}>
       <Image rounded light={light} size={large ? 'medium' : 'xsmall'} src={team.imageUrl} />
       <RowStack>
-        {large && (
-          <RowSubhead light={light} highlighted={team.isFavorite}>{team.firstName}&nbsp;</RowSubhead>
-        )}
+        <RowSubhead large={large} light={light} highlighted={team.isFavorite}>{team.firstName}&nbsp;</RowSubhead>
         <RowLabel light={light} large={large} highlighted={team.isFavorite}>
           {team.lastName}
         </RowLabel>

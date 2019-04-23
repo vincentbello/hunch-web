@@ -19,7 +19,6 @@ import DarkLink from 'components/DarkLink';
 const StyledDivButton = styled(DivButton)`
   background-color: ${colors.white};
   border-radius: 2px;
-  margin: ${spacing(0, 2, 2)};
   padding: ${spacing(2)};
   display: flex;
   ${common.shadow}

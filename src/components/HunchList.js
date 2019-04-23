@@ -9,6 +9,7 @@ import { type RouterProps } from 'types/router';
 import { type User } from 'types/user';
 
 import styled from '@emotion/styled';
+import { spacing } from 'theme/sizes';
 
 import { FiPlus } from 'react-icons/fi';
 import Button from 'components/Button';
@@ -35,6 +36,11 @@ const UnorderedList = styled.ul`
 
 const ListItem = styled.li`
   list-style-type: none;
+  margin-bottom: ${spacing(2)};
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
 `;
 
 function HunchList({ hunchesQuery: { hunches, error, loading, networkStatus, refetch }, hunchListType, user }: Props): React.Node {

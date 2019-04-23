@@ -1,7 +1,7 @@
 // @flow
 import { keyframes } from '@emotion/core';
 import colors from 'theme/colors';
-import { media, spacing } from 'theme/sizes';
+import { media, sizes, spacing } from 'theme/sizes';
 
 export default {
   global: `
@@ -61,10 +61,15 @@ export default {
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    max-width: 1080px;
+    width: 100%;
+    max-width: ${sizes.desktop}px;
     height: 100%;
-
-    ${media.mobile`width: 100%;`}
+    flex: 1 0 0;
+  `,
+  main: `
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   `,
   reset: {
     item: `

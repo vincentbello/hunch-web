@@ -4,11 +4,12 @@ import typography from 'theme/typography';
 import { spacing } from 'theme/sizes';
 
 export const Container = styled.div`
-  height: 100%;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow: auto;
 `;
 
 export const Heading = styled.h1`

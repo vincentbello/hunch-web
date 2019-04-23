@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { darken } from 'polished';
+import { darken, lighten, transparentize } from 'polished';
 import common from 'theme/common';
 import colors from 'theme/colors';
 import { spacing } from 'theme/sizes';
@@ -16,9 +16,9 @@ export type Props = {
   leftIcon: React.Node,
   icon: React.Node,
   rightIcon: React.Node,
-  size: 'small' | 'medium' | 'large',
+  size: 'small' | 'medium' | 'large' | 'xlarge',
   tint: string,
-  type: 'primary' | 'secondary' | 'tertiary',
+  type: 'primary' | 'secondary' | 'tertiary' | 'translucent',
 };
 
 const defaultProps = {
@@ -41,11 +41,15 @@ const SIZE_STYLES = {
   },
   medium: {
     fontSize: 15,
-    padding: spacing(2, 2),
+    padding: '8px 10px',
   },
   large: {
     fontSize: 18,
     padding: spacing(3),
+  },
+  xlarge: {
+    fontSize: 22,
+    padding: spacing(4),
   },
 };
 
@@ -65,13 +69,25 @@ const getTypeStyles = (type, tint) => {
         color: tint,
       };
 
-    default:
+    case 'tertiary':
       return {
         borderColor: colors.transparent,
         backgroundColor: colors.transparent,
         color: tint,
         hoverColor: darken(0.25, tint),
       };
+
+    default: {
+      const bg = lighten(0.15, tint);
+      const hoverBg = lighten(0.25, tint);
+      return {
+        borderColor: bg,
+        backgroundColor: bg,
+        color: colors.white,
+        hoverBorderColor: hoverBg,
+        hoverBackgroundColor: hoverBg,
+      };
+    }
   }
 };
 
@@ -90,7 +106,7 @@ const commonStyles = props => {
     color: ${typeStyles.color};
     font-size: ${sizeStyles.fontSize}px;
     font-weight: 600;
-    transition: color 250ms, background-color 250ms;
+    transition: border-color 200ms, colorz 200ms, background-color 200ms;
     cursor: pointer;
     ${props.disabled ? `
       pointer-events: none;
@@ -98,11 +114,14 @@ const commonStyles = props => {
       cursor: default;
     ` : ''}
     &:hover {
-      background-color: ${darken(0.06, typeStyles.backgroundColor)};
-      ${'hoverColor' in typeStyles && `color: ${typeStyles.hoverColor}`}
+      background-color: ${'hoverBackgroundColor' in typeStyles ? typeStyles.hoverBackgroundColor : darken(0.06, typeStyles.backgroundColor)};
+      ${'hoverBorderColor' in typeStyles ? `border-color: ${typeStyles.hoverBorderColor};` : ''}
+      ${'hoverColor' in typeStyles ? `color: ${typeStyles.hoverColor};` : ''}
     }
     &:active {
-      background-color: ${darken(0.12, typeStyles.backgroundColor)};
+      background-color: ${'hoverBackgroundColor' in typeStyles ? typeStyles.hoverBackgroundColor : darken(0.12, typeStyles.backgroundColor)};
+      ${'hoverBorderColor' in typeStyles ? `border-color: ${typeStyles.hoverBorderColor};` : ''}
+      ${'hoverColor' in typeStyles ? `color: ${typeStyles.hoverColor};` : ''}
     }
   `;
 };

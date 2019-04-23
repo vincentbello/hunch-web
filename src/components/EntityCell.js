@@ -15,6 +15,7 @@ type Props = {
   emphasized: boolean,
   entity: User | Team,
   inList: boolean,
+  lightMode: boolean,
   linkable: boolean,
   small: boolean,
   type: 'user' | 'team',
@@ -24,11 +25,16 @@ type Props = {
 
 const containerStyles = props => `
   display: flex;
-  background-color: ${colors.white};
-  padding: ${spacing(2, props.small ? 1 : 2)};
+  background-color: ${props.lightMode ? colors.transparent : colors.white};
+  padding: ${props.lightMode ? 0 : spacing(2, props.small ? 1 : 2)};
+  color: ${props.lightMode ? colors.offwhite : colors.text.primary};
   align-items: center;
   ${props.centered ? `justify-content: center;` : ''}
   ${props.inList ? `border-bottom: 1px solid ${colors.borders.cell};` : ''}
+
+  &:hover {
+    color: ${props.lightMode ? colors.white : colors.text.primary};
+  }
 `;
 
 const StyledLink = styled(Link, { shouldForwardProp: prop => prop !== 'inList' })`
@@ -50,7 +56,7 @@ const Button = styled.button`
 
 const Content = styled.div`
   ${props => props.small ? typography.h5 : typography.h4}
-  color: ${colors.text.primary};
+  ${props => props.lightMode && `font-size: 16px;`}
   margin: ${props => props.small ? spacing(0, 0, 0, 1) : spacing(0, 2)};
   text-align: left;
   text-overflow: ellipsis;
@@ -60,12 +66,12 @@ const Content = styled.div`
   ${props => props.emphasized && `font-weight: bold;`}
 `;
 
-function EntityCell({ centered, emphasized, entity, inList, linkable, small, type, renderMeta, onClick }: Props) {
-  const containerProps = { centered, inList, small };
+function EntityCell({ centered, emphasized, entity, inList, lightMode, linkable, small, type, renderMeta, onClick }: Props) {
+  const containerProps = { centered, inList, lightMode, small };
   const content = (
     <>
       <Image bordered={!small} rounded size={small ? 'xxsmall' : 'small'} src={entity.imageUrl} />
-      <Content emphasized={emphasized} full={inList} small={small}>
+      <Content emphasized={emphasized} lightMode={lightMode} full={inList} small={small}>
         {small ? entity[type === 'user' ? 'firstName' : 'lastName'] : entity.fullName}
       </Content>
       {renderMeta()}
@@ -78,6 +84,7 @@ function EntityCell({ centered, emphasized, entity, inList, linkable, small, typ
 
 EntityCell.defaultProps = {
   emphasized: false,
+  lightMode: false,
   linkable: false,
   small: false,
   type: 'user',
