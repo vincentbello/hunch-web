@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 
 import withCurrentUser, { type CurrentUserProps } from 'hocs/withCurrentUser';
 
@@ -68,6 +68,7 @@ const StyledLink = styled(NavLink)`
 
 function Hunches({ currentUser, history, match }: Props): React.Node {
   useDocumentTitle('Hunch');
+  if (!match.params.type) return <Redirect to="/hunches/active" />;
   return (
     <Wrapper>
       <NavList>

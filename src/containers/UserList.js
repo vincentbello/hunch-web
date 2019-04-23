@@ -52,6 +52,7 @@ const Input = styled.input`
   margin: ${spacing(2, 0)};
   outline: none;
   width: 100%;
+  box-sizing: border-box;
 `;
 
 function UserList({ currentUser, enterTime, userListType, usersQuery, userId }: Props) {
