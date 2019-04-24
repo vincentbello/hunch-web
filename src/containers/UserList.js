@@ -78,7 +78,7 @@ function UserList({ currentUser, enterTime, searchable, userListType, usersQuery
                   inList
                   entity={user}
                   isMe={currentUser.id !== user.id}
-                  renderMeta={() => userListType === 'FRIEND_REQUESTS' && <FriendshipDualAction userId={user.id} />}
+                  renderMeta={() => userListType === 'FRIEND_REQUESTS' && <FriendshipDualAction user={user} />}
                 />
               </ListItem>
             ))}

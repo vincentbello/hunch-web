@@ -9,6 +9,7 @@ import HomeContainer from 'containers/Home';
 import HunchesContainer from 'containers/Hunches';
 import HunchContainer from 'containers/Hunch';
 import UserContainer from 'containers/User';
+import ToastContainer from 'containers/Toast';
 import Nav from 'components/Nav';
 
 import styled from '@emotion/styled';
@@ -43,6 +44,7 @@ export default function AppRouter() {
           </>
         </Switch>
       </Main>
+      <ToastContainer />
     </BrowserRouter>
   );
 }

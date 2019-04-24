@@ -1,6 +1,7 @@
 // @flow
 import * as React from 'react';
 import { Redirect } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import HunchCreationContext, { clearForm, setWager } from 'contexts/HunchCreationContext';
 import useDocumentTitle from 'hooks/useDocumentTitle';
@@ -62,6 +63,7 @@ const NavButtons = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: ${spacing(1)};
 `;
 
 export default function CreateHunch({ history, match }: RouterProps) {
@@ -69,6 +71,7 @@ export default function CreateHunch({ history, match }: RouterProps) {
   const [creationState, dispatch] = React.useContext(HunchCreationContext);
   const onCreated = React.useMemo(() => () => {
     history.push('/hunches/pending');
+    toast.success(<>You successfully challenged <strong>{creationState.bettee.firstName}</strong> to a Hunch.</>);
     setTimeout(() => dispatch(clearForm()), 1000);
   });
   const { step, index } = React.useMemo(() => {

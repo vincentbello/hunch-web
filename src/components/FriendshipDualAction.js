@@ -1,14 +1,17 @@
 // @flow
 import * as React from 'react';
 import { graphql } from 'react-apollo';
+import { toast } from 'react-toastify';
+import type { User } from 'types/user';
 import GET_FRIENDSHIP from 'graphql/queries/getUserFriendship';
 import GET_USER from 'graphql/queries/getUser';
 import GET_USERS from 'graphql/queries/getUsers';
 import UPDATE_FRIENDSHIP_STATUS from 'graphql/mutations/updateFriendshipStatus';
+import DarkLink from 'components/DarkLink';
 import DualAction from 'components/DualAction';
 
 type Props = {
-  userId: number,
+  user: User,
   updateFriendshipStatus: () => void,
 };
 
@@ -35,10 +38,17 @@ const updateHandler = (userId: number): (() => void) => (cache, { data: { update
   }
 };
 
-function FriendshipDualAction({ userId, updateFriendshipStatus }: Props) {
+const toastHandler = (user: User) => ({ updateFriendshipStatus }) => {
+  const successMessage = updateFriendshipStatus.status === 'ACTIVE'
+    ? <>You and <DarkLink to={`/user/${user.id}`}>{user.firstName}</DarkLink> are now friends!</>
+    : <>You have rejected <DarkLink to={`/user/${user.id}`}>{user.fullName}</DarkLink>'s friend request.</>;
+  toast.success(successMessage);
+};
+
+function FriendshipDualAction({ user, updateFriendshipStatus }: Props) {
   const updaterFn = (status: FriendshipStatus) => (evt) => {
     evt.preventDefault();
-    updateFriendshipStatus({ variables: { userId, status } });
+    updateFriendshipStatus({ variables: { userId: user.id, status } });
   };
   return (
     <DualAction
@@ -54,5 +64,5 @@ function FriendshipDualAction({ userId, updateFriendshipStatus }: Props) {
 
 export default graphql(UPDATE_FRIENDSHIP_STATUS, {
   name: 'updateFriendshipStatus',
-  options: ({ userId }) => ({ update: updateHandler(userId) }),
+  options: ({ user }) => ({ update: updateHandler(user.id), onCompleted: toastHandler(user) }),
 })(FriendshipDualAction);
