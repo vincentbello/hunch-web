@@ -9,6 +9,7 @@ import { type User, type UserListType } from 'types/user';
 import useInputFilter from 'hooks/useInputFilter';
 import withCurrentUser, { type CurrentUserProps } from 'hocs/withCurrentUser';
 import DerivedStateSplash from 'components/DerivedStateSplash';
+import FriendshipDualAction from 'components/FriendshipDualAction';
 import Splash from 'components/Splash';
 import EntityCell from 'components/EntityCell';
 
@@ -55,7 +56,7 @@ const Input = styled.input`
   box-sizing: border-box;
 `;
 
-function UserList({ currentUser, enterTime, userListType, usersQuery, userId }: Props) {
+function UserList({ currentUser, enterTime, searchable, userListType, usersQuery, userId }: Props) {
   const [filteredUsers, inputProps] = useInputFilter(usersQuery.users);
   React.useEffect(() => {
     if (usersQuery.users) usersQuery.refetch();
@@ -64,7 +65,7 @@ function UserList({ currentUser, enterTime, userListType, usersQuery, userId }: 
   const { loading, error } = usersQuery;
   return (
     <Container>
-      <Input type="text" placeholder="Find a friend..." {...inputProps} />
+      {searchable && <Input type="text" placeholder="Find a friend..." {...inputProps} />}
       <DerivedStateSplash error={error} loading={loading}>
         {filteredUsers.length === 0 ? (
           <Splash heading={USER_LIST_EMPTY_MESSAGES[userListType]} visualName="meh-lightbulb" visualType="illustration" />
@@ -72,7 +73,13 @@ function UserList({ currentUser, enterTime, userListType, usersQuery, userId }: 
           <List>
             {filteredUsers.map((user: User): React.Node => (
               <ListItem key={user.id}>
-                <EntityCell linkable inList entity={user} isMe={currentUser.id !== user.id} />
+                <EntityCell
+                  linkable
+                  inList
+                  entity={user}
+                  isMe={currentUser.id !== user.id}
+                  renderMeta={() => userListType === 'FRIEND_REQUESTS' && <FriendshipDualAction userId={user.id} />}
+                />
               </ListItem>
             ))}
           </List>
@@ -82,6 +89,7 @@ function UserList({ currentUser, enterTime, userListType, usersQuery, userId }: 
   );
 }
 UserList.displayName = 'UserList';
+UserList.defaultProps = { searchable: false };
 
 export default compose(
   withCurrentUser,

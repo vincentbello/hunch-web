@@ -37,7 +37,7 @@ const containerStyles = props => `
   }
 `;
 
-const StyledLink = styled(Link, { shouldForwardProp: prop => prop !== 'inList' })`
+const StyledLink = styled(Link, { shouldForwardProp: prop => !['inList', 'lightMode', 'small'].includes(prop) })`
   ${common.reset.link}
   ${containerStyles}
 `;

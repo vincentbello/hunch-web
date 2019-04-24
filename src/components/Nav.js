@@ -8,6 +8,7 @@ import HunchCreationContext, { clearForm } from 'contexts/HunchCreationContext';
 
 import Button from 'components/Button';
 import EntityCell from 'components/EntityCell';
+import NavIndicator from 'components/NavIndicator';
 
 import styled from '@emotion/styled';
 import colors from 'theme/colors';
@@ -41,7 +42,8 @@ const NavList = styled.ul`
 
 const NavItem = styled.li`
   display: inline-flex;
-  margin-right: ${spacing(2)};
+  position: relative;
+  margin-right: ${spacing(4)};
   list-style-type: none;
   text-align: center;
 
@@ -63,6 +65,8 @@ const StyledLink = styled(NavLink)`
     background-color: ${colors.links.underlay};
   }
 `;
+
+const NavButton = styled(Button)`font-size: 16px;`;
 
 const activeClassStyles = `
   font-weight: 700 !important;
@@ -86,12 +90,14 @@ function Nav({ currentUser }: CurrentUserProps) {
               <NavList>
                 <NavItem>
                   <StyledLink to="/hunches" activeClassName={activeClassName}>Hunches</StyledLink>
+                  <NavIndicator type="hunches" />
                 </NavItem>
                 <NavItem>
                   <StyledLink exact to="/friends" activeClassName={activeClassName}>Friends</StyledLink>
+                  <NavIndicator type="friends" />
                 </NavItem>
                 <NavItem>
-                  <Button asLink buttonTitle="Create" to="/hunch/new" type="translucent" onClick={() => dispatch(clearForm())} />
+                  <NavButton asLink buttonTitle="Create" to="/hunch/new" type="translucent" onClick={() => dispatch(clearForm())} />
                 </NavItem>
                 <NavItem>
                   <StyledLink exact to="/me" activeClassName={activeClassName}>

@@ -18,7 +18,7 @@ import HunchCreationContext, { setBettee } from 'contexts/HunchCreationContext';
 import { FiBell, FiEdit2, FiUsers } from 'react-icons/fi';
 import Button from 'components/Button';
 import DerivedStateSplash from 'components/DerivedStateSplash';
-import DualAction from 'components/DualAction';
+import FriendshipDualAction from 'components/FriendshipDualAction';
 import FavoritesList from 'components/FavoritesList';
 import FriendshipButton from 'components/FriendshipButton';
 import Image from 'components/Image';
@@ -29,13 +29,18 @@ import UserStats from 'components/UserStats';
 import styled from '@emotion/styled';
 import common from 'theme/common';
 import colors from 'theme/colors';
-import { spacing } from 'theme/sizes';
+import { media, spacing } from 'theme/sizes';
 import typography from 'theme/typography';
 
 const ActionContainer = styled.div`
+  margin-top: ${spacing(2)};
   padding: ${spacing(2)};
   background-color: ${colors.white};
   border: 1px solid ${colors.borders.main};
+  display: flex;
+  align-items: center;
+
+  ${media.mobile`display: block;`}
 `;
 
 const ActionLabel = styled.div`
@@ -44,12 +49,18 @@ const ActionLabel = styled.div`
   margin-bottom: ${spacing(3)};
   display: flex;
   align-items: center;
+  flex: 1 0 0;
+  font-size: 16px;
+
+  ${media.mobile`font-size: 14px;`}
 `;
 
 const StyledFiBell = styled(FiBell)`
-  font-size: 16px;
+  font-size: 20px;
   margin-right: ${spacing(2)};
   color: ${colors.text.primary};
+
+  ${media.mobile`font-size: 16px;`}
 `;
 
 type Props = RouterProps & {
@@ -120,7 +131,6 @@ function UserCard({ display, history, isCurrent, small, user, userFriendshipQuer
     userFriendshipQuery.userFriendship.status === 'PENDING' &&
     userFriendshipQuery.userFriendship.userId === user.id
   );
-  const updateFriendship = (status: FriendshipStatus): void => updateFriendshipStatus({ variables: { userId: user.id, status } });
   const challenge = () => {
     dispatch(setBettee(user));
     history.push('/hunch/new');
@@ -134,14 +144,7 @@ function UserCard({ display, history, isCurrent, small, user, userFriendshipQuer
             <StyledFiBell />
             <div>{`${user.firstName} sent you a friend request.`}</div>
           </ActionLabel>
-          <DualAction
-            canPerformPrimaryAction
-            canPerformSecondaryAction
-            primaryAction={(): void => updateFriendship('ACTIVE')}
-            primaryLabel="Accept"
-            secondaryAction={(): void => updateFriendship('REJECTED')}
-            secondaryLabel="Reject"
-          />
+          <FriendshipDualAction userId={user.id} />
         </ActionContainer>
       )}
 
@@ -159,11 +162,7 @@ function UserCard({ display, history, isCurrent, small, user, userFriendshipQuer
           <>
             <Section centered clear>
               <DerivedStateSplash loading={userFriendshipQuery.loading} error={userFriendshipQuery.error} size="small">
-                <FriendshipButton
-                  friendship={userFriendshipQuery.userFriendship}
-                  user={user}
-                  updateFriendshipStatus={updateFriendship}
-                />
+                <FriendshipButton friendship={userFriendshipQuery.userFriendship} user={user} />
               </DerivedStateSplash>
               <LeftOffsetButton
                 asLink

@@ -14,6 +14,17 @@ export default {
     }
   `,
   keyframes: {
+    pulse: keyframes`
+      from {
+        transform: scale(1);
+      }
+      40% {
+        transform: scale(1.15);
+      }
+      to {
+        transform: scale(1);
+      }
+    `,
     pulseAndShake: keyframes`
       0% {
         transform: scale(1);
