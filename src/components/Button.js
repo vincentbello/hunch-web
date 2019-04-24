@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { darken, lighten, transparentize } from 'polished';
+import { darken, lighten } from 'polished';
 import common from 'theme/common';
 import colors from 'theme/colors';
 import { spacing } from 'theme/sizes';

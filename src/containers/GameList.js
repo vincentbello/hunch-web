@@ -3,6 +3,7 @@ import * as React from 'react';
 import { graphql } from 'react-apollo';
 import GET_UPCOMING_GAMES from 'graphql/queries/getUpcomingGames';
 
+import Spinner from 'react-spinkit';
 import { FiRotateCw } from 'react-icons/fi';
 import Button from 'components/Button';
 import DivButton from 'components/DivButton';
@@ -14,6 +15,7 @@ import Splash from 'components/Splash';
 import { type Game } from 'types/game';
 
 import styled from '@emotion/styled';
+import colors from 'theme/colors';
 import common from 'theme/common';
 import { spacing } from 'theme/sizes';
 
@@ -49,6 +51,13 @@ const ListItem = styled.li`
   }
 `;
 
+const StyledSpinner = styled(Spinner)`
+  height: 20px;
+  width: 20px;
+  position: relative;
+  top: ${spacing(1)};
+`;
+
 const StyledDivButton = styled(DivButton)(common.shadow);
 const Header = styled.header`display: flex;`;
 
@@ -58,7 +67,11 @@ function GameList({ canCreateHunch, gamesQuery, today, withHeader, selectGame }:
       {withHeader && (
         <Header>
           <SectionHeader grow>Upcoming Games</SectionHeader>
-          <Button onClick={() => gamesQuery.refetch()} type="tertiary" icon={<FiRotateCw />} />
+          {gamesQuery.networkStatus === 4 ? (
+            <StyledSpinner name="double-bounce" color={colors.brand.primary} fadeIn="none" />
+          ) : (
+            <Button onClick={() => gamesQuery.refetch()} type="tertiary" icon={<FiRotateCw />} />
+          )}
         </Header>
       )}
       <DerivedStateSplash error={gamesQuery.error} loading={gamesQuery.loading}>

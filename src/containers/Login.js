@@ -1,17 +1,16 @@
 // @flow
 import * as React from 'react';
-import queryString from 'query-string';
 import styled from '@emotion/styled';
 import { graphql } from 'react-apollo';
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
-import { darken } from 'polished';
 
 import useDocumentTitle from 'hooks/useDocumentTitle';
 import type { RouterProps } from 'types/router';
 import AuthenticationContext from 'contexts/AuthenticationContext';
 import GET_CURRENT_USER from 'graphql/queries/getCurrentUser';
 import LOGIN from 'graphql/mutations/login';
+import FacebookLogin from 'components/Login/Facebook';
 
+import { darken } from 'polished';
 import common from 'theme/common';
 import colors from 'theme/colors';
 import { spacing } from 'theme/sizes';
@@ -40,6 +39,7 @@ const FbButton = styled.button`
   transition: background-color 250ms;
   cursor: pointer;
   border: none;
+  outline: none;
   ${props => props.disabled && 'pointer-events: none;'}
 
   &:hover {
@@ -51,13 +51,6 @@ function LoginContainer(props: Props): React.Node {
   useDocumentTitle('Hunch | Log in');
   const [isAuthenticating, setAuthenticating] = React.useState(false);
   const { setAuthenticated } = React.useContext(AuthenticationContext);
-  React.useEffect(() => {
-    const params = queryString.parse(props.location.hash);
-    if (params.access_token) {
-      setAuthenticating(true);
-      onFbLogin({ accessToken: params.access_token});
-    }
-  }, [props.location.hash]);
 
   async function onFbLogin(response) {
     if (response.isCancelled) {
@@ -79,14 +72,11 @@ function LoginContainer(props: Props): React.Node {
       <SplashImage src="assets/brand/logo.png" alt="HunchCard" />
       <Header>Welcome to HunchCard!</Header>
       <FacebookLogin
-        appId="1508649675817033"
-        fields="name,email,picture"
-        responseType="token"
-        scope="public_profile,user_friends"
         callback={onFbLogin}
         render={(fbRenderProps) => (
           <FbButton
             disabled={isAuthenticating}
+            isMobile
             onClick={() => {
               setAuthenticating(true);
               fbRenderProps.onClick();
