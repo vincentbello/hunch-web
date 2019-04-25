@@ -4,7 +4,6 @@ import queryString from 'query-string';
 
 const APP_ID = '1508649675817033';
 const FIELDS = 'name,email,picture';
-const RESPONSE_TYPE = 'token';
 const SCOPE = 'public_profile,user_friends';
 const RETURN_SCOPES = false;
 const XFBML = false;
@@ -12,18 +11,11 @@ const COOKIE = false;
 const AUTH_TYPE = '';
 const VERSION = '3.1';
 const LANGUAGE = 'en_US';
-const AUTH_STATE = 'facebookdirect';
 
-const getIsMobile = () => {
-  let isMobile = false;
-
-  try {
-    isMobile = !!((window.navigator && window.navigator.standalone) || navigator.userAgent.match('CriOS') || navigator.userAgent.match(/mobile/i));
-  } catch (ex) {
-    // continue regardless of error
-  }
-
-  return isMobile;
+type Props = {
+  callback: () => void,
+  onFailure: () => void,
+  render: () => React.Node,
 };
 
 function useMountedState(initialVal) {
@@ -61,7 +53,7 @@ function loadSdkAsynchronously() {
   })(document, 'script', 'facebook-jssdk');
 }
 
-function FacebookLogin({ callback, isMobile, redirectUri, onFailure, render }) {
+function FacebookLogin({ callback, onFailure, render }: Props) {
   const [isSdkLoaded, setSdkLoaded] = useMountedState(false);
   const [isProcessing, setProcessing] = useMountedState(false);
 
@@ -114,33 +106,12 @@ function FacebookLogin({ callback, isMobile, redirectUri, onFailure, render }) {
   function onClick(evt) {
     if (!isSdkLoaded || isProcessing) return;
     setProcessing(true);
-    const params = {
-      client_id: APP_ID,
-      redirect_uri: redirectUri,
-      state: AUTH_STATE,
-      return_scopes: RETURN_SCOPES,
-      scope: SCOPE,
-      response_type: RESPONSE_TYPE,
-      auth_type: AUTH_TYPE,
-    };
-
-    if (isMobile) {
-      window.location.href = `https://www.facebook.com/dialog/oauth?${queryString.stringify(params)}`;
-    } else {
-      if (!window.FB) {
-        onFailure({ status: 'facebookNotLoaded' });
-        return;
-      }
-
-      window.FB.login(checkLoginState, { scope: SCOPE, return_scopes: RETURN_SCOPES, auth_type: AUTH_TYPE });
-    }
+    window.FB.login(checkLoginState, { scope: SCOPE, return_scopes: RETURN_SCOPES, auth_type: AUTH_TYPE });
   };
 
   return render({ onClick, isProcessing, isSdkLoaded });
 }
 FacebookLogin.defaultProps = {
-  redirectUri: window.location.href,
-  isMobile: getIsMobile(),
   onFailure() {},
 };
 

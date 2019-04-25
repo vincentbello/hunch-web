@@ -31,7 +31,6 @@ const GET_USER_STATS = gql`
   }
 `;
 
-// TODO: styled(Link) to={`user/${user.id}`}
 const Container = styled.div`
   ${props => props.muted && `opacity: 1;`}
   position: relative;

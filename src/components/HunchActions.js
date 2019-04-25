@@ -6,8 +6,7 @@ import type { RouterProps } from 'types/router';
 import HunchResponseActions from 'components/HunchResponseActions';
 
 import styled from '@emotion/styled';
-import colors from 'theme/colors';
-import { media, spacing } from 'theme/sizes';
+import { spacing } from 'theme/sizes';
 
 type Props = RouterProps & {
   currentId: number,

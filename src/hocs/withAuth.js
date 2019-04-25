@@ -9,10 +9,13 @@ import REFRESH_AUTH from 'graphql/mutations/refreshAuth';
 
 export default function withAuth(ComponentToProtect): React.ComponentType<> {
   function Protected(props): React.Node {
+    const mountRef = React.useRef();
+    const refreshTimeout = React.useRef(null);
     const [state, setState] = React.useState({ checking: true, redirect: false });
     const { isAuthenticated, setAuthenticated } = React.useContext(AuthenticationContext);
 
     async function checkAuth() {
+      if (mountRef.current === null) return;
       if (isAuthenticated) {
         setState({ checking: false, redirect: false });
         return;
@@ -32,6 +35,7 @@ export default function withAuth(ComponentToProtect): React.ComponentType<> {
           localStorage.setItem('refreshToken', refreshAuth.refreshToken);
           setAuthenticated(true);
           setState({ ...state, checking: false });
+          refreshTimeout.current = setTimeout(checkAuth, 1000 * 60 * 60); // Refresh auth every hour
         } catch (err) {
           console.log('Refresh auth error', err);
           setAuthenticated(false);
@@ -41,11 +45,16 @@ export default function withAuth(ComponentToProtect): React.ComponentType<> {
     }
 
     React.useEffect(() => {
+      mountRef.current = true;
       checkAuth();
+      return () => {
+        mountRef.current = false;
+        if (refreshTimeout !== null) clearTimeout(refreshTimeout);
+      };
     }, []);
 
     if (state.checking) return null;
-    if (state.redirect) return <Redirect to="login" />;
+    if (state.redirect) return <Redirect to="/login" />;
     return <ComponentToProtect {...props} />;
   }
 
