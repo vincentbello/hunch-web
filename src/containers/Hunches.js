@@ -10,12 +10,31 @@ import type { ViewType } from 'types/hunch';
 import type { RouterProps } from 'types/router';
 import styled from '@emotion/styled';
 import colors from 'theme/colors';
-import { spacing } from 'theme/sizes';
+import { media, spacing } from 'theme/sizes';
 
 import HunchList from 'components/HunchList';
+import SectionHeader from 'components/SectionHeader';
 // import TabView from 'src/components/TabView';
 
 type Props = CurrentUserProps & RouterProps;
+
+const Container = styled.div`
+  margin: ${spacing(2, 0, 2, 2)};
+  display: flex;
+
+  ${media.tablet(`margin: ${spacing(2)};`)}
+`;
+
+const Main = styled.div`
+  flex: 2 0 0;
+  margin-right: ${spacing(4)};
+  ${media.tablet`margin-right: 0;`}
+`;
+
+const Aside = styled.aside`
+  flex: 1 0 0;
+  margin-top: ${spacing(2)};
+`;
 
 const Wrapper = styled.div`
   display: flex;
@@ -23,7 +42,7 @@ const Wrapper = styled.div`
   height: 100%;
 `;
 
-const Container = styled.div`
+const ListContainer = styled.div`
   padding-top: ${spacing(2)};
   flex: 1 0 0;
 `;
@@ -70,20 +89,28 @@ function Hunches({ currentUser, history, match }: Props): React.Node {
   useDocumentTitle('Hunch');
   if (!match.params.type) return <Redirect to="/hunches/active" />;
   return (
-    <Wrapper>
-      <NavList>
-        {HUNCH_VIEW_TYPES.map((viewType: ViewType): React.Node => (
-          <NavItem key={viewType.key}>
-            <StyledLink exact to={`/hunches/${viewType.key.toLowerCase()}`} activeClassName="__activeNavLink__">
-              {viewType.title}
-            </StyledLink>
-          </NavItem>
-        ))}
-      </NavList>
-      <Container>
-        <HunchList hunchListType={match.params.type ? match.params.type.toUpperCase() : HUNCH_VIEW_TYPES[0].key} user={currentUser} />
-      </Container>
-    </Wrapper>
+    <Container>
+      <Main>
+        <Wrapper>
+          <NavList>
+            {HUNCH_VIEW_TYPES.map((viewType: ViewType): React.Node => (
+              <NavItem key={viewType.key}>
+                <StyledLink exact to={`/hunches/${viewType.key.toLowerCase()}`} activeClassName="__activeNavLink__">
+                  {viewType.title}
+                </StyledLink>
+              </NavItem>
+            ))}
+          </NavList>
+          <ListContainer>
+            <HunchList hunchListType={match.params.type ? match.params.type.toUpperCase() : HUNCH_VIEW_TYPES[0].key} user={currentUser} />
+          </ListContainer>
+        </Wrapper>
+      </Main>
+      <Aside>
+        <SectionHeader>Hunch Requests</SectionHeader>
+        <HunchList hunchListType="REQUESTED" user={currentUser} />
+      </Aside>
+    </Container>
   );
 }
 Hunches.displayName = 'HunchesContainer';
