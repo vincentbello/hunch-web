@@ -49,7 +49,7 @@ const FbButton = styled.button`
 
 function LoginContainer(props: Props): React.Node {
   useDocumentTitle('Hunch | Log in');
-  const [isAuthenticating, setAuthenticating] = React.useState(false);
+  const [isAuthenticating, setAuthenticating] = React.useState(window.location.hash.length > 0);
   const { setAuthenticated } = React.useContext(AuthenticationContext);
 
   async function onFbLogin(response) {
@@ -73,9 +73,10 @@ function LoginContainer(props: Props): React.Node {
       <Header>Welcome to HunchCard!</Header>
       <FacebookLogin
         callback={onFbLogin}
+        isMobile
         render={(fbRenderProps) => (
           <FbButton
-            disabled={isAuthenticating}
+            disabled={isAuthenticating || fbRenderProps.isProcessing}
             isMobile
             onClick={() => {
               setAuthenticating(true);

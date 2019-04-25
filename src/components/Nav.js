@@ -12,10 +12,11 @@ import NavIndicator from 'components/NavIndicator';
 
 import styled from '@emotion/styled';
 import colors from 'theme/colors';
-import { sizes, spacing } from 'theme/sizes';
+import { media, sizes, spacing } from 'theme/sizes';
 
 const PageContainer = styled.nav`
   width: 100%;
+  max-width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,11 +31,13 @@ const NavContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
   max-width: ${sizes.desktop}px;
+  ${media.mobile`max-width: 100%;`}
 `;
 
 const NavList = styled.ul`
   flex: 1 0 0;
   margin: 0;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -46,6 +49,7 @@ const NavItem = styled.li`
   margin-right: ${spacing(4)};
   list-style-type: none;
   text-align: center;
+  ${media.desktop(`margin-right: ${spacing(1)};`)}
 
   &:last-of-type {
     margin-right: 0;

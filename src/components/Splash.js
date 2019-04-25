@@ -7,43 +7,21 @@ import styled from '@emotion/styled';
 import common from 'theme/common';
 import { spacing } from 'theme/sizes';
 import typography from 'theme/typography';
-// import Colors from 'theme/colors';
-// import { SplashStyles, SplashStylesWithNav } from 'theme/app';
 
-const Container = styled.div(common.splash);
-const Image = styled.img`
-  width: 90px;
-  height: 120px;
-  margin-bottom: ${spacing(4)};
-`;
+const Container = styled.div(props => `
+  ${common.splash}
+  ${props.small && `height: auto;`}
+`);
+const Image = styled.img(props => `
+  width: ${props.small ? 67.5 : 90}px;
+  height: ${props.small ? 90 : 120}px;
+  margin-bottom: ${spacing(props.small ? 2 : 4)};
+`);
 const Heading = styled.h3`
-  ${typography.h3}
-  font-weight: 600;
+  ${props => props.small ? typography.h4 : typography.h3}
+  ${props => props.small && `margin: ${spacing(1, 0, 2)};`}
+  font-weight: ${props => props.small ? 500 : 600};
 `;
-
-// const styles = StyleSheet.create({
-//   splash: {
-//     flex: 1,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   splash_tabs: {
-//     height: SplashStylesWithNav.height - 64,
-//   },
-//   icon: {
-//     marginBottom: 16,
-//   },
-//   image: {
-//     width: 90,
-//     height: 120,
-//     marginBottom: 16,
-//   },
-//   heading: {
-//     ...Typography.h3,
-//     fontWeight: '500',
-//     color: Colors.textPrimary,
-//   },
-// });
 
 type VisualType = 'icon' | 'illustration';
 
@@ -52,18 +30,19 @@ type Props = {
   grow: boolean,
   heading: string,
   inTabs: boolean,
+  small: boolean,
   visualName: string,
   visualType: VisualType,
   renderSubhead: null | () => React.Node,
 };
 
-const Visual = ({ name, type }: { name: string, type: VisualType }): React.Node => {
+const Visual = ({ name, small, type }: { name: string, small: boolean, type: VisualType }): React.Node => {
   switch (type) {
     // case 'icon':
     //   return <Icon style={styles.icon} name={name} size={48} color={Colors.textPrimary} />;
 
     case 'illustration': {
-      return <Image src={`/assets/illustrations/${name}.png`} />;
+      return <Image small={small} src={`/assets/illustrations/${name}.png`} />;
     }
 
     default:
@@ -71,10 +50,10 @@ const Visual = ({ name, type }: { name: string, type: VisualType }): React.Node 
   }
 };
 
-const Splash = ({ heading, visualName, visualType, renderSubhead }: Props): React.Node => (
-  <Container>
-    <Visual name={visualName} type={visualType} />
-    <Heading>{heading}</Heading>
+const Splash = ({ heading, small, visualName, visualType, renderSubhead }: Props): React.Node => (
+  <Container small={small}>
+    <Visual name={visualName} type={visualType} small={small} />
+    <Heading small={small}>{heading}</Heading>
     {renderSubhead !== null && renderSubhead()}
   </Container>
 );
@@ -83,6 +62,7 @@ Splash.defaultProps = {
   grow: false,
   inTabs: false,
   fullScreen: false,
+  small: false,
   visualType: 'illustration',
   renderSubhead: null,
 };

@@ -4,6 +4,7 @@ import { withRouter } from 'react-router';
 import { distanceInWordsToNow, format } from 'date-fns';
 import pluralize from 'pluralize';
 import { compose, graphql, Query } from 'react-apollo';
+import { STEP_SEQUENCE } from 'constants/create-hunch';
 import GET_FRIENDSHIP from 'graphql/queries/getUserFriendship';
 import GET_STATS from 'graphql/queries/getUserStats';
 import GET_USER from 'graphql/queries/getUser';
@@ -17,6 +18,7 @@ import HunchCreationContext, { setBettee } from 'contexts/HunchCreationContext';
 
 import { FiBell, FiEdit2, FiUsers } from 'react-icons/fi';
 import Button from 'components/Button';
+import DarkLink from 'components/DarkLink';
 import DerivedStateSplash from 'components/DerivedStateSplash';
 import FriendshipDualAction from 'components/FriendshipDualAction';
 import FavoritesList from 'components/FavoritesList';
@@ -32,6 +34,19 @@ import colors from 'theme/colors';
 import { media, spacing } from 'theme/sizes';
 import typography from 'theme/typography';
 
+type Props = RouterProps & {
+  display: boolean,
+  isCurrent: boolean,
+  small: boolean,
+  user: User,
+  userFriendshipQuery: {
+    loading: boolean,
+    error: Error,
+    userFriendship: UserFriendship,
+  },
+  updateFriendshipStatus: ({ variables: { userId: number, status: FriendshipStatus } }) => void,
+};
+
 const ActionContainer = styled.div`
   margin-top: ${spacing(2)};
   padding: ${spacing(2)};
@@ -46,13 +61,12 @@ const ActionContainer = styled.div`
 const ActionLabel = styled.div`
   ${typography.base}
   font-weight: 500;
-  margin-bottom: ${spacing(3)};
   display: flex;
   align-items: center;
   flex: 1 0 0;
   font-size: 16px;
 
-  ${media.mobile`font-size: 14px;`}
+  ${media.mobile`font-size: 14px; margin-bottom: ${spacing(3)};`}
 `;
 
 const StyledFiBell = styled(FiBell)`
@@ -63,18 +77,12 @@ const StyledFiBell = styled(FiBell)`
   ${media.mobile`font-size: 16px;`}
 `;
 
-type Props = RouterProps & {
-  display: boolean,
-  isCurrent: boolean,
-  small: boolean,
-  user: User,
-  userFriendshipQuery: {
-    loading: boolean,
-    error: Error,
-    userFriendship: UserFriendship,
-  },
-  updateFriendshipStatus: ({ variables: { userId: number, status: FriendshipStatus } }) => void,
-};
+const StyledDarkLink = styled(DarkLink)`
+  ${typography.h2}
+  display: inline-block;
+  margin: 0 0 2px;
+  font-weight: bold;
+`;
 
 const Container = styled.main`margin-top: ${spacing(2)};`;
 
@@ -133,7 +141,7 @@ function UserCard({ display, history, isCurrent, small, user, userFriendshipQuer
   );
   const challenge = () => {
     dispatch(setBettee(user));
-    history.push('/hunch/new');
+    history.push(`/hunch/new/${STEP_SEQUENCE[1].key}`);
   };
 
   return (
@@ -144,7 +152,7 @@ function UserCard({ display, history, isCurrent, small, user, userFriendshipQuer
             <StyledFiBell />
             <div>{`${user.firstName} sent you a friend request.`}</div>
           </ActionLabel>
-          <FriendshipDualAction userId={user.id} />
+          <FriendshipDualAction user={user} />
         </ActionContainer>
       )}
 
@@ -152,7 +160,7 @@ function UserCard({ display, history, isCurrent, small, user, userFriendshipQuer
         <Section>
           <Image bordered rounded size={small ? 'medium' : 'large'} src={user.imageUrl} />
           <Header>
-            <HeaderTitle>{user.fullName}</HeaderTitle>
+            {display ? <StyledDarkLink to={`/user/${user.id}`}>{user.fullName}</StyledDarkLink> : <HeaderTitle>{user.fullName}</HeaderTitle>}
             <HeaderMeta>{`Member since ${format(user.createdAt, 'MMMM D, YYYY')}`}</HeaderMeta>
             <HeaderMeta>{`Last seen ${distanceInWordsToNow(user.lastLoginAt, { addSuffix: true })}`}</HeaderMeta>
           </Header>

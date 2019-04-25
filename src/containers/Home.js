@@ -4,7 +4,6 @@ import * as React from 'react';
 import styled from '@emotion/styled';
 import { media, spacing } from 'theme/sizes';
 
-import BreakpointContext from 'contexts/BreakpointContext';
 import { HUNCH_VIEW_TYPES } from 'constants/view-types';
 import GameList from 'containers/GameList';
 import withCurrentUser, { type CurrentUserProps } from 'hocs/withCurrentUser';
@@ -24,7 +23,10 @@ const Main = styled.div`
   margin-right: ${spacing(4)};
   ${media.tablet`margin-right: 0;`}
 `;
-const Aside = styled.aside`flex: 1 0 0;`;
+const Aside = styled.aside`
+  flex: 1 0 0;
+  ${media.tablet`display: none;`}
+`;
 
 const Section = styled.section`
   margin-bottom: ${spacing(4)};
@@ -35,7 +37,6 @@ const Section = styled.section`
 `;
 
 function Home({ currentUser }: CurrentUserProps) {
-  const breakpoint = React.useContext(BreakpointContext);
   return (
     <Container>
       <Main>
@@ -47,11 +48,9 @@ function Home({ currentUser }: CurrentUserProps) {
           <HunchList hunchListType={HUNCH_VIEW_TYPES[0].key} user={currentUser} />
         </Section>
       </Main>
-      {breakpoint === 'desktop' &&  (
-        <Aside>
-          <UserCard display isCurrent small user={currentUser} />
-        </Aside>
-      )}
+      <Aside>
+        <UserCard display isCurrent small user={currentUser} />
+      </Aside>
     </Container>
   );
 }

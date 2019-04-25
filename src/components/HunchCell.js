@@ -15,12 +15,14 @@ import { spacing } from 'theme/sizes';
 
 import DivButton from 'components/DivButton';
 import DarkLink from 'components/DarkLink';
+import HunchResponseActions from 'components/HunchResponseActions';
 
 const StyledDivButton = styled(DivButton)`
   background-color: ${colors.white};
   border-radius: 2px;
   padding: ${spacing(2)};
   display: flex;
+  flex-wrap: wrap;
   ${common.shadow}
 `;
 
@@ -85,84 +87,10 @@ const LabelText = styled.span`
   ${props => props.isComplete && `color: ${props.won ? 'green' : 'red'};`}
 `;
 
-// const styles = StyleSheet.create({
-//   hunch: {
-//     backgroundColor: Colors.white,
-//     borderRadius: 2,
-//     marginLeft: 8,
-//     marginRight: 8,
-//     marginBottom: 8,
-//     paddingLeft: 8,
-//     paddingRight: 8,
-//     paddingTop: 6,
-//     paddingBottom: 6,
-//   },
-//   container: {
-//     flexDirection: 'row',
-//     backgroundColor: Colors.white,
-//     borderRadius: 2,
-//     alignItems: 'center',
-//   },
-//   image: {
-//     alignSelf: 'flex-start',
-//   },
-//   content: {
-//     flex: 1,
-//     marginLeft: 8,
-//   },
-//   header: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     marginBottom: 2,
-//   },
-//   link: {
-//     fontWeight: '800',
-//   },
-//   label: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//   },
-//   labelText: {
-//     fontSize: 18,
-//     fontWeight: '600',
-//     color: Colors.textPrimary,
-//   },
-//   labelText_green: {
-//     fontSize: 20,
-//     fontWeight: '900',
-//     color: Colors.primary.green,
-//   },
-//   labelText_red: {
-//     fontSize: 20,
-//     fontWeight: '900',
-//     color: Colors.primary.red,
-//   },
-//   labelSuperscript: {
-//     fontSize: 14,
-//     marginLeft: 5,
-//     marginRight: 1,
-//   },
-//   headerText: {
-//     flex: 1,
-//     color: Colors.textPrimary,
-//     marginRight: 4,
-//     ...Typography.base,
-//   },
-//   body: {
-//     flex: 1,
-//     fontSize: 13,
-//     color: Colors.textSecondary,
-//   },
-//   meta: {
-//     textAlign: 'right',
-//     fontSize: 12,
-//     color: Colors.primary.gray,
-//   },
-//   footer: {
-//     paddingTop: 4,
-//     paddingBottom: 4,
-//   },
-// });
+const Footer = styled.footer`
+  margin: ${spacing(2, 0, 0)};
+  flex: 0 0 100%;
+`;
 
 type Props = RouterProps & {
   hunch: Hunch,
@@ -203,11 +131,11 @@ function HunchCell({ disabled, history, hunch, userId }: Props): React.Node {
           <MetaText>{distanceInWordsToNow(hunch.createdAt, { addSuffix: true })}</MetaText>
         </Content>
       </Layout>
-      {/* {!hunch.responded && (
-        <View style={styles.footer}>
-          <HunchActions hunch={hunch} isBettor={isBettor} />
-        </View>
-      )} */}
+      {!hunch.responded && (
+        <Footer>
+          <HunchResponseActions hunch={hunch} isBettor={isBettor} />
+        </Footer>
+      )}
     </StyledDivButton>
   );
 }

@@ -10,7 +10,9 @@ import useInputFilter from 'hooks/useInputFilter';
 import withCurrentUser, { type CurrentUserProps } from 'hocs/withCurrentUser';
 import DerivedStateSplash from 'components/DerivedStateSplash';
 import FriendshipDualAction from 'components/FriendshipDualAction';
+import { IMG_SIZES } from 'components/Image';
 import Splash from 'components/Splash';
+import EntityCard from 'components/EntityCard';
 import EntityCell from 'components/EntityCell';
 
 import styled from '@emotion/styled';
@@ -22,7 +24,7 @@ const USER_LIST_EMPTY_MESSAGES = {
 };
 
 type Props = CurrentUserProps & {
-  enterTime: Date,
+  aside: boolean,
   userListType: UserListType,
   usersQuery: {
     loading: boolean,
@@ -32,6 +34,7 @@ type Props = CurrentUserProps & {
     users: Array<User>,
   },
   userId: number,
+  viewType: 'card' | 'list',
 };
 
 const Container = styled.div`
@@ -43,24 +46,33 @@ const Container = styled.div`
 const List = styled.ul`
   margin: 0;
   padding: 0;
+  ${props => props.grid && `
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(${IMG_SIZES.xlarge}px, 6fr));
+    grid-gap: ${spacing(3)};
+  `}
 `;
 
-const ListItem = styled.li`list-style-type: none;`;
+const ListItem = styled.li`
+  list-style-type: none;
+  margin: 0 auto;
+`;
 
 const Input = styled.input`
   font-size: 15px;
   padding: ${spacing(3, 2)};
-  margin: ${spacing(2, 0)};
+  margin-bottom: ${spacing(2)};
   outline: none;
   width: 100%;
   box-sizing: border-box;
 `;
 
-function UserList({ currentUser, enterTime, searchable, userListType, usersQuery, userId }: Props) {
+function UserList({ aside, currentUser, searchable, userListType, usersQuery, userId, viewType }: Props) {
   const [filteredUsers, inputProps] = useInputFilter(usersQuery.users);
   React.useEffect(() => {
     if (usersQuery.users) usersQuery.refetch();
   }, [])
+  const EntityComponent = viewType === 'card' ? EntityCard : EntityCell;
 
   const { loading, error } = usersQuery;
   return (
@@ -68,12 +80,17 @@ function UserList({ currentUser, enterTime, searchable, userListType, usersQuery
       {searchable && <Input type="text" placeholder="Find a friend..." {...inputProps} />}
       <DerivedStateSplash error={error} loading={loading}>
         {filteredUsers.length === 0 ? (
-          <Splash heading={USER_LIST_EMPTY_MESSAGES[userListType]} visualName="meh-lightbulb" visualType="illustration" />
+          <Splash
+            small={aside}
+            heading={inputProps.value.length > 0 ? 'No friends found.' : USER_LIST_EMPTY_MESSAGES[userListType]}
+            visualName="meh-lightbulb"
+            visualType="illustration"
+          />
         ) : (
-          <List>
+          <List grid={viewType === 'card'}>
             {filteredUsers.map((user: User): React.Node => (
               <ListItem key={user.id}>
-                <EntityCell
+                <EntityComponent
                   linkable
                   inList
                   entity={user}
@@ -89,7 +106,11 @@ function UserList({ currentUser, enterTime, searchable, userListType, usersQuery
   );
 }
 UserList.displayName = 'UserList';
-UserList.defaultProps = { searchable: false };
+UserList.defaultProps = {
+  aside: false,
+  searchable: false,
+  viewType: 'list',
+};
 
 export default compose(
   withCurrentUser,

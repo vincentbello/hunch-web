@@ -113,6 +113,7 @@ export default {
     max-width: ${sizes.desktop}px;
     height: 100%;
     flex: 1 0 0;
+    ${media.tablet`max-width: 100%;`}
   `,
   main: `
     height: 100%;
@@ -150,7 +151,5 @@ export default {
     align-items: center;
     height: 100%;
     width: 100%;
-
-    ${media.mobile`width: 100vw;`}
   `,
 };

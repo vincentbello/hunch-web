@@ -46,7 +46,7 @@ function useMountedState(initialVal) {
 function isRedirectedFromFb() {
   const parsedParams = queryString.parse(window.location.search);
   const parsedHash = queryString.parse(window.location.hash);
-  return [parsedParams, parsedHash].some(p => Boolean(p.code) || Boolean(p.granted_scopes));
+  return [parsedParams, parsedHash].some(p => Boolean(p.access_token) || Boolean(p.granted_scopes));
 }
 
 function loadSdkAsynchronously() {

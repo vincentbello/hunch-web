@@ -42,6 +42,7 @@ const Footer = styled.footer`
 
 const StyledReactModal = styled(ReactModal)`
   width: calc(100% - 30px);
+  max-width: 500px;
   min-height: 100px;
 `;
 

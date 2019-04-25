@@ -18,7 +18,7 @@ import { FaStar, FaRegStar } from 'react-icons/fa';
 
 import DerivedStateSplash from 'components/DerivedStateSplash';
 import Dropdown, { type TriggerContext } from 'components/Dropdown';
-import Image from 'components/Image';
+import EntityCell from 'components/EntityCell';
 
 type Props = {
   teamsQuery: {
@@ -75,38 +75,25 @@ const TeamList = styled.ul`
   width: 100%;
 `;
 
-const TeamItem = styled.li`
-  list-style-type: none;
-  padding: ${spacing(1, 3, 1, 2)};
-  display: flex;
-  align-items: center;
+const TeamItem = styled.li`list-style-type: none;`;
 
-  &:hover {
-    background-color: ${colors.offwhite};
-  }
-`;
-
-const Label = styled.div`
-  margin-left: ${spacing(2)};
-  flex: 1 0 0;
-`;
-
-const StyledFaStar = styled(FaStar)`color: ${colors.gold};`;
-const StyledFaRegStar = styled(FaRegStar)`color: ${colors.gold};`;
-
-const IconButton = styled.button`
+const iconStyles = `
+  color: ${colors.gold};
   border: none;
   background: none;
   outline: none;
   cursor: pointer;
   font-size: 18px;
-  padding: 0 6px;
+  margin: 0 6px;
   transition: transform 250ms;
 
   &:hover {
     transform: scale(1.2);
   }
 `;
+
+const StyledFaStar = styled(FaStar)(iconStyles);
+const StyledFaRegStar = styled(FaRegStar)(iconStyles);
 
 function TeamSelect(props: Props): React.Node {
   const [filteredTeams, inputProps] = useInputFilter(props.teamsQuery.teams);
@@ -141,11 +128,13 @@ function TeamSelect(props: Props): React.Node {
             <TeamList>
               {filteredTeams.map((team: Team) => (
                 <TeamItem key={team.id}>
-                  <Image rounded size="small" src={team.imageUrl} />
-                  <Label>{team.firstName} <strong>{team.lastName}</strong></Label>
-                  <IconButton onClick={getTeamPressHandler(team)}>
-                    {team.isFavorite ? <StyledFaStar /> : <StyledFaRegStar />}
-                  </IconButton>
+                  <EntityCell
+                    entity={team}
+                    inList
+                    type="team"
+                    renderMeta={() => team.isFavorite ? <StyledFaStar /> : <StyledFaRegStar />}
+                    onClick={getTeamPressHandler(team)}
+                  />
                 </TeamItem>
               ))}
             </TeamList>

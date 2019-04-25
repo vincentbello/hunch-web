@@ -17,6 +17,7 @@ import withCurrentUser, { type CurrentUserProps } from 'hocs/withCurrentUser';
 import DerivedStateSplash from 'components/DerivedStateSplash';
 import GameCell from 'components/GameCell';
 import Amount from 'components/Amount';
+import HunchActions from 'components/HunchActions';
 import Messages from 'components/Messages';
 import ImageSplash from 'components/ImageSplash';
 import SectionHeader from 'components/SectionHeader';
@@ -78,6 +79,11 @@ function HunchContainer({ currentUser, hunchQuery: { loading, error, hunch } }: 
                   <Amount amount={hunch.amount} />
                   <UserThumbnail currentUser={currentUser} user={hunch.bettee} hunch={hunch} game={game} />
                 </Section>
+                {(!hunch.active && [hunch.bettor.id, hunch.bettee.id].includes(currentUser.id)) && (
+                  <Section>
+                    <HunchActions hunch={hunch} currentId={currentUser.id} />
+                  </Section>
+                )}
                 {Boolean(hunch.wager) && (
                   <Section>
                     <SectionHeader>Trash Talk</SectionHeader>

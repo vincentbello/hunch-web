@@ -64,5 +64,9 @@ function FriendshipDualAction({ user, updateFriendshipStatus }: Props) {
 
 export default graphql(UPDATE_FRIENDSHIP_STATUS, {
   name: 'updateFriendshipStatus',
-  options: ({ user }) => ({ update: updateHandler(user.id), onCompleted: toastHandler(user) }),
+  options: ({ user }) => ({
+    update: updateHandler(user.id),
+    onCompleted: toastHandler(user),
+    refetchQueries: [{ query: GET_USERS, variables: { userListType: 'FRIENDS', userId: null } }],
+  }),
 })(FriendshipDualAction);

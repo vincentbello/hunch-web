@@ -12,21 +12,21 @@ const FriendsList = withUserListType('FRIENDS')(UserList);
 const FriendRequests = withUserListType('FRIEND_REQUESTS')(UserList);
 
 const Container = styled.div`
-  margin: ${spacing(2, 0, 2, 2)};
+  margin: ${spacing(3, 0, 2, 2)};
   display: flex;
 
-  ${media.tablet(`margin: ${spacing(2)};`)}
+  ${media.mobile(`flex-direction: column;`)}
 `;
 
 const Main = styled.div`
   flex: 2 0 0;
   margin-right: ${spacing(4)};
-  ${media.tablet`margin-right: 0;`}
+  ${media.mobile`order: 2;`}
 `;
 
 const Aside = styled.aside`
   flex: 1 0 0;
-  margin-top: ${spacing(2)};
+  ${media.mobile`order: 1;`}
 `;
 
 export default function Friends(props) {
@@ -34,11 +34,12 @@ export default function Friends(props) {
   return (
     <Container>
       <Main>
-        <FriendsList {...props} searchable />
+        <SectionHeader>My Friends</SectionHeader>
+        <FriendsList {...props} viewType="card" searchable />
       </Main>
       <Aside>
         <SectionHeader>Friend Requests</SectionHeader>
-        <FriendRequests {...props} />
+        <FriendRequests {...props} aside />
       </Aside>
     </Container>
   );

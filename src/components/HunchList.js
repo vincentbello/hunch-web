@@ -18,6 +18,7 @@ import DerivedStateSplash from 'components/DerivedStateSplash';
 import Splash from 'components/Splash';
 
 type Props = RouterProps & {
+  aside: boolean,
   hunchesQuery: {
     loading: boolean,
     error: Error,
@@ -43,12 +44,13 @@ const ListItem = styled.li`
   }
 `;
 
-function HunchList({ hunchesQuery: { hunches, error, loading, networkStatus, refetch }, hunchListType, user }: Props): React.Node {
+function HunchList({ aside, hunchesQuery: { hunches, error, loading, networkStatus, refetch }, hunchListType, user }: Props): React.Node {
   const renderHunches = (hunches: Array<Hunch>): React.Node => {
     if (hunches.length === 0) {
       return (
         <Splash
           heading={`You have no ${hunchListType.toLowerCase()} hunches.`}
+          small={aside}
           visualName="meh-lightbulb"
           visualType="illustration"
           renderSubhead={hunchListType === 'ACTIVE' ? (): React.Node => (
@@ -83,6 +85,7 @@ function HunchList({ hunchesQuery: { hunches, error, loading, networkStatus, ref
   );
 }
 HunchList.displayName = 'HunchList';
+HunchList.defaultProps = { aside: false };
 
 export default graphql(GET_HUNCHES, {
   name: 'hunchesQuery',

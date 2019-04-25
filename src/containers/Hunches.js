@@ -14,26 +14,25 @@ import { media, spacing } from 'theme/sizes';
 
 import HunchList from 'components/HunchList';
 import SectionHeader from 'components/SectionHeader';
-// import TabView from 'src/components/TabView';
 
 type Props = CurrentUserProps & RouterProps;
 
 const Container = styled.div`
-  margin: ${spacing(2, 0, 2, 2)};
+  margin: ${spacing(3, 0, 2, 2)};
   display: flex;
 
-  ${media.tablet(`margin: ${spacing(2)};`)}
+  ${media.mobile(`flex-direction: column;`)}
 `;
 
 const Main = styled.div`
   flex: 2 0 0;
   margin-right: ${spacing(4)};
-  ${media.tablet`margin-right: 0;`}
+  ${media.mobile(`order: 2; margin-right: ${spacing(2)};`)}
 `;
 
 const Aside = styled.aside`
   flex: 1 0 0;
-  margin-top: ${spacing(2)};
+  ${media.mobile`order: 1;`}
 `;
 
 const Wrapper = styled.div`
@@ -50,8 +49,7 @@ const ListContainer = styled.div`
 const NavList = styled.ul`
   display: flex;
   margin: 0;
-  padding: ${spacing(3)};
-  border-bottom: 1px solid ${colors.borders.main};
+  padding: ${spacing(2)};
 `;
 
 const NavItem = styled.li`
@@ -92,6 +90,7 @@ function Hunches({ currentUser, history, match }: Props): React.Node {
     <Container>
       <Main>
         <Wrapper>
+          <SectionHeader>My Hunches</SectionHeader>
           <NavList>
             {HUNCH_VIEW_TYPES.map((viewType: ViewType): React.Node => (
               <NavItem key={viewType.key}>
@@ -108,7 +107,7 @@ function Hunches({ currentUser, history, match }: Props): React.Node {
       </Main>
       <Aside>
         <SectionHeader>Hunch Requests</SectionHeader>
-        <HunchList hunchListType="REQUESTED" user={currentUser} />
+        <HunchList hunchListType="REQUESTED" user={currentUser} aside />
       </Aside>
     </Container>
   );
