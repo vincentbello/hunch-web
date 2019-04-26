@@ -13,7 +13,6 @@ import typography from 'theme/typography';
 import { media, spacing } from 'theme/sizes';
 
 import { FaCaretLeft } from 'react-icons/fa';
-import Button from 'components/Button';
 import Image from 'components/Image';
 
 type Props = {
