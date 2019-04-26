@@ -1,9 +1,13 @@
 // @flow
 import * as React from 'react';
+import { Query } from 'react-apollo';
+import GET_USER from 'graphql/queries/getUser';
+import withCurrentUser, { type CurrentUserProps } from 'hocs/withCurrentUser';
 import withUserListType from 'hocs/withUserListType';
 import useDocumentTitle from 'hooks/useDocumentTitle';
 import UserList from 'containers/UserList';
 import SectionHeader from 'components/SectionHeader';
+import type { RouterProps } from 'types/router';
 
 import styled from '@emotion/styled';
 import { media, spacing } from 'theme/sizes';
@@ -29,18 +33,33 @@ const Aside = styled.aside`
   ${media.mobile`order: 1;`}
 `;
 
-export default function Friends(props) {
+type Props = RouterProps & CurrentUserProps & {};
+
+function Friends(props: Props) {
   useDocumentTitle('Friends');
   return (
     <Container>
       <Main>
-        <SectionHeader>My Friends</SectionHeader>
+        <SectionHeader>
+          {!props.match.params.id || props.match.params.id === `${props.currentUser.id}` ? (
+            'My '
+          ) : (
+            <Query query={GET_USER} variables={{ id: parseInt(props.match.params.id, 10) }}>
+              {({ data: { user } }) => Boolean(user) && `${user.fullName}'s `}
+            </Query>
+          )}
+          Friends
+        </SectionHeader>
         <FriendsList {...props} viewType="card" searchable />
       </Main>
-      <Aside>
-        <SectionHeader>Friend Requests</SectionHeader>
-        <FriendRequests {...props} aside />
-      </Aside>
+      {!props.match.params.id && (
+        <Aside>
+          <SectionHeader>Friend Requests</SectionHeader>
+          <FriendRequests {...props} aside />
+        </Aside>
+      )}
     </Container>
   );
 }
+
+export default withCurrentUser(Friends);

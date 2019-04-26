@@ -46,6 +46,7 @@ const defaultProps = {
 
 const MetaText = styled.span`
   ${typography.base}
+  text-align: center;
   color: ${props => colors.text[props.light ? 'tertiary' : 'secondary']};
   ${props => props.emphasized && `font-weight: 600;`}
   ${props => props.spaced && `margin: ${spacing(1, 0)};`}
@@ -164,6 +165,7 @@ const GameStatus = ({ game, light, spaced }: GameStatusProps): React.Node => {
   return (
     <>
       <MetaText light={light} emphasized={hasStarted}>
+        {Boolean(game.number) && <>Game {game.number}<br /></>}
         {hasStarted ? (game.completed ? 'Final' : 'In Progress') : format(game.startDate, spaced ? 'MMM D, YYYY' : 'M/D, h:mm A')}
       </MetaText>
       {spaced && (
@@ -210,8 +212,8 @@ function GameCell({ canCreateHunch, game, large, light, muted, withContainer }: 
         <MetaContainer hideable={canCreateHunch} large={large}>
           <GameStatus game={game} light={light} spaced={large} />
         </MetaContainer>
-        {canCreateHunch && <CreateButton gameId={game.id} />}
       </MainContent>
+      {canCreateHunch && <CreateButton gameId={game.id} />}
       {large && (
         <MetaText emphasized light={light} spaced>{`${game.homeTeam.site} · ${game.homeTeam.city}, ${game.homeTeam.state}`}</MetaText>
       )}

@@ -10,6 +10,7 @@ export default gql`
     seasonType
     completed
     inProgress
+    number
     homeScore
     awayScore
     startDate

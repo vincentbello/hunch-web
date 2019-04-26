@@ -77,7 +77,7 @@ function GameList({ canCreateHunch, gamesQuery, today, withHeader, selectGame }:
       <DerivedStateSplash error={gamesQuery.error} loading={gamesQuery.loading}>
         {Boolean(gamesQuery.upcomingGames) && (
           gamesQuery.upcomingGames.length === 0 ? (
-            <Splash heading={today ? 'No upcoming games today.' : 'No games.'} visualName="meh-lightbulb" visualType="illustration" />
+            <Splash heading={today ? 'No upcoming games today.' : 'No games scheduled.'} visualName="meh-lightbulb" visualType="illustration" />
           ) : (
             <List>
               {gamesQuery.upcomingGames.map((game: Game): React.Node => (

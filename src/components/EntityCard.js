@@ -57,7 +57,7 @@ const Content = styled.div`
   ${typography.h4}
   line-height: 18px;
   font-weight: 500;
-  padding: ${spacing(2)};
+  padding: ${spacing(3, 2)};
   flex-grow: 1;
   display: flex;
   align-items: center;
