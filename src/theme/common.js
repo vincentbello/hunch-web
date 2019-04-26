@@ -8,6 +8,8 @@ export default {
     body {
       background-color: ${colors.background};
       font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      width: 100%;
+      overflow-x: hidden;
     }
 
     html, body, #root {

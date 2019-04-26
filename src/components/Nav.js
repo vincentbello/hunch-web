@@ -5,9 +5,11 @@ import { ClassNames } from '@emotion/core';
 
 import withCurrentUser, { type CurrentUserProps } from 'hocs/withCurrentUser';
 import HunchCreationContext, { clearForm } from 'contexts/HunchCreationContext';
+import BreakpointContext from 'contexts/BreakpointContext';
 
 import Button from 'components/Button';
 import EntityCell from 'components/EntityCell';
+import Image from 'components/Image';
 import NavIndicator from 'components/NavIndicator';
 
 import styled from '@emotion/styled';
@@ -49,7 +51,7 @@ const NavItem = styled.li`
   margin-right: ${spacing(4)};
   list-style-type: none;
   text-align: center;
-  ${media.tablet(`margin-right: ${spacing(2)};`)}
+  ${media.tablet(`margin-right: ${spacing(1)};`)}
 
   &:last-of-type {
     margin-right: 0;
@@ -73,14 +75,14 @@ const StyledLink = styled(NavLink)`
 const NavButton = styled(Button)`font-size: 16px;`;
 
 const Logo = styled.div`
-  background-image: url('assets/brand/logo-text-white.png');
+  background-image: url('/assets/brand/logo-text-white.png');
   background-repeat: no-repeat;
   background-size: 200px;
   width: 200px;
   height: 30px;
 
   ${media.tablet`
-    background-image: url('assets/brand/logo-letter-white.png');
+    background-image: url('/assets/brand/logo-letter-white.png');
     background-size: 30px;
     width: 30px;
   `}
@@ -97,6 +99,7 @@ const activeClassStyles = `
 
 function Nav({ currentUser }: CurrentUserProps) {
   const [_, dispatch] = React.useContext(HunchCreationContext); // eslint-disable-line no-unused-vars
+  const breakpoint = React.useContext(BreakpointContext);
   return (
     <ClassNames>
       {({ css, cx }) => {
@@ -121,7 +124,11 @@ function Nav({ currentUser }: CurrentUserProps) {
                 </NavItem>
                 <NavItem>
                   <StyledLink exact to="/me" activeClassName={activeClassName}>
-                    <EntityCell lightMode entity={currentUser} small />
+                    {breakpoint === 'mobile' ? (
+                      <Image rounded size="xxsmall" src={currentUser.imageUrl} />
+                      ) : (
+                        <EntityCell lightMode entity={currentUser} small />
+                      )}
                   </StyledLink>
                 </NavItem>
               </NavList>

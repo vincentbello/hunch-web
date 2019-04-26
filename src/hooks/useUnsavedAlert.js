@@ -10,7 +10,7 @@ export default function useUnsavedAlert(alertMessage, showAlert = false) {
     };
     if (showAlert) window.addEventListener('beforeunload', alert);
     return () => {
-      if (!showAlert) window.removeEventListener('beforeunload', alert);
+      if (showAlert) window.removeEventListener('beforeunload', alert);
     };
   }, [alertMessage, showAlert]);
 }
