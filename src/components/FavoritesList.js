@@ -61,6 +61,7 @@ const ListItem = styled.li(props => css`
 
 const RemoveButton = styled.button`
   background-color: ${colors.primary.red};
+  border: none;
   transition: background-color 250ms;
   cursor: pointer;
   outline: none;
