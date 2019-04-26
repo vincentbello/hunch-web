@@ -7,9 +7,13 @@ export default {
   global: `
     body {
       background-color: ${colors.background};
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
       width: 100%;
+      margin: 0;
       overflow-x: hidden;
+    }
+
+    * {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     }
 
     html, body, #root {
