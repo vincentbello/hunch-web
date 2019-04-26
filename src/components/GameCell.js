@@ -4,10 +4,7 @@ import { withRouter } from 'react-router';
 import { format } from 'date-fns';
 
 import { type Game } from 'types/game';
-import { type RouterProps } from 'types/router';
 import { type Team } from 'types/team';
-
-import HunchCreationContext, { setGame } from 'contexts/HunchCreationContext';
 
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
@@ -73,12 +70,6 @@ const MetaContainer = styled.div`
   margin: ${spacing(2, 2, 0, 0)};
   align-items: flex-end;
   justify-content: center;
-`;
-
-const StyledButton = styled(Button)`
-  [data-game-container]:not(:hover) & {
-    display: none;
-  }
 `;
 
 const Content = styled.div`
@@ -177,15 +168,6 @@ const GameStatus = ({ game, light, spaced }: GameStatusProps): React.Node => {
   );
 };
 
-const CreateButton = withRouter(({ gameId, history }: RouterProps & { gameId: number }) => {
-  const [_, dispatch] = React.useContext(HunchCreationContext); // eslint-disable-line no-unused-vars
-  const createHunch = () => {
-    dispatch(setGame(gameId));
-    history.push('/hunch/new');
-  };
-  return <StyledButton buttonTitle="Create Hunch" type="secondary" onClick={createHunch} />;
-});
-
 function GameCell({ canCreateHunch, game, large, light, muted, withContainer }: Props) {
   return (
     <Container contained={withContainer}>
@@ -213,7 +195,6 @@ function GameCell({ canCreateHunch, game, large, light, muted, withContainer }: 
           <GameStatus game={game} light={light} spaced={large} />
         </MetaContainer>
       </MainContent>
-      {canCreateHunch && <CreateButton gameId={game.id} />}
       {large && (
         <MetaText emphasized light={light} spaced>{`${game.homeTeam.site} · ${game.homeTeam.city}, ${game.homeTeam.state}`}</MetaText>
       )}
