@@ -49,7 +49,7 @@ const NavItem = styled.li`
   margin-right: ${spacing(4)};
   list-style-type: none;
   text-align: center;
-  ${media.desktop(`margin-right: ${spacing(1)};`)}
+  ${media.tablet(`margin-right: ${spacing(2)};`)}
 
   &:last-of-type {
     margin-right: 0;
@@ -72,6 +72,20 @@ const StyledLink = styled(NavLink)`
 
 const NavButton = styled(Button)`font-size: 16px;`;
 
+const Logo = styled.div`
+  background-image: url('assets/brand/logo-text-white.png');
+  background-repeat: no-repeat;
+  background-size: 200px;
+  width: 200px;
+  height: 30px;
+
+  ${media.tablet`
+    background-image: url('assets/brand/logo-letter-white.png');
+    background-size: 30px;
+    width: 30px;
+  `}
+`;
+
 const activeClassStyles = `
   font-weight: 700 !important;
   color: ${colors.white} !important;
@@ -90,7 +104,9 @@ function Nav({ currentUser }: CurrentUserProps) {
         return (
           <PageContainer>
             <NavContainer>
-              <StyledLink exact to="/" activeClassName={activeClassName}>Home</StyledLink>
+              <NavLink exact to="/">
+                <Logo />
+              </NavLink>
               <NavList>
                 <NavItem>
                   <StyledLink to="/hunches" activeClassName={activeClassName}>Hunches</StyledLink>
