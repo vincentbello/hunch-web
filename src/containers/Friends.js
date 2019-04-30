@@ -5,11 +5,15 @@ import GET_USER from 'graphql/queries/getUser';
 import withCurrentUser, { type CurrentUserProps } from 'hocs/withCurrentUser';
 import withUserListType from 'hocs/withUserListType';
 import useDocumentTitle from 'hooks/useDocumentTitle';
+import { FiPlus } from 'react-icons/fi';
+import Button from 'components/Button';
+import FriendSelect from 'components/FriendSelect';
 import UserList from 'containers/UserList';
 import SectionHeader from 'components/SectionHeader';
 import type { RouterProps } from 'types/router';
 
 import styled from '@emotion/styled';
+import common from 'theme/common';
 import { media, spacing } from 'theme/sizes';
 
 const FriendsList = withUserListType('FRIENDS')(UserList);
@@ -20,6 +24,11 @@ const Container = styled.div`
   display: flex;
 
   ${media.mobile(`flex-direction: column;`)}
+`;
+
+const Header = styled.header`
+  display: flex;
+  align-items: center;
 `;
 
 const Main = styled.div`
@@ -33,10 +42,15 @@ const Aside = styled.aside`
   ${media.mobile`order: 1;`}
 `;
 
+const InputContainer = styled.div`
+  margin-bottom: ${spacing(2)};
+`;
+
 type Props = RouterProps & CurrentUserProps & {};
 
 function Friends(props: Props) {
   useDocumentTitle('Friends');
+  const [adding, setAdding] = React.useState(false);
   return (
     <Container>
       <Main>
@@ -54,7 +68,11 @@ function Friends(props: Props) {
       </Main>
       {!props.match.params.id && (
         <Aside>
-          <SectionHeader>Friend Requests</SectionHeader>
+          <Header>
+            <SectionHeader grow>Friend Requests</SectionHeader>
+            {!adding && <Button size="large" type="tertiary" icon={<FiPlus />} onClick={() => setAdding(true)} />}
+          </Header>
+          {adding && <InputContainer><FriendSelect allUsers autoFocus contained linkable /></InputContainer>}
           <FriendRequests {...props} aside />
         </Aside>
       )}

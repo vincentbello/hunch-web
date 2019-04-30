@@ -2,6 +2,6 @@
 import { useState } from 'react';
 
 export default function useInputHandler() {
-  const [input, setInput] = useState('');
-  return [input, (evt: SyntheticEvent<HTMLInputElement>) => setInput(evt.target.value)];
+  const [value, setValue] = useState('');
+  return { value, onChange: (evt: SyntheticEvent<HTMLInputElement>) => setValue(evt.target.value) };
 };

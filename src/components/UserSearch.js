@@ -23,7 +23,8 @@ type Props = {
   renderUser: (user: User) => React.Node,
 };
 
-function UserSearch({ usersQuery, renderUser }: Props) {
+function UserSearch({ input, usersQuery, renderUser }: Props) {
+  if (input.length === 0) return null;
   return (
     <DerivedStateSplash loading={usersQuery.loading} error={usersQuery.error}>
       {!usersQuery.users || usersQuery.users.length === 0 ? (

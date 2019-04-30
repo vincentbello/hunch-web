@@ -170,10 +170,15 @@ function UserCard({ display, history, isCurrent, small, user, userFriendshipQuer
           <>
             <Section centered clear>
               <DerivedStateSplash loading={userFriendshipQuery.loading} error={userFriendshipQuery.error} size="small">
-                <FriendshipButton friendship={userFriendshipQuery.userFriendship} user={user} />
+                <FriendshipButton
+                  friendship={userFriendshipQuery.userFriendship}
+                  user={user}
+                  updateFriendshipStatus={(status: FriendshipStatus) => updateFriendshipStatus({ variables: { userId: user.id, status } })}
+                />
               </DerivedStateSplash>
               <LeftOffsetButton
                 asLink
+                disabled={user.friendCount === 0}
                 to={`/user/${user.id}/friends`}
                 leftIcon={<FiUsers />}
                 buttonTitle={pluralize('friend', user.friendCount, true)}

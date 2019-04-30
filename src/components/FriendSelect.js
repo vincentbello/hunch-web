@@ -52,6 +52,7 @@ const Footer = styled.footer`
 `;
 
 type Props = {
+  allUsers: boolean,
   autoFocus: boolean,
   contained: boolean,
   friendsQuery: {
@@ -60,16 +61,17 @@ type Props = {
     users: User[],
   },
   large: boolean,
+  linkable: boolean,
   value: User | null,
   selectUser: null | (friend: User) => void,
   renderUser: () => React.Node,
 };
 
-function FriendSelect({ autoFocus, contained, friendsQuery, large, value, selectUser, renderUser }: Props) {
+function FriendSelect({ allUsers, autoFocus, contained, friendsQuery, large, linkable, value, selectUser, renderUser }: Props) {
   const [filteredUsers, inputProps] = useInputFilter(friendsQuery.users);
   const [fullSearch, setFullSearch] = React.useState(false);
   const renderUserItem = (user: User, toggle: (open: boolean) => void) => (
-    <EntityCell inList entity={user} onClick={chain(() => selectUser(user), () => toggle(false))} />
+    <EntityCell inList entity={user} linkable={linkable} onClick={chain(() => selectUser(user), () => toggle(false))} />
   );
 
   return (
@@ -82,10 +84,10 @@ function FriendSelect({ autoFocus, contained, friendsQuery, large, value, select
               autoFocus={autoFocus}
               contained={contained}
               large={large}
-              placeholder="Select a friend..."
+              placeholder={allUsers ? 'Search all users...' : 'Select a friend...'}
               ref={context.props.ref}
               onFocus={() => context.toggle(true)}
-              // onBlur={() => context.toggle(false)}
+              onBlur={() => context.toggle(false)}
               {...inputProps}
             />
           )}
@@ -93,7 +95,7 @@ function FriendSelect({ autoFocus, contained, friendsQuery, large, value, select
           {(actions: DropdownActions) => (
             <DropdownContent>
               <DerivedStateSplash loading={friendsQuery.loading} error={friendsQuery.error}>
-                {fullSearch && inputProps.value.length > 0 ? (
+                {allUsers || fullSearch ? (
                   <UserSearch input={inputProps.value} renderUser={(user: User) => renderUserItem(user, actions.toggle)} />
                 ) : (
                   <>
@@ -120,9 +122,18 @@ function FriendSelect({ autoFocus, contained, friendsQuery, large, value, select
   );
 }
 FriendSelect.defaultProps = {
+  allUsers: false,
   contained: false,
   large: false,
+  linkable: false,
+  value: null,
   renderUser: () => null,
 };
 
-export default graphql(GET_USERS, { name: 'friendsQuery', options: { variables: { userListType: 'FRIENDS' } } })(FriendSelect);
+export default graphql(GET_USERS, {
+  name: 'friendsQuery',
+  options: {
+    variables: { userListType: 'FRIENDS' },
+    skip: ({ allUsers }) => allUsers,
+  },
+})(FriendSelect);

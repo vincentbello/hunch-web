@@ -126,6 +126,16 @@ export default {
     display: flex;
     flex-direction: column;
   `,
+  input: `
+    background-color: ${colors.white};
+    border: 1px solid ${colors.borders.main};
+    border-radius: 2px;
+    box-shadow: none;
+    box-sizing: border-box;
+    font-size: 15px;
+    outline: none;
+    padding: ${spacing(2)};
+  `,
   reset: {
     button: `
       background: none;
