@@ -42,7 +42,7 @@ const defaultProps = {
 
 const MetaText = styled.span`
   ${typography.base}
-  text-align: center;
+  text-align: right;
   color: ${props => colors.text[props.light ? 'tertiary' : 'secondary']};
   ${props => props.emphasized && `font-weight: 600;`}
   ${props => props.spaced && `margin: ${spacing(1, 0)};`}

@@ -13,7 +13,6 @@ import SectionHeader from 'components/SectionHeader';
 import type { RouterProps } from 'types/router';
 
 import styled from '@emotion/styled';
-import common from 'theme/common';
 import { media, spacing } from 'theme/sizes';
 
 const FriendsList = withUserListType('FRIENDS')(UserList);
