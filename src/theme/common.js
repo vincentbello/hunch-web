@@ -127,6 +127,13 @@ export default {
     flex-direction: column;
   `,
   reset: {
+    button: `
+      background: none;
+      padding: 0;
+      margin: 0;
+      box-shadow: 0;
+      cursor: pointer;
+    `,
     item: `
       list-style-type: none;
     `,

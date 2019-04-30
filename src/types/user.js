@@ -35,4 +35,4 @@ export type UserStats = {
   against: StatGroup,
 };
 
-export type UserListType = 'FRIENDS' | 'FRIEND_REQUESTS';
+export type UserListType = 'FRIENDS' | 'FRIEND_REQUESTS' | 'ALL_USERS';

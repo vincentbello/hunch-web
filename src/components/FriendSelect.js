@@ -7,7 +7,9 @@ import type { User } from 'types/user';
 import useInputFilter from 'hooks/useInputFilter';
 import { chain } from 'utils/functions';
 
+import Button from 'components/Button';
 import DerivedStateSplash from 'components/DerivedStateSplash';
+import UserSearch from 'components/UserSearch';
 import Dropdown, { type DropdownActions, type TriggerContext } from 'components/Dropdown';
 import EntityCell from 'components/EntityCell';
 
@@ -44,13 +46,18 @@ const Input = styled.input`
 const FriendList = styled.ul(common.reset.list);
 const FriendItem = styled.li(common.reset.item);
 
+const Footer = styled.footer`
+  padding: ${spacing(1)};
+  border-top: 2px solid ${colors.borders.main};
+`;
+
 type Props = {
   autoFocus: boolean,
   contained: boolean,
   friendsQuery: {
     loading: boolean,
     error: Error,
-    teams: User[],
+    users: User[],
   },
   large: boolean,
   value: User | null,
@@ -60,6 +67,11 @@ type Props = {
 
 function FriendSelect({ autoFocus, contained, friendsQuery, large, value, selectUser, renderUser }: Props) {
   const [filteredUsers, inputProps] = useInputFilter(friendsQuery.users);
+  const [fullSearch, setFullSearch] = React.useState(false);
+  const renderUserItem = (user: User, toggle: (open: boolean) => void) => (
+    <EntityCell inList entity={user} onClick={chain(() => selectUser(user), () => toggle(false))} />
+  );
+
   return (
     <Container>
       {value === null ? (
@@ -81,13 +93,24 @@ function FriendSelect({ autoFocus, contained, friendsQuery, large, value, select
           {(actions: DropdownActions) => (
             <DropdownContent>
               <DerivedStateSplash loading={friendsQuery.loading} error={friendsQuery.error}>
-                <FriendList>
-                  {filteredUsers.map((user: User) => (
-                    <FriendItem key={user.id}>
-                      <EntityCell inList entity={user} onClick={chain(() => selectUser(user), () => actions.toggle(false))} />
-                    </FriendItem>
-                  ))}
-                </FriendList>
+                {fullSearch && inputProps.value.length > 0 ? (
+                  <UserSearch input={inputProps.value} renderUser={(user: User) => renderUserItem(user, actions.toggle)} />
+                ) : (
+                  <>
+                    <FriendList>
+                      {filteredUsers.map((user: User) => (
+                        <FriendItem key={user.id}>
+                          {renderUserItem(user, actions.toggle)}
+                        </FriendItem>
+                      ))}
+                    </FriendList>
+                    {inputProps.value.length > 0 && (
+                      <Footer>
+                        <Button block buttonTitle="Search all users..." type="tertiary" onClick={() => setFullSearch(true)} />
+                      </Footer>
+                    )}
+                  </>
+                )}
               </DerivedStateSplash>
             </DropdownContent>
           )}
